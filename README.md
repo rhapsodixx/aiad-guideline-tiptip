@@ -1,0 +1,26 @@
+# AI Assisted Development at TipTip
+
+Welcome to the TipTip AI Assisted Development repository. The purpose of this repository is to provide guidance, resources, and standardized practices for leveraging AI tools effectively and securely within our engineering workflows.
+
+## Guides
+
+The `guides/` directory contains comprehensive documentation covering various aspects of AI Assisted Development. These guides provide high-level overviews and in-depth information on setup, integrations, project configurations, and best practices to ensure teams can adopt and benefit from AI assistance consistently.
+
+- [**Setup Guide**](guides/claude_code_setup_guide.md): Outlines the initial installation and configuration required to run Claude Code locally using TipTip's GLM model routing and recommended IDEs.
+- [**Project Memory Guide**](guides/claude_code_project_memory_guide.md): Explains the structure and purpose of `CLAUDE.md` files for injecting persistent, repo-specific architecture patterns and engineering rules into every session.
+- [**Skills Guide**](guides/claude_code_skills_guide.md): Details how to install and invoke reusable, version-controlled prompt templates that standardize repetitive tasks like code reviews and PR descriptions.
+- [**MCP Integrations Guide**](guides/claude_code_mcp_guide.md): Documents how to connect Claude to live external tools and contexts, such as Jira, Confluence, database schemas, and codebase symbols via Serena.
+- [**Hooks Guide**](guides/claude_code_hooks_guide.md): Covers the setup of automated safety and quality gates (linters, formatters, SQL guards) that trigger transparently during Claude's tool execution lifecycle.
+- [**Workflows Guide**](guides/claude_code_workflows_guide.md): Provides practical blueprints and `task.md` templates for running complex, autonomous engineering operations from end to end.
+
+## Skills
+
+Skills are reusable, specialized prompts and instructions that extend the capabilities of our AI tools for specific development and operational tasks. They help standardize outcomes, improve code quality, and save engineers time on repetitive tasks.
+
+For full details on the available skills, their purpose, and how to use them, please refer to the [Skills Guide](guides/claude_code_skills_guide.md).
+
+## Tasks & Workflows
+
+Tasks and workflows are structured, repeatable sequences of actions that combine multiple tools, commands, or processes to accomplish larger engineering objectives efficiently. They outline the standardized approaches for complex or multi-step operations.
+
+For further, detailed information on the available tasks and workflows, please review the [Workflows Guide](guides/claude_code_workflows_guide.md).

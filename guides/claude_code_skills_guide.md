@@ -197,6 +197,7 @@ This section outlines how skills affect token consumption and API cost, and give
 - **Do not create private skills that duplicate canonical ones.** If a canonical skill does not fit your repo, the fix is to improve the canonical skill or add a project-level override, not to maintain a private fork.
 - **Suggest new skills.** If you find yourself typing the same multi-step prompt more than twice, that is a skill candidate. Document the prompt and propose it via the agreed channel.
 - **Understand what each skill does before invoking it.** Skills can run commands, edit files, and make multiple API calls. Know what a skill does before running it on production-adjacent code.
+- **Update placeholders before executing:** When invoking a newly created scaffolded skill from the repository, ensure you have updated the `<!-- TODO: Implement TipTip specific instructions for this skill -->` placeholder with actual instructions before executing it.
 
 ### The Improvement Loop
 
