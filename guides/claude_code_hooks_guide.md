@@ -621,6 +621,33 @@ Below is the complete configuration. The global config isolates engineering-wide
 
 Engineers should not write hooks from scratch — pull from `aiad-claude`.
 
+### Option 1: Automated Installation (Recommended)
+
+To streamline setup, we provide an interactive installation script that installs global hooks and interactively sets up project-level hooks for your specific stack.
+
+**Prerequisite:** Ensure TipTip's Claude Code resource repository is cloned to `/tmp`:
+```bash
+git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /tmp/aiad-claude
+```
+
+Run the following command from the root of your project repository:
+
+```bash
+bash scripts/install-hooks.sh
+```
+
+The script will:
+1. Verify the `aiad-claude` repository exists in `/tmp/aiad-claude`.
+2. Install the required global hooks (like secret guard and notifications) to `~/.claude/hooks/`.
+3. Prompt you to select your stack (Backend/Go or Frontend/Next.js) and install the corresponding project-level hooks into `.claude/hooks/` for your current repository.
+4. Automatically apply `chmod +x` to make all installed hooks executable.
+
+Lastly, make sure to copy the relevant settings block from `/tmp/aiad-claude/settings/project-settings.json` to your local `.claude/settings.json`.
+
+### Option 2: Manual Installation (Advanced/Fallback)
+
+If you prefer to install hooks manually or are using an unsupported environment, follow these steps:
+
 **Installation Commands:**
 ```bash
 # Clone TipTip's Claude Code resource repository

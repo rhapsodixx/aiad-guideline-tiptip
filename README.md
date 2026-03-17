@@ -2,6 +2,20 @@
 
 Welcome to the TipTip AI Assisted Development repository. The purpose of this repository is to provide guidance, resources, and standardized practices for leveraging AI tools effectively and securely within our engineering workflows.
 
+## Installation & Automation
+
+To standardize tip-to-tail setup across TipTip, this repository provides automated shell scripts in the root directory. **These scripts must be executed from the root of the cloned `aiad-claude` repository.**
+
+- **`install-claude-templates.sh`**: Installs global `CLAUDE.md` context files for your specific engineering stack (Backend, Frontend, Mobile). See the [Project Memory Guide](guides/claude_code_project_memory_guide.md) for details.
+- **`install-hooks.sh`**: Installs essential safety/quality hook gates (like SQL protection and ESLint enforcement) globally and per-project. See the [Hooks Guide](guides/claude_code_hooks_guide.md) for details.
+
+To run either script, simply execute:
+```bash
+./install-claude-templates.sh
+# or
+./install-hooks.sh
+```
+
 ## Guides
 
 The `guides/` directory contains comprehensive documentation covering various aspects of AI Assisted Development. These guides provide high-level overviews and in-depth information on setup, integrations, project configurations, and best practices to ensure teams can adopt and benefit from AI assistance consistently.

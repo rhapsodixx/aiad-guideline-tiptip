@@ -133,10 +133,10 @@ Demonstrates how to structure a repository-specific `CLAUDE.md` for a hypothetic
 
 To easily install these global setup and stack templates onto your machine, use the interactive wizard script. It will automatically copy the relevant files and configure the imports.
 
-Run the script from the project root and follow the prompts:
+Run the script from the root of the cloned `aiad-claude` repository and follow the prompts:
 
 ```bash
-bash claude-templates/install-claude-templates.sh
+bash install-claude-templates.sh
 ```
 
 ---

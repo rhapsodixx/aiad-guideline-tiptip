@@ -61,13 +61,8 @@ GLOBAL_TEMPLATE_SRC="global/tiptip-engineering.md"
 GLOBAL_TEMPLATE_DEST="$CLAUDE_DIR/CLAUDE.md"
 
 if [ ! -f "$GLOBAL_TEMPLATE_SRC" ]; then
-    # Adjust path assuming script might be run from root or within claude-templates folder
-    if [ -f "claude-templates/$GLOBAL_TEMPLATE_SRC" ]; then
-        cd claude-templates
-    else
-        echo "Error: Global template not found at $GLOBAL_TEMPLATE_SRC. Run this script from the project root or the claude-templates directory."
-        exit 1
-    fi
+    echo "Error: Global template not found at $GLOBAL_TEMPLATE_SRC. Run this script from the root of the aiad-claude repository."
+    exit 1
 fi
 
 # Always copy global to overwrite/initialize
