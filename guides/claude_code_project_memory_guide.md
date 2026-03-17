@@ -100,213 +100,61 @@ Below are the templates. **Copy and paste the ones relevant to your work:**
 ---
 
 ### Template 1: Global — TipTip Engineering (stack-agnostic)
-**File:** `~/.claude/CLAUDE.md`
-
-```markdown
-# TipTip Engineering Global Conventions
-
-You are assisting an engineer at PT TipTip Network Indonesia (which also operates the SatuSatu platform).
-
-## Universal Principles
-- Write clean, maintainable, and testable code. No magic numbers. 
-- Never hardcode credentials, secrets, or API keys under any circumstances.
-- Keep functions small and single-purpose.
-
-## Git & PR Conventions
-- Branch naming: `feature/<ticket-id>-<short-description>`, `fix/<ticket-id>-<short-description>`, `chore/<short-description>`
-- Commit messages: Use imperative mood (e.g., "Add user authentication", not "Added user authentication"). Include ticket ID if applicable.
-- PRs should be small and focused on a single logical change.
-
-## Security & Compliance
-- NEVER log Personally Identifiable Information (PII) like emails, phone numbers, or passwords.
-- Ensure all sensitive data rests encrypted.
-- If you suspect a security vulnerability in the code, highlight it immediately with a ⚠️ warning.
-
-## Language Policy
-- All code code (variables, functions, classes), comments, and documentation MUST be written in English.
-- (Bahasa Indonesia is permitted for internal Slack communications and PR descriptions, but Claude should default to English).
-
-## Team Communication
-- General engineering discussion: `#engineering` Slack channel.
-- Outages or critical production bugs: Escalated via PagerDuty and the `#incidents` Slack channel.
-
-**IMPORTANT:** Always refer to the project-level `./CLAUDE.md` for stack-specific configurations and conventions relative to the specific repository you are currently operating in.
-```
+Contains universal principles, Git conventions, security rules, and language policy applicable across all TipTip repositories. Essential for ensuring consistent code quality and security standards.
+[View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/global/tiptip-engineering.md)
 
 ---
 
 ### Template 2: Global — Go Stack
-**File:** `~/.claude/stacks/golang.md`
-*(Import this into your `~/.claude/CLAUDE.md` via `@~/.claude/stacks/golang.md` if you write Go)*
-
-```markdown
-# TipTip Go Stack Conventions
-
-## Base Assumptions
-- Go version 1.22+.
-- Follow standard Go module structures.
-
-## Error Handling
-- Wrap errors using `fmt.Errorf("failed to do X: %w", err)`.
-- Use custom error types for domain-level errors that need to be checked via `errors.As` or `errors.Is`.
-- Do not silently swallow errors.
-
-## Design & Architecture
-- Interface design: Keep interfaces small (1-2 methods). Accept interfaces, return structs.
-- Concurrency: Never start a goroutine without knowing how and when it will stop. Prefer worker pools over unbounded goroutines.
-- Context: ALWAYS pass `context.Context` as the first argument to functions doing I/O. NEVER store `context.Context` inside a struct.
-- Database access: Use the Repository pattern. We typically use `pgx` for PostgreSQL access (unless otherwise specified in the repo).
-- Dependency Injection: Pass dependencies explicitly (e.g., via struct fields on server or handler structs), avoid global state.
-- Logging: Use structured logging with `zap`. Respect log levels (Info, Warn, Error, Debug).
-
-## Testing
-- Use Table-Driven tests for multiple scenarios.
-- Name tests descriptively: `TestFunctionName_Scenario_Outcome`.
-- Use localized mocks (not massive global mocks) for dependencies.
-
-## Anti-Patterns to Avoid
-- Avoid `init()` functions unless strictly necessary for registering drivers.
-- Avoid using `sqlx` in modern services unless the repo explicitly configures it.
-- Avoid panic-driven control flow. Return errors.
-```
+Provides specific Go-based guidelines covering error handling, design architecture, and anti-patterns for Go 1.22+. Prevents Claude from hallucinating non-standard packages or improper Go concurrency models.
+[View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/stacks/golang.md)
 
 ---
 
 ### Template 3: Global — React / Next.js Stack
-**File:** `~/.claude/stacks/nextjs.md`
-*(Import this into your `~/.claude/CLAUDE.md` via `@~/.claude/stacks/nextjs.md` if you write Frontend code)*
-
-```markdown
-# TipTip React / Next.js Stack Conventions
-
-## Base Assumptions
-- Node.js LTS and Next.js 14+.
-- Default to **App Router** (`app/` directory) unless the repo specifically indicates it is a legacy Pages Router project.
-- Strict TypeScript. Ensure `tsconfig.json` strict mode is respected. No `any` types.
-
-## Components & State
-- File naming: PascalCase for components (`UserProfile.tsx`), camelCase for utilities (`formatDate.ts`).
-- Co-locate tests and styles with the component (e.g., `Button.tsx`, `Button.test.tsx`).
-- State Management: Prefer Zustand for global client state and React Query for server state/data fetching.
-
-## API & Integration
-- Frontend should call TipTip backend APIs via typed fetch wrappers or React Query hooks.
-- Handle loading, error, and success states explicitly.
-
-## Error Handling & UX
-- Use React Error Boundaries for catching render errors.
-- Display user-friendly toast notifications for operational errors or successful mutations.
-
-## Styling & Performance
-- Use Tailwind CSS for all styling.
-- Utilize `next/image` for image optimization.
-- Implement lazy loading for heavy components not visible on the initial viewport.
-- Be conscious of bundle size; import libraries selectively.
-
-## Anti-Patterns to Avoid
-- Do not mix Server Components and Client Components incorrectly. Use `"use client"` only at the boundary leaf nodes where interactivity/React hooks are actually needed.
-- Avoid legacy `getServerSideProps` or `getStaticProps` in App Router components.
-- Do not leak secret environment variables to the client. Only prefix with `NEXT_PUBLIC_` if it is explicitly meant to be visible in the browser.
-```
+Establishes App Router defaults, state management preferences, and styling constraints for Next.js applications. Ensures Claude generates modern React code adhering to TipTip's specific Next.js conventions.
+[View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/stacks/nextjs.md)
 
 ---
 
 ### Template 4: Global — Flutter Stack
-**File:** `~/.claude/stacks/flutter.md`
-*(Import this into your `~/.claude/CLAUDE.md` via `@~/.claude/stacks/flutter.md` if you write Mobile code)*
-
-```markdown
-# TipTip Flutter Stack Conventions
-
-## Base Assumptions
-- Flutter 3.19+ and Dart 3.3+.
-- Sound null safety is strictly enforced.
-
-## Architecture & State
-- State Management: Default to **Riverpod** for state management and dependency injection.
-- Folder Structure: Use a Feature-First structure (e.g., `lib/features/auth/presentation`, `lib/features/auth/domain`).
-- Navigation: Use `GoRouter` for declarative routing.
-
-## UI & Widgets
-- Prefer `StatelessWidget` with Riverpod's `ConsumerWidget` over `StatefulWidget` where possible.
-- Use `StatefulWidget` only for local, ephemeral UI state (e.g., animation controllers, scroll controllers).
-- Keep `build()` methods small. Extract complex widget trees into separate widget classes (prefer classes over functions returning widgets).
-- Follow TipTip's centralized design tokens and Theming system (do not hardcode hex colors throughout the app).
-
-## API & Data
-- Use `Dio` (or Retrofit for Dio) for network requests.
-- Parse JSON using code generation tools (e.g., `json_serializable` or `freezed`).
-- Include robust error handling and user feedback (snackbars/dialogs) for network timeouts or failures.
-
-## Testing & Quality
-- Write unit tests for business logic (Providers, Notifiers).
-- Write widget tests for critical UI components.
-- Platform awareness: Ensure the UI handles SafeArea properly and gracefully adapts if there are specific iOS vs Android UX discrepancies needed by TipTip.
-
-## Anti-Patterns to Avoid
-- Do not perform heavy synchronous computations on the UI isolate. Use `compute()` or isolates.
-- Avoid deeply nested widget trees ("Callback hell"); use extraction to flatten the hierarchy.
-```
+Defines architecture, state management (Riverpod), and UI testing standards for TipTip Dart/Flutter applications. Prevents outdated patterns and ensures proper API data handling.
+[View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/stacks/flutter.md)
 
 ---
 
 ### Template 5: Per-Repo Sample — Go Service (Creator Service)
-**File:** `<repo-root>/CLAUDE.md`
+Demonstrates how to structure a repository-specific `CLAUDE.md` for a hypothetical internal Go service. Illustrates how to document domain constraints (currency formats, transaction logic), external integration pointers, and specific warnings for known tech debt.
+[View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/per-repo/creator-service-sample.md)
 
-```markdown
-# Creator Service
+---
 
-This is the TipTip Creator Service. It handles creator monetization, earnings calculations, wallet management, and TipTip's payment gateway integrations.
+### Automated Installation Script
 
-## Stack
-- Go 1.22
-- PostgreSQL 15 (using `pgx` native, DO NOT use `sqlx`)
-- `gin-gonic/gin` for HTTP routing
-- `uber-go/zap` for structured logging
+To easily install these global setup and stack templates onto your machine, use the interactive wizard script. It will automatically copy the relevant files and configure the imports.
 
-## Directory Structure
-```
-.
-├── cmd/
-│   └── api/             # Main application entrypoint
-├── internal/
-│   ├── handler/         # HTTP routes and controllers
-│   ├── service/         # Core business logic
-│   ├── repository/      # Database interaction layer (pgx)
-│   └── util/            # Shared utilities
-└── migrations/          # SQL migrate files
-```
+Run the script from the project root and follow the prompts:
 
-## Domain Patterns
-- **Wallets:** All financial calculations MUST use `int64` representing the lowest denomination (Rupiah). Never use floating-point types (`float64`, `float32`) for currency.
-- **Transactions:** Financial updates spanning multiple tables must occur inside a `pgx.Tx` transaction.
-
-## External Integrations
-- Integrates with Midtrans and Xendit payment gateways. 
-- Mocks for these gateways are located in `internal/service/mock_gateway/`.
-
-## Development Commands
-- Run locally: `go run cmd/api/main.go`
-- Run all tests: `go test -v ./...`
-- Run database migrations: `make migrate-up`
-
-## Environment Variables Needed (Local)
-(Never commit the actual values, just the structure)
-- `DB_DSN`
-- `PORT`
-- `MIDTRANS_SERVER_KEY`
-- `XENDIT_SECRET_KEY`
-
-## Known Technical Debt (Careful here)
-- The legacy `CalculatePayout_V1` function in `internal/service/payout.go` is notoriously fragile and lacks test coverage. If modifying it, proceed extremely slowly and verify steps.
-
-## Claude Tips for this Repo
-- Claude frequently tries to import `database/sql` or `github.com/jmoiron/sqlx`. Do not do this. Use `github.com/jackc/pgx/v5` constructs.
+```bash
+bash claude-templates/install-claude-templates.sh
 ```
 
 ---
 
-## 6. What to Expect from Engineers
+## 6. Tips & Tricks for Repository-Level CLAUDE.md
+
+### Generating and Refining with `/init`
+- **Initial Generation**: Use the `/init` command within a Claude Code session. Claude will scan your project's code and recent commits to automatically draft a relevant `CLAUDE.md`. [[Docs: /init Command]](https://docs.anthropic.com/en/docs/claude-code/overview#init)
+- **Iterative Refinement**: Run `/init` periodically as your architecture evolves. Claude updates the existing file with newly discovered patterns while preserving your custom additions. [[Docs: Updating Memory]](https://docs.anthropic.com/en/docs/claude-code/memory#updating-project-memory)
+
+### Best Practices for Content
+- **1. Omit Standard Boilerplate:** Exclude generic advice (e.g., "write clean code"). Focus exclusively on TipTip-specific exceptions, custom commands, and non-obvious rules. [[Ref: The "does this help" filter]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
+- **2. Document Frequent Mistakes:** Explicitly document the specific, repetitive corrections you find yourself giving Claude for the repository. [[Ref: CLAUDE.md Best Practices]](https://docs.anthropic.com/en/docs/claude-code/memory#best-practices-for-claudemd)
+- **3. Enforce Brevity:** Keep the file under 300 lines. A bloated context file wastes tokens and dilutes instruction-following capabilities. [[Ref: Keep CLAUDE.md succinct]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
+
+---
+
+## 7. What to Expect from Engineers
 
 For `CLAUDE.md` to be effective, it must be treated as living documentation, owned and maintained by the engineering team.
 
@@ -332,6 +180,7 @@ Individual engineers are responsible for:
   6. Next session: Claude gets it right.
   *(This loop is how the file matures. It is expected and normal).*
 - Treating `CLAUDE.md` updates as meaningful PRs. Include a brief description of why the change was made (e.g., "Added note about `pgx` because Claude kept suggesting `sqlx`").
+- **Updating Templates**: If you believe the global templates or stack templates are inaccurate or missing information, you are strictly encouraged to submit a Pull Request to update the source templates located in the `/claude-templates/` directory. This process is critical to maintaining consistent accuracy and upholding TipTip's quality bar across the organization.
 
 ### Quality Bar
 - **Accuracy over completeness:** Stale context is worse than no context. If `CLAUDE.md` says a repo uses `sqlx` but it migrated to `pgx` 6 months ago, Claude will confidently generate broken code.
@@ -341,7 +190,7 @@ Individual engineers are responsible for:
 
 ---
 
-## 7. Quick Reference
+## 8. Quick Reference
 
 | Task / Item | Command / Location |
 |---|---|
