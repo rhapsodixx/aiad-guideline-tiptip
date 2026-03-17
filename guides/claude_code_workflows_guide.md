@@ -1,5 +1,5 @@
 # Workflows & Autonomous Tasks — TipTip Internal
-### Series: Claude Code at TipTip | Guide 6 of N: Workflows & Autonomous Tasks
+### Series: Claude Code at TipTip | Guide 6 of 7: Workflows & Autonomous Tasks
 
 > ⚠️ **Prerequisites:** Complete all prior guides (1–5) before this guide.
 > This guide assumes CLAUDE.md is configured (Guide 2), skills are installed (Guide 3), MCPs are active (Guide 4), and hooks are enforcing quality gates (Guide 5). Without these foundations, autonomous workflows will produce lower-quality, unconstrained output.

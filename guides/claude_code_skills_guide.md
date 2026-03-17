@@ -1,7 +1,7 @@
 > ⚠️ Prerequisites: Complete Guide 1 (Setup) and Guide 2 (CLAUDE.md & Project Memory) before proceeding with this guide.
 
 # Skills — TipTip Internal
-### Series: Claude Code at TipTip | Guide 3 of N: Skills
+### Series: Claude Code at TipTip | Guide 3 of 7: Skills
 
 ---
 

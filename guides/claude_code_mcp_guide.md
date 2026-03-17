@@ -1,5 +1,5 @@
 # MCP Integrations — TipTip Internal
-### Series: Claude Code at TipTip | Guide 4 of N: MCP Integrations
+### Series: Claude Code at TipTip | Guide 4 of 7: MCP Integrations
 
 > ⚠️ Prerequisites: Complete Guide 1 (Setup), Guide 2 (CLAUDE.md & Project Memory),
 > and Guide 3 (Skills) before proceeding with this guide.

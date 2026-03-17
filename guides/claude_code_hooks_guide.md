@@ -1,5 +1,5 @@
 # Hooks — TipTip Internal
-### Series: Claude Code at TipTip | Guide 5 of N: Hooks
+### Series: Claude Code at TipTip | Guide 5 of 7: Hooks
 
 > [!WARNING]
 > **Prerequisites:** Complete Guides 1–4 before proceeding with this guide.
