@@ -12,6 +12,7 @@ The `guides/` directory contains comprehensive documentation covering various as
 - [**MCP Integrations Guide**](guides/claude_code_mcp_guide.md): Documents how to connect Claude to live external tools and contexts, such as Jira, Confluence, database schemas, and codebase symbols via Serena.
 - [**Hooks Guide**](guides/claude_code_hooks_guide.md): Covers the setup of automated safety and quality gates (linters, formatters, SQL guards) that trigger transparently during Claude's tool execution lifecycle.
 - [**Workflows Guide**](guides/claude_code_workflows_guide.md): Provides practical blueprints and `task.md` templates for running complex, autonomous engineering operations from end to end.
+- [**Team Usage & Best Practices Guide**](guides/claude_code_team_usage_guide.md): Covers how to sustain, measure, and scale Claude Code adoption across TipTip's engineering team, including metrics and migration criteria.
 
 ## Skills
 
