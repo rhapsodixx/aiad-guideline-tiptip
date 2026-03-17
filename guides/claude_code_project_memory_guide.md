@@ -1,5 +1,4 @@
-# CLAUDE.md & Project Memory — TipTip Internal
-### Series: Claude Code at TipTip | Guide 2 of 7: Project Memory
+# Guide 2 of 7: CLAUDE.md & Project Memory
 
 > ⚠️ **Prerequisites:** Complete Guide 1 (Setup) before proceeding with this guide.
 

@@ -1,5 +1,4 @@
-# Claude Code Setup Guide — TipTip Internal
-### Series: Claude Code at TipTip | Guide 1 of 7: Setup
+# Guide 1 of 7: Setup
 
 ---
 

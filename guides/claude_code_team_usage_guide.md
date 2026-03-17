@@ -1,5 +1,4 @@
-# Team Usage & Best Practices — TipTip Internal
-### Series: Claude Code at TipTip | Guide 7 of 7: Team Usage & Best Practices
+# Guide 7 of 7: Team Usage & Best Practices
 
 > 📋 This guide is the final guide in TipTip's Claude Code series.
 > It is written primarily for engineering leads.

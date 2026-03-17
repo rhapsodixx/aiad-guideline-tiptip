@@ -1,7 +1,6 @@
-# Hooks — TipTip Internal
-### Series: Claude Code at TipTip | Guide 5 of 7: Hooks
+# Guide 5 of 7: Hooks
 
-> [!WARNING]
+> ⚠️ **WARNING**
 > **Prerequisites:** Complete Guides 1–4 before proceeding with this guide.
 > Hooks build on the CLAUDE.md conventions (Guide 2), skills (Guide 3),
 > and MCP setup (Guide 4). Having those in place first ensures hooks
@@ -320,7 +319,7 @@ exit 0
 
 ### 4.4 Dangerous SQL Guard — PreToolUse (Backend)
 
-> [!CAUTION]
+> 🚨 **CAUTION**
 > Safety-critical hook. Do not disable without explicit team consensus.
 
 **Purpose:** Before Claude executes any bash command, scan for patterns that indicate destructive SQL operations without safety conditions. Block the command and explain why.
@@ -378,7 +377,7 @@ exit 0
 
 ### 4.5 Secret Leak Guard — PreToolUse (Engineering-Wide)
 
-> [!CAUTION]
+> 🚨 **CAUTION**
 > Safety-critical hook. Belongs in the *global* config to protect all projects.
 
 **Purpose:** Before Claude writes any file, scan the content for patterns that look like secrets: AWS keys, private keys, connection strings.
