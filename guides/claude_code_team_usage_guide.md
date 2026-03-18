@@ -51,12 +51,12 @@ Metrics are grouped into two categories:
 #### Metric 2: Skill Invocation Frequency
 **What it is:** How often named skills (Guide 3) are being invoked across the team — which skills are used daily, which are rarely used, and which are never used.
 
-**Why it matters:** If the must-have skills (`pr-description`, `code-review`, `write-test`) are not being invoked regularly, it indicates either that engineers are not using Claude Code for these tasks, or that the skills are not working well enough to be trusted.
+**Why it matters:** If the must-have skills (`pr-description`, `code-review`, `tdd`) are not being invoked regularly, it indicates either that engineers are not using Claude Code for these tasks, or that the skills are not working well enough to be trusted.
 
 **Success threshold:**
 - `pr-description`: invoked for at least 60% of MRs within 8 weeks
 - `code-review`: invoked at least once per engineer per sprint
-- `write-test`: invoked at least once per engineer per week on active feature work
+- `tdd`: invoked at least once per engineer per week on active feature work
 
 **How to track:**
 - Add a logging line to each skill's markdown file that appends an entry to a local `.claude-skill-log.jsonl` file on invocation. Example log entry: `{"skill": "pr-description", "timestamp": "...", "repo": "...", "user": "..."}`
@@ -245,7 +245,7 @@ The key principle: **do not give engineers all seven guides at once.** Overloadi
 **What to complete:**
 - No new guides — this phase is about developing habits with Guides 1–3.
 - Engineer uses Claude Code for at least 3 different task types during this period: writing code, generating tests, and reviewing their own code before MR submission.
-- Engineer uses the `debug-trace` or `systematic-debugging` skill on at least one real bug or error during this period.
+- Engineer uses the `build-fix` or `systematic-debugging` skill on at least one real bug or error during this period.
 
 **Expected behavior by end of Week 3:**
 - Engineer reaches for Claude Code automatically for covered task types without being reminded.

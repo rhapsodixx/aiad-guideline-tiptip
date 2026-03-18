@@ -31,12 +31,12 @@ This makes hooks TipTip's enforcement layer: they ensure Claude's output always 
 
 ## 2. The Four Hook Types
 
-| Hook Type | Fires When | Primary Use at TipTip |
-|---|---|---|
-| PreToolUse | Before Claude executes any tool call | Safety gates — block dangerous commands |
-| PostToolUse | After Claude executes a tool call | Quality gates — lint, format, test after edits |
-| Notification | When Claude sends a status notification | Awareness — alert engineer on long tasks |
-| Stop | When Claude finishes or stops a task | Reporting — summarize what changed |
+| Hook Type    | Fires When                              | Primary Use at TipTip                          |
+| ------------ | --------------------------------------- | ---------------------------------------------- |
+| PreToolUse   | Before Claude executes any tool call    | Safety gates — block dangerous commands        |
+| PostToolUse  | After Claude executes a tool call       | Quality gates — lint, format, test after edits |
+| Notification | When Claude sends a status notification | Awareness — alert engineer on long tasks       |
+| Stop         | When Claude finishes or stops a task    | Reporting — summarize what changed             |
 
 ### PreToolUse
 - **Fires:** Before the tool executes. Claude has decided to run a tool, and the hook can inspect the parameters (`tool_name`, `tool_input`) and block it before it happens.
@@ -726,15 +726,15 @@ echo '{"tool_name": "Write", "tool_input": {"content": "api_key=abc123secret"}}'
 
 ## 9. Quick Reference
 
-| Hook | Type | Stack | Config Level | Prerequisite |
-|---|---|---|---|---|
-| Go Lint (`go vet` + `golangci-lint`) | `PostToolUse` | Backend | Project | `golangci-lint` |
-| ESLint Auto-fix | `PostToolUse` | Frontend | Project | `eslint` (project) |
-| Prettier Auto-format | `PostToolUse` | Frontend | Project | `prettier` (project) |
-| Dangerous SQL Guard | `PreToolUse` | Backend | Project | None |
-| Secret Leak Guard | `PreToolUse` | Engineering-wide | Global | None |
-| Long Task Notification | `Notification` | Engineering-wide | Global | None |
-| Task Summary on Stop | `Stop` | Engineering-wide | Project | None |
+| Hook                                 | Type           | Stack            | Config Level | Prerequisite         |
+| ------------------------------------ | -------------- | ---------------- | ------------ | -------------------- |
+| Go Lint (`go vet` + `golangci-lint`) | `PostToolUse`  | Backend          | Project      | `golangci-lint`      |
+| ESLint Auto-fix                      | `PostToolUse`  | Frontend         | Project      | `eslint` (project)   |
+| Prettier Auto-format                 | `PostToolUse`  | Frontend         | Project      | `prettier` (project) |
+| Dangerous SQL Guard                  | `PreToolUse`   | Backend          | Project      | None                 |
+| Secret Leak Guard                    | `PreToolUse`   | Engineering-wide | Global       | None                 |
+| Long Task Notification               | `Notification` | Engineering-wide | Global       | None                 |
+| Task Summary on Stop                 | `Stop`         | Engineering-wide | Project      | None                 |
 
 - **Official hooks docs:** https://docs.anthropic.com/en/docs/claude-code/hooks
 - **TipTip hooks repository:** https://gitlab.com/tiptiptv/common/aiad-claude (hooks are in the `hooks/` directory, settings templates in `settings/`)

@@ -100,18 +100,18 @@ Because TipTip's recommended IDE is VS Code, these execution steps are specifica
 
 For quick selection between modes, refer to this decision table:
 
-| Situation | Recommended Mode | Reason |
-|---|---|---|
-| Exploring an unfamiliar codebase | Interactive | Need to understand before acting |
-| Requirements are still unclear | Interactive | Premature automation of an unclear goal |
-| Writing a new feature end-to-end | Autonomous | Well-defined goal, Claude can execute |
-| Refactoring a module to new pattern | Autonomous | Clear before/after, hooks catch regressions |
-| Debugging a specific error | Interactive | Hypothesis-test loop needs human judgment |
-| Generating tests for existing code | Autonomous | Mechanical task, well-defined output |
-| Reviewing an MR before submitting | Autonomous | Defined input (diff), defined output (review) |
-| Architecture or design decisions | Interactive | Requires judgment, not execution |
-| Generating an MR description | Autonomous | Short, well-defined, use the skill |
-| Incident debugging under pressure | Interactive | Speed and judgment over structure |
+| Situation                           | Recommended Mode | Reason                                        |
+| ----------------------------------- | ---------------- | --------------------------------------------- |
+| Exploring an unfamiliar codebase    | Interactive      | Need to understand before acting              |
+| Requirements are still unclear      | Interactive      | Premature automation of an unclear goal       |
+| Writing a new feature end-to-end    | Autonomous       | Well-defined goal, Claude can execute         |
+| Refactoring a module to new pattern | Autonomous       | Clear before/after, hooks catch regressions   |
+| Debugging a specific error          | Interactive      | Hypothesis-test loop needs human judgment     |
+| Generating tests for existing code  | Autonomous       | Mechanical task, well-defined output          |
+| Reviewing an MR before submitting   | Autonomous       | Defined input (diff), defined output (review) |
+| Architecture or design decisions    | Interactive      | Requires judgment, not execution              |
+| Generating an MR description        | Autonomous       | Short, well-defined, use the skill            |
+| Incident debugging under pressure   | Interactive      | Speed and judgment over structure             |
 
 **Practical Signal:**
 If you can write clear acceptance criteria before starting, use **autonomous** mode. If you are not sure what done looks like yet, use **interactive** mode first, then switch to autonomous once the approach is clear.
@@ -158,7 +158,7 @@ Below are 7 realistic TipTip scenarios structured as recipes.
 **When to use:** A Jira ticket requires a new HTTP endpoint (e.g., a new `/v1/creator/earnings` endpoint in `creator-service`).
 **Recommended mode:** Autonomous
 **MCPs:** Jira <!-- Reason: Pulls the exact acceptance criteria directly into the session without copy-pasting -->, Context7 <!-- Reason: Injects version-accurate Go library docs to prevent hallucinated APIs -->, PostgreSQL <!-- Reason: Allows Claude to inspect the schema locally for the repository layer -->, GitLab <!-- Reason: Fetches MR context and repository metadata -->
-**Skills:** `golang-pattern`, `write-test`, `pr-description`
+**Skills:** `golang-pattern`, `tdd`, `pr-description`
 
 **Step-by-step instructions:**
 1. Pull the Jira ticket via MCP to dynamically draft `task.md`.
@@ -178,7 +178,7 @@ Use the `workflow_1_new_endpoint.md` template from `aiad-claude/tasks/`. Copy it
 **When to use:** The team is moving from direct DB calls to a repository pattern in a given module.
 **Recommended mode:** Autonomous with subagents for large modules
 **MCPs:** Serena <!-- Reason: The Serena MCP is strictly needed here to map symbol usages across modules prior to refactoring, avoiding expensive full-file reads -->, Context7 <!-- Reason: Validates library logic during the pattern refactor -->, PostgreSQL <!-- Reason: Verifies database schema implications -->
-**Skills:** `golang-pattern`, `refactor-go`, `write-test`
+**Skills:** `golang-pattern`, `go-review`, `tdd`
 
 **Step-by-step instructions:**
 1. Define the before/after pattern explicitly in the `task.md`.
@@ -225,7 +225,7 @@ Review the current branch's changes against the Jira ticket linked in the MR. Us
 **When to use:** Legacy code modified for a new feature lacks sufficient test coverage.
 **Recommended mode:** Autonomous
 **MCPs:** Serena <!-- Reason: Quickly maps dependencies and usages of the functions needing test coverage -->, PostgreSQL <!-- Reason: Helps Claude understand schema types to build robust database layer mocks -->, Context7 <!-- Reason: Pulls up-to-date assertions and mock library patterns -->
-**Skills:** `write-test`, `golang-pattern`
+**Skills:** `tdd`, `golang-pattern`
 
 **Step-by-step instructions:**
 1. Identify the un-covered file.
@@ -308,7 +308,7 @@ Do not write any code yet. Output the plan as a markdown document I can review a
 **When to use:** A production Sentry error is reported, requiring root cause diagnosis and a fix.
 **Recommended mode:** Interactive
 **MCPs:** Serena <!-- Reason: Traces the exact execution path and symbol relationships upward from the erroring line -->, Context7 <!-- Reason: Assesses if the error stems from a known third-party library issue or version mismatch -->, PostgreSQL <!-- Reason: Inspects the data constraints if the panic involves the DB layer -->, Sequential Thinking <!-- Reason: Prevents Claude from prematurely jumping to conclusions by forcing a structured, multi-step diagnosis of the root cause -->
-**Skills:** `debug-trace`, `systematic-debugging`
+**Skills:** `build-fix`, `systematic-debugging`
 
 **Step-by-step instructions:**
 1. Copy the raw Sentry error and the full stack trace.
@@ -325,7 +325,7 @@ Environment: [production/staging]
 First seen: [timestamp]
 Frequency: [how often it is occurring]
 
-Using the debug-trace skill, work through this systematically:
+Using the systematic-debugging skill, work through this systematically:
 1. Locate the exact line in our codebase where this originates
 2. Trace the call chain upward to understand how we got there
 3. Form a hypothesis for the root cause
@@ -397,15 +397,15 @@ This list bounds improvements planned for TipTip's Claude Code workflow. Enginee
 
 ### Workflow Decision
 
-| Want to... | Workflow | Mode | Key MCPs |
-|---|---|---|---|
-| Add a Go API endpoint | Workflow 1 | Autonomous | Jira, Context7, PostgreSQL |
-| Refactor a Go module | Workflow 2 | Autonomous | Serena, Context7 |
-| Review MR before submission | Workflow 3 | Autonomous | GitLab, Jira, Serena |
-| Add tests to existing code | Workflow 4 | Autonomous | Serena, PostgreSQL |
-| Review a SQL query | Workflow 5 | Interactive | PostgreSQL |
-| Plan a feature from Jira | Workflow 6 | Interactive | Jira, Confluence, Serena |
-| Debug a Sentry error | Workflow 7 | Interactive | Serena, Context7 |
+| Want to...                  | Workflow   | Mode        | Key MCPs                   |
+| --------------------------- | ---------- | ----------- | -------------------------- |
+| Add a Go API endpoint       | Workflow 1 | Autonomous  | Jira, Context7, PostgreSQL |
+| Refactor a Go module        | Workflow 2 | Autonomous  | Serena, Context7           |
+| Review MR before submission | Workflow 3 | Autonomous  | GitLab, Jira, Serena       |
+| Add tests to existing code  | Workflow 4 | Autonomous  | Serena, PostgreSQL         |
+| Review a SQL query          | Workflow 5 | Interactive | PostgreSQL                 |
+| Plan a feature from Jira    | Workflow 6 | Interactive | Jira, Confluence, Serena   |
+| Debug a Sentry error        | Workflow 7 | Interactive | Serena, Context7           |
 
 ### Task File Checklist
 
@@ -419,10 +419,10 @@ Before starting an autonomous session, confirm:
 
 ### Key Resources
 
-| Resource | Link |
-|---|---|
-| TipTip aiad-claude repository | https://gitlab.com/tiptiptv/common/aiad-claude |
-| Claude Code common workflows | https://docs.anthropic.com/en/docs/claude-code/common-workflows |
-| PlanetScale database skills | https://database-skills.preview.planetscale.com/ |
-| Claude Code subagents | https://docs.anthropic.com/en/docs/claude-code/sub-agents |
-| **Next in series** | Guide 7 — Team Usage & Best Practices |
+| Resource                      | Link                                                            |
+| ----------------------------- | --------------------------------------------------------------- |
+| TipTip aiad-claude repository | https://gitlab.com/tiptiptv/common/aiad-claude                  |
+| Claude Code common workflows  | https://docs.anthropic.com/en/docs/claude-code/common-workflows |
+| PlanetScale database skills   | https://database-skills.preview.planetscale.com/                |
+| Claude Code subagents         | https://docs.anthropic.com/en/docs/claude-code/sub-agents       |
+| **Next in series**            | Guide 7 — Team Usage & Best Practices                           |

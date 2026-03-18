@@ -435,19 +435,19 @@ claude mcp add --transport stdio puppeteer -- npx -y @modelcontextprotocol/serve
 
 ## 7. Recommended MCP Stack by Role
 
-| MCP | Engineering-Wide | Backend (Go) | Frontend (Next.js) | Classification | Config Level |
-|---|---|---|---|---|---|
-| Serena | ✅ | ✅ | ✅ | Must-Have | Project |
-| Context7 | ✅ | ✅ | ✅ | Must-Have | Global |
-| Sequential Thinking | ✅ | ✅ | ✅ | Must-Have | Global |
-| Jira | ✅ | ✅ | ✅ | Must-Have | Global |
-| Confluence | ✅ | ✅ | ✅ | Must-Have | Global |
-| GitLab | ✅ | ✅ | ✅ | Must-Have | Global |
-| Slack | ✅ | - | - | Nice-to-Have | Global |
-| Web Search | ✅ | - | - | Nice-to-Have | Global |
-| PostgreSQL | - | ✅ | - | Must-Have | Project |
-| Figma | - | - | ✅ | Must-Have | Project |
-| Browser/Playwright | - | - | ✅ | Nice-to-Have | Project |
+| MCP                 | Engineering-Wide | Backend (Go) | Frontend (Next.js) | Classification | Config Level |
+| ------------------- | ---------------- | ------------ | ------------------ | -------------- | ------------ |
+| Serena              | ✅                | ✅            | ✅                  | Must-Have      | Project      |
+| Context7            | ✅                | ✅            | ✅                  | Must-Have      | Global       |
+| Sequential Thinking | ✅                | ✅            | ✅                  | Must-Have      | Global       |
+| Jira                | ✅                | ✅            | ✅                  | Must-Have      | Global       |
+| Confluence          | ✅                | ✅            | ✅                  | Must-Have      | Global       |
+| GitLab              | ✅                | ✅            | ✅                  | Must-Have      | Global       |
+| Slack               | ✅                | -            | -                  | Nice-to-Have   | Global       |
+| Web Search          | ✅                | -            | -                  | Nice-to-Have   | Global       |
+| PostgreSQL          | -                | ✅            | -                  | Must-Have      | Project      |
+| Figma               | -                | -            | ✅                  | Must-Have      | Project      |
+| Browser/Playwright  | -                | -            | ✅                  | Nice-to-Have   | Project      |
 
 - **Must-Have** MCPs should be installed before the engineer's first Claude Code session on a production repository.
 - **Project-level** MCPs (in `.mcp.json`) should be committed to the repository so the whole team shares the same configuration automatically.
@@ -492,18 +492,18 @@ The skill orchestrates; the MCPs supply the data. However, be cautious of **cont
 
 ## 10. Quick Reference
 
-| MCP | Source | Install Command (CLI) | Config Level | Key Credential |
-|---|---|---|---|---|
-| Serena | github.com/oraios/serena | `claude mcp add serena ...` | Project | None / uv config |
-| Context7 | context7.com | `npx ctx7 setup --claude` | Global | Context7 API key |
-| Sequential Thinking | github.com/.../sequentialthinking | `claude mcp add sequential-thinking ...` | Global | None |
-| Jira | @modelcontextprotocol/server-jira | `claude mcp add jira ...` | Global | Atlassian API token |
-| Confluence | @modelcontextprotocol/server-confluence | `claude mcp add confluence ...` | Global | Atlassian API token |
-| GitLab | @modelcontextprotocol/server-gitlab | `claude mcp add gitlab ...` | Global | GitLab PAT |
-| Slack | @modelcontextprotocol/server-slack | `claude mcp add slack ...` | Global | Slack API token |
-| PostgreSQL | @modelcontextprotocol/server-postgres | `claude mcp add postgres ...` | Project | DB connection string |
-| Figma | figma.com/MCP | `claude mcp add --transport sse figma...`| Project | Figma PAT |
-| Browser | @modelcontextprotocol/server-puppeteer | `claude mcp add puppeteer ...`| Project | None |
+| MCP                 | Source                                  | Install Command (CLI)                     | Config Level | Key Credential       |
+| ------------------- | --------------------------------------- | ----------------------------------------- | ------------ | -------------------- |
+| Serena              | github.com/oraios/serena                | `claude mcp add serena ...`               | Project      | None / uv config     |
+| Context7            | context7.com                            | `npx ctx7 setup --claude`                 | Global       | Context7 API key     |
+| Sequential Thinking | github.com/.../sequentialthinking       | `claude mcp add sequential-thinking ...`  | Global       | None                 |
+| Jira                | @modelcontextprotocol/server-jira       | `claude mcp add jira ...`                 | Global       | Atlassian API token  |
+| Confluence          | @modelcontextprotocol/server-confluence | `claude mcp add confluence ...`           | Global       | Atlassian API token  |
+| GitLab              | @modelcontextprotocol/server-gitlab     | `claude mcp add gitlab ...`               | Global       | GitLab PAT           |
+| Slack               | @modelcontextprotocol/server-slack      | `claude mcp add slack ...`                | Global       | Slack API token      |
+| PostgreSQL          | @modelcontextprotocol/server-postgres   | `claude mcp add postgres ...`             | Project      | DB connection string |
+| Figma               | figma.com/MCP                           | `claude mcp add --transport sse figma...` | Project      | Figma PAT            |
+| Browser             | @modelcontextprotocol/server-puppeteer  | `claude mcp add puppeteer ...`            | Project      | None                 |
 
 - **Official MCP Docs:** [https://docs.anthropic.com/en/docs/claude-code/mcp](https://docs.anthropic.com/en/docs/claude-code/mcp)
 - **TipTip Claude Code Repository:** [https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude) (project-level mcp.json templates are maintained here).
