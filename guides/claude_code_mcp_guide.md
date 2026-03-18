@@ -1,37 +1,23 @@
 # Guide 4 of 7: MCP Integrations
 
-> ⚠️ Prerequisites: Complete Guide 1 (Setup), Guide 2 (CLAUDE.md & Project Memory),
-> and Guide 3 (Skills) before proceeding with this guide.
+> ⚠️ Prerequisites: Complete Guides 1–3 before proceeding.
 
 ---
 
 ## 1. What Is MCP?
 
-MCP (Model Context Protocol) is an open standard developed by Anthropic that allows
-Claude Code to connect to external tools, services, and data sources as structured
-tool calls within a session.
+MCP (Model Context Protocol) is an open standard that lets Claude Code connect to external tools and data sources — Jira, Confluence, Figma, databases, web search — as structured tool calls within a session.
 
-Without MCP, Claude Code can only work with files and commands available in the
-local filesystem. With MCP, it can query Jira, read Confluence pages, inspect
-a Figma design, search the web, or navigate a codebase symbolically — all within
-the same session.
+Without MCP, Claude only sees your local filesystem. With MCP, it queries live systems mid-session.
 
-MCP servers are local processes or remote services that expose a defined set of
-tools. Claude Code calls these tools the same way it calls built-in tools like
-file read or bash execution.
+**Skills vs MCP:**
+- **Skills** = static prompt templates defining *how* Claude approaches a task
+- **MCP** = live data and live actions from external systems
+- Skills orchestrate MCP — they compose, not compete
 
-**The difference between Skills (Guide 3) and MCP:**
-- **Skills** are static prompt templates — they define *HOW* Claude should approach a task.
-- **MCP servers** provide live data and live actions — they give Claude access to
-  real-time information from external systems.
-- **Skills and MCP compose**: a skill can orchestrate multiple MCP tool calls as
-  part of its workflow.
+**Token cost note:** Every MCP tool call returns data into the context window. This is why Skills (Guide 3) came first — understand context cost before adding MCP calls on top.
 
-**A note on token cost:** Every MCP tool call returns data that enters the context window.
-This is why Guide 3 (Skills) came first — engineers should already understand
-context cost before adding MCP tool calls on top.
-
-[Read the official Anthropic MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp).
+[Official MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp).
 
 ---
 
@@ -82,13 +68,10 @@ If you use an MCP-enabled VS Code extension (like Claude desktop/extension or Co
 
 ## 3. MCP and Token Cost
 
-Before adding MCP servers indiscriminately, understand their impact on TipTip's current cost-sensitive GLM setup.
-
-- **Persistent Context**: Every MCP tool call result enters the context window and stays there. Ten Jira ticket lookups = ten chunks of data in context.
-- **High-Frequency vs Low-Frequency**: Some MCPs (like Serena or Context7) are called frequently during a session. Ensure their value justifies the cost.
-- **Serena's Efficiency Mechanism**: While it's a high-frequency MCP, Serena provides code-centric tools like `find_symbol` and `find_referencing_symbols`. According to its documentation, this means *"the agent no longer needs to read entire files, perform grep-like searches or basic string replacements to find the right parts of the code... these tools greatly enhance (token) efficiency."* By using targeted symbol lookups instead of broad file reads across our large Go backends, Serena can actually help control context growth during refactoring.
-- **Practical guidance**: Close and restart sessions when context gets large. MCP data does not persist between sessions — it is fetched fresh each time.
-- **Contrast with Skills**: Skills add tokens *once* at invocation. MCP adds tokens *every time* a tool is called. In a long session with many MCP calls, MCP is the dominant cost driver.
+- **Persistent context** — every MCP tool call result enters the context window and stays there. Ten Jira lookups = ten data chunks in context.
+- **Serena's efficiency trade-off** — high-frequency MCP, but provides targeted symbol lookups instead of broad file reads. For large Go backends, this *reduces* token usage during refactoring.
+- **Skills add tokens once; MCP adds tokens per call** — in long sessions with many MCP calls, MCP is the dominant cost driver
+- **Restart when bloated** — MCP data doesn't persist between sessions. Fresh session = clean context.
 
 ---
 
@@ -99,9 +82,7 @@ These MCPs are relevant for all TipTip engineers regardless of stack. Configure 
 ### 4.1 Serena — Semantic Code Intelligence
 **Classification:** Must-Have
 
-TipTip has multiple large Go backend services and a Next.js frontend. Navigating large codebases with file-level reads is expensive and imprecise. Serena provides symbol-level navigation: find all usages of an interface, navigate to a function definition, understand a type's dependency graph — without Claude reading entire files to find what it needs.
-
-Serena's documentation states that by providing IDE-like tools directly to the agent, *"the agent no longer needs to read entire files... these tools greatly enhance (token) efficiency."* Serena is especially valuable for TipTip's refactoring workflows given the multi-service Go backend where interface changes cascade across many files.
+TipTip has multiple large Go backends and a Next.js frontend. Navigating these with file-level reads is expensive and imprecise. Serena provides symbol-level navigation: find all usages of an interface, navigate to a function definition, understand a type's dependency graph — without reading entire files. Especially valuable for refactoring workflows where interface changes cascade across services.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -129,9 +110,7 @@ claude mcp add --transport stdio serena -- uvx --from git+https://github.com/ora
 ### 4.2 Context7 — Live Library Documentation
 **Classification:** Must-Have
 
-Go, Next.js, and Flutter all evolve rapidly. Claude's training data has a knowledge cutoff. Context7 injects current, version-accurate library documentation directly into the session context when Claude needs to reference an external library, eliminating hallucinated APIs and outdated code logic.
-
-This is particularly valuable for TipTip's SatuSatu platform given its reliance on travel API integrations and third-party SDKs that update frequently.
+Go, Next.js, and Flutter evolve fast. Claude's training data has a knowledge cutoff. Context7 injects current, version-accurate library docs directly into the session — eliminates hallucinated APIs and outdated patterns.
 
 **Installation — Claude Code CLI / Command Line:**
 ```bash
@@ -159,9 +138,7 @@ npx ctx7 setup --claude
 ### 4.3 Sequential Thinking — Structured Problem Decomposition
 **Classification:** Must-Have
 
-Complex engineering tasks — system design, incident debugging, architecture decisions, migration planning — benefit from structured step-by-step reasoning. Sequential Thinking forces Claude to break a problem into explicit reasoning steps, evaluate each step, and revise before committing to an approach.
-
-This produces more reliable outputs for high-stakes decisions and is especially relevant for TipTip's backend engineers working on payment flows, wallet management, and data migration tasks.
+Forces Claude to reason step-by-step for complex tasks — system design, incident debugging, migration planning. Produces more reliable outputs for high-stakes decisions. Token overhead, so use for complex tasks, not trivial edits.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -189,7 +166,7 @@ claude mcp add --transport stdio sequential-thinking -- npx -y @modelcontextprot
 ### 4.4 Jira MCP — Issue Context in Sessions
 **Classification:** Must-Have
 
-TipTip engineers work from Jira tickets. With Jira MCP, Claude can pull the ticket directly, read linked tickets, understand context, and write code aligned with the actual acceptance criteria. This eliminates copy-pasting and enables skills (from Guide 3) to automatically pull the Jira ticket for the current branch.
+Claude pulls the Jira ticket directly — linked tickets, acceptance criteria, all in session context. No more copy-pasting ticket descriptions.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -220,7 +197,7 @@ claude mcp add --transport stdio jira -- npx -y @modelcontextprotocol/server-jir
 ### 4.5 Confluence MCP — Internal Documentation Access
 **Classification:** Must-Have
 
-TipTip's architecture decisions, API contracts, and technical RFCs live in Confluence. With it, Claude can pull the relevant ADR (Architecture Decision Record), read the API contract for a service, or reference the on-call runbook mid-session. Useful for onboarding and multi-service tasks.
+Claude can pull ADRs, API contracts, and tech RFCs from Confluence mid-session. Useful for onboarding and multi-service tasks.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -248,39 +225,10 @@ claude mcp add --transport stdio confluence -- npx -y @modelcontextprotocol/serv
 
 ---
 
-### 4.6 Slack MCP — Thread and Decision Context
+### 4.6 Brave Search / Web Search MCP — Research While Coding
 **Classification:** Nice-to-Have
 
-Engineering decisions often happen in Slack threads before reaching Jira. With Slack MCP, Claude can pull a thread for context from `#incidents` or `#architecture` into a debugging session. Nice-to-Have because most decision context should eventually live in Jira or Confluence.
-
-**Installation — Claude Code CLI:**
-```bash
-claude mcp add --transport stdio slack -- npx -y @modelcontextprotocol/server-slack
-```
-
-**Installation — VS Code (Claude Code extension):**
-```json
-{
-  "mcpServers": {
-    "slack": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-slack"],
-      "env": {
-        "SLACK_BOT_TOKEN": "xoxb-YOUR-TOKEN"
-      }
-    }
-  }
-}
-```
-**Config level:** Global (`~/.claude.json`).
-**Prerequisites:** Slack API token.
-
----
-
-### 4.7 Brave Search / Web Search MCP — Research While Coding
-**Classification:** Nice-to-Have
-
-Enables Claude to search for solutions, error messages, and library documentation without leaving the session. Complements Context7 by covering general web research. Nice-to-Have because Context7 covers most library-specific needs, and general web search can bloat context.
+General web search without leaving the session. Complements Context7 for non-library queries. Can bloat context — use sparingly.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -313,9 +261,9 @@ These MCPs are relevant for engineers working on TipTip's Go backend services. C
 ### 5.1 PostgreSQL MCP — Direct Database Inspection
 **Classification:** Must-Have (Backend)
 
-TipTip's Go services are data-layer heavy: payment records, creator profiles, wallet transactions, event tickets. Inspecting the schema and exploring table relationships without leaving Claude Code dramatically accelerates backend development. Claude can write migration scripts with full awareness of the real database and columns.
+TipTip's Go services are data-layer heavy — payment records, wallet transactions, event tickets. Claude can inspect the real schema and write migration scripts with full column awareness.
 
-> 🚨 **SECURITY WARNING:** The PostgreSQL MCP should **ONLY** be configured against local development or staging databases. **NEVER** connect it to the production database via MCP in a local dev environment.
+> 🚨 **SECURITY WARNING:** Only connect to **local dev or staging** databases. **Never** production via MCP.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -342,9 +290,9 @@ claude mcp add --transport stdio postgres --env POSTGRES_URL=postgresql://localh
 ---
 
 ### 5.2 GitLab MCP — Repository and MR Context
-**Classification:** Must-Have (Backend, but note it is also useful for Frontend)
+**Classification:** Must-Have (Backend + Frontend)
 
-Enables Claude to fetch MR descriptions, pipeline status, review comments, and repository metadata directly in a session. Particularly useful for the code-review skill (Guide 3): the skill can pull the MR diff from GitLab directly rather than relying on locally staged changes.
+Claude fetches MR diffs, pipeline status, and review comments directly. The `code-review` skill (Guide 3) can pull the MR diff from GitLab instead of relying on locally staged changes.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -410,7 +358,7 @@ claude mcp add --transport sse figma https://mcp.figma.com/mcp --header "Authori
 ### 6.2 Browser/Playwright MCP — Live UI Testing and Inspection
 **Classification:** Nice-to-Have (Frontend)
 
-Enables Claude to open a browser, navigate to a running local dev server, inspect the rendered UI, and verify that generated components render correctly. Useful for debugging visual regressions where file-level inspection is insufficient.
+Claude opens a browser, navigates to your local dev server, inspects rendered UI. Useful for visual regressions where file-level inspection isn't enough.
 
 **Installation — Claude Code CLI:**
 ```bash
@@ -443,7 +391,6 @@ claude mcp add --transport stdio puppeteer -- npx -y @modelcontextprotocol/serve
 | Jira                | ✅                | ✅            | ✅                  | Must-Have      | Global       |
 | Confluence          | ✅                | ✅            | ✅                  | Must-Have      | Global       |
 | GitLab              | ✅                | ✅            | ✅                  | Must-Have      | Global       |
-| Slack               | ✅                | -            | -                  | Nice-to-Have   | Global       |
 | Web Search          | ✅                | -            | -                  | Nice-to-Have   | Global       |
 | PostgreSQL          | -                | ✅            | -                  | Must-Have      | Project      |
 | Figma               | -                | -            | ✅                  | Must-Have      | Project      |
@@ -457,40 +404,35 @@ claude mcp add --transport stdio puppeteer -- npx -y @modelcontextprotocol/serve
 
 ## 8. MCP and Skills: How They Work Together
 
-**Skills** (Guide 3) define the workflow. **MCPs** provide the live data.
+Skills define the workflow. MCPs supply the live data.
 
-**Example: The TipTip Code Review Workflow**
-The `code-review` skill orchestrates the activity, but it can be supercharged with MCPs:
-1. **GitLab MCP** pulls the MR diff and reviewer comments directly from the repository.
-2. **Jira MCP** pulls the linked ticket to check the original acceptance criteria.
-3. **PostgreSQL MCP** validates if the new SQL migrations mapped in the MR correctly apply to the schema locally.
-4. **Context7** checks the newly added Go module usage against the absolute latest library definitions.
+**Example — TipTip code review workflow:**
+1. **GitLab MCP** pulls the MR diff and reviewer comments
+2. **Jira MCP** pulls the linked ticket to verify acceptance criteria
+3. **PostgreSQL MCP** validates new SQL migrations against the local schema
+4. **Context7** checks newly added Go modules against latest library docs
 
-The skill orchestrates; the MCPs supply the data. However, be cautious of **context window compounding**. When a skill triggers multiple MCP calls, the context grows quickly. Monitor session length and restart when context feels bloated!
+The skill orchestrates; MCPs supply data. Watch for **context window compounding** — multiple MCP calls in one skill grow context fast. Restart sessions when bloated.
 
 ---
 
 ## 9. What to Expect from Engineers
 
-### Engineering Lead Responsibilities
+### Engineering Leads
+- **Own the project-level `.mcp.json`** for active repos — committed to the repository so every engineer gets the same config
+- **Provide a global config template** — standard `~/.claude.json` covering Jira, Confluence, GitLab, Context7, Sequential Thinking
+- **Coordinate credentials** — API tokens via secrets manager, **never hardcoded in `.mcp.json`**
+- **Review `.mcp.json` changes via MR** — adding MCPs is a team decision
+- **Monitor token cost** — check Z.ai dashboard after MCP rollout. If costs spike, identify high-frequency MCPs
 
-- **Own the project-level `.mcp.json` for active repositories.** This file should be committed to the repository so every engineer who clones the repo gets the correct MCP configuration automatically.
-- **Bootstrap global MCP config for the team.** Provide the team with a standard `~/.claude.json` template covering Jira, Confluence, GitLab, Context7, and Sequential Thinking. Engineers copy this as their baseline global config.
-- **Manage MCP credentials distribution.** Jira, Confluence, and GitLab MCPs require API tokens. Coordinate with the team on how these are obtained and stored inside a secrets manager (**do not hardcode in `.mcp.json`**).
-- **Review `.mcp.json` changes via MR.** Adding or modifying project-level MCPs is a team decision, not an individual one.
-- **Monitor token cost impact.** After MCP rollout, review session costs in the Z.ai dashboard. If costs spike significantly, identify which MCPs are high-frequency and consider whether their usage can be made more targeted.
+### Individual Engineers
+- Install global MCPs before first production session (use the team template)
+- Know what each MCP accesses — databases, Jira tickets, Confluence pages. Understand what you're giving Claude.
+- Don't add MCPs to project `.mcp.json` without team discussion
+- Report MCP failures immediately in `#aiad-discussion` — silent failures degrade output
+- Keep tokens current — if Jira/Confluence lookups start failing, check token expiry first
 
-### Individual Engineer Responsibilities
-
-- **Install global MCPs before first production session.** Use the team-provided global config template as the baseline.
-- **Understand what each MCP does before relying on it.** MCPs can read sensitive data (database contents, Jira tickets, Confluence pages). Know what you are giving Claude access to in each session.
-- **Do not add MCPs to project `.mcp.json` without team discussion.** Project-level MCPs affect everyone who works on that repo.
-- **Report MCP failures promptly.** If an MCP server stops responding or returns wrong data, it degrades Claude's output silently. Report to the `#claude-code` Slack channel.
-- **Keep MCP credentials current.** API tokens expire. If Claude starts failing on Jira or Confluence lookups, check token expiry first.
-
-> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Context window management is critical.** Your 200K context window before compacting might only be ~70K with too many tools enabled, and performance degrades significantly. Have 20–30 MCPs in config, but **keep under 10 enabled and under 80 tools active** per session.
-
-> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Disable unused MCPs per project** — keep all MCPs in user config but disable everything unused for a given project via `disabledMcpServers` in your project config. Navigate to `/plugins` or run `/mcp` to manage them.
+> 💡 *Tip:* Keep under 10 MCPs enabled and under 80 tools active per session. Your 200K context window before compacting might only be ~70K with too many tools. Disable unused MCPs per project via `disabledMcpServers` in `.mcp.json`.
 
 ---
 
@@ -504,7 +446,6 @@ The skill orchestrates; the MCPs supply the data. However, be cautious of **cont
 | Jira                | @modelcontextprotocol/server-jira       | `claude mcp add jira ...`                 | Global       | Atlassian API token  |
 | Confluence          | @modelcontextprotocol/server-confluence | `claude mcp add confluence ...`           | Global       | Atlassian API token  |
 | GitLab              | @modelcontextprotocol/server-gitlab     | `claude mcp add gitlab ...`               | Global       | GitLab PAT           |
-| Slack               | @modelcontextprotocol/server-slack      | `claude mcp add slack ...`                | Global       | Slack API token      |
 | PostgreSQL          | @modelcontextprotocol/server-postgres   | `claude mcp add postgres ...`             | Project      | DB connection string |
 | Figma               | figma.com/MCP                           | `claude mcp add --transport sse figma...` | Project      | Figma PAT            |
 | Browser             | @modelcontextprotocol/server-puppeteer  | `claude mcp add puppeteer ...`            | Project      | None                 |

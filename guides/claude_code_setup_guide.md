@@ -4,22 +4,22 @@
 
 ## 1. Why Claude Code?
 
-Claude Code is a terminal-native agentic coding tool — not just an autocomplete tool. It understands your full project context by directly reading files, running commands, and navigating codebases within your terminal. This allows it to autonomously execute multi-step tasks such as large-scale refactoring, writing comprehensive tests, and debugging complex issues.
+Claude Code is a terminal-native agentic coding tool — not autocomplete. It reads files, runs commands, and navigates codebases directly from your terminal to autonomously execute multi-step tasks.
 
-Compared to alternatives like Cursor, Copilot, Cline, or Windsurf, Claude Code's ecosystem offers stronger capabilities for our workflows:
-- **Skills system:** Reusable, project-specific task templates to standardize workflows.
-- **CLAUDE.md project memory:** Native, persistent memory for project guidelines and architectural decisions.
-- **MCP integrations:** First-class support for Model Context Protocol to seamlessly integrate with Jira, Confluence, Slack, and browsers.
-- **Subagents and parallel execution:** Ability to delegate and run sub-tasks concurrently for faster completion.
-- **Hooks:** Pre- and post-tool execution hooks to enforce linting, testing, and formatting standards dynamically.
+Why Claude Code over Cursor, Copilot, Cline, or Windsurf:
+- **Skills** — reusable, project-specific task templates
+- **CLAUDE.md** — native, persistent project memory
+- **MCP** — first-class Model Context Protocol integrations (Jira, Confluence, browsers)
+- **Subagents** — parallel sub-task delegation
+- **Hooks** — pre/post tool execution enforcement for linting, testing, formatting
 
-**TipTip's Plan:** We are currently setting up Claude Code using GLM models via Z.ai to reduce cost during the onboarding phase. We plan to eventually migrate to an official Claude Code subscription (Pro/Max/Team) once the team is proficient and the ROI is demonstrated. The current GLM setup gives us full access to Claude Code's powerful tooling ecosystem right now at a minimal cost.
+**TipTip's Plan:** Currently using GLM models via Z.ai to reduce cost during onboarding. We'll migrate to an official Claude Code subscription (Pro/Max/Team) once the team is proficient and ROI is demonstrated. The GLM setup gives full access to Claude Code's tooling ecosystem at minimal cost.
 
 ---
 
 ## 2. Prerequisites
 
-Before starting the setup, ensure you have the following ready:
+Before starting:
 - **Node.js v18+**: Required to run Claude Code. [Download and install Node.js here](https://nodejs.org/en/download/).
 - **Z.ai Account & API Key**: Required for our GLM configuration. Ask Panji Gautama for the API key.
 - **Git**: Assumed to be already installed and configured on your machine.

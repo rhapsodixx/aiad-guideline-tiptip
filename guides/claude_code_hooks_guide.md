@@ -10,22 +10,18 @@
 
 ## 1. What Are Hooks?
 
-Hooks are scripts that Claude Code runs automatically at specific points in its tool execution lifecycle — before a tool runs (`PreToolUse`), after a tool runs (`PostToolUse`), when Claude sends a notification (`Notification`), and when Claude stops a task (`Stop`).
+Hooks are scripts Claude Code runs automatically at specific points in its tool execution lifecycle — before a tool runs (`PreToolUse`), after (`PostToolUse`), on notification (`Notification`), and on stop (`Stop`).
 
-They are not git hooks. They fire inside Claude's own action loop, wrapping every tool call Claude makes during a session.
+Not git hooks. These fire inside Claude's action loop, wrapping every tool call during a session.
 
-The key distinction from Skills and MCP:
-- **Skills** define HOW Claude approaches a task (prompt templates).
-- **MCP** provides live data from external systems.
-- **Hooks** enforce quality gates and safety constraints on Claude's actions regardless of what skill or task is running — they cannot be skipped by Claude the way a prompt instruction can be overridden mid-session.
+**Skills vs MCP vs Hooks:**
+- **Skills** = how Claude approaches a task (prompts)
+- **MCP** = live data from external systems
+- **Hooks** = enforcement layer on Claude's actions — deterministic shell scripts that can't be overridden mid-session
 
-Hooks run on the engineer's local machine (or CI runner), not inside the LLM — they are deterministic shell scripts with real system access.
+A hook can inspect, block, modify context, run linters, execute tests, post notifications, or log output. This is TipTip's quality enforcement layer.
 
-A hook can: inspect what Claude is about to do, block it, modify the context, run a linter, execute a test, post a notification, or log output.
-
-This makes hooks TipTip's enforcement layer: they ensure Claude's output always meets TipTip's quality bar before the engineer reviews it.
-
-*Official Reference: [Anthropic Claude Code Hooks Documentation](https://docs.anthropic.com/en/docs/claude-code/hooks)*
+*[Anthropic Hooks Documentation](https://docs.anthropic.com/en/docs/claude-code/hooks)*
 
 ---
 
@@ -119,9 +115,9 @@ Engineers should pull from the canonical repository rather than writing hooks fr
 
 ### 4.1 Go Linter — PostToolUse (Backend)
 
-**Purpose:** After Claude writes or edits any `.go` file, automatically run `go vet` and `golangci-lint`. If lint errors are found, feed them back to Claude as context so it can self-correct before the engineer reviews.
+**Purpose:** After Claude writes/edits any `.go` file, run `go vet` + `golangci-lint`. Feed lint errors back to Claude for self-correction.
 
-**Why this matters for TipTip:** Claude frequently produces Go code that compiles but has lint issues — unused error returns, shadowed variables, or import ordering problems. Without this hook, the engineer must manually run lint after every Claude edit. With it, Claude's output is always lint-clean before the engineer sees it.
+Without this hook, engineers manually lint after every Claude edit. With it, output is always lint-clean before review.
 
 **Prerequisites:** `golangci-lint` installed.
 
@@ -188,9 +184,9 @@ exit 0
 
 ### 4.2 TypeScript/ESLint — PostToolUse (Frontend)
 
-**Purpose:** After Claude writes or edits any `.ts`, `.tsx`, `.js`, or `.jsx` file, automatically run `eslint --fix` on the file. Feed any unfixable errors back to Claude.
+**Purpose:** After Claude writes/edits `.ts`, `.tsx`, `.js`, or `.jsx`, run `eslint --fix`. Feed unfixable errors back to Claude.
 
-**Why this matters for TipTip:** Claude's React/Next.js output sometimes violates TipTip's ESLint rules (unused imports, missing hook dependencies, improper `any` usage). Auto-fixing what can be fixed and surfacing what cannot keeps the output clean.
+Claude's React/Next.js output sometimes violates TipTip's ESLint rules. Auto-fix what can be fixed, surface what can't.
 
 **Prerequisites:** project-local `eslint`.
 
@@ -253,9 +249,9 @@ exit 0
 
 ### 4.3 Prettier — PostToolUse (Frontend)
 
-**Purpose:** After Claude writes any frontend file, run `prettier --write` to enforce consistent formatting. This is a silent hook — it fixes and exits 0 with no feedback to Claude unless Prettier itself errors.
+**Purpose:** After Claude writes any frontend file, run `prettier --write`. Silent hook — fixes and exits 0.
 
-**Why this matters for TipTip:** Formatting debates are eliminated. Every file Claude touches is automatically formatted to TipTip's Prettier config before the engineer reviews it.
+Formatting debates eliminated. Every file Claude touches is auto-formatted before review.
 
 **Prerequisites:** project-local `prettier`.
 
@@ -322,9 +318,9 @@ exit 0
 > 🚨 **CAUTION**
 > Safety-critical hook. Do not disable without explicit team consensus.
 
-**Purpose:** Before Claude executes any bash command, scan for patterns that indicate destructive SQL operations without safety conditions. Block the command and explain why.
+**Purpose:** Before Claude executes any bash command, scan for destructive SQL patterns (DROP, TRUNCATE, DELETE/UPDATE without WHERE). Block and explain.
 
-**Why this matters for TipTip:** With the PostgreSQL MCP, Claude has direct database access in backend sessions. This hook is a hard stop that forces explicit review before anything destructive runs.
+With PostgreSQL MCP, Claude has direct DB access in backend sessions. This is a hard stop before anything destructive runs.
 
 **settings.json entry:**
 ```json
@@ -380,9 +376,9 @@ exit 0
 > 🚨 **CAUTION**
 > Safety-critical hook. Belongs in the *global* config to protect all projects.
 
-**Purpose:** Before Claude writes any file, scan the content for patterns that look like secrets: AWS keys, private keys, connection strings.
+**Purpose:** Before Claude writes any file, scan content for secret patterns: AWS keys, private keys, connection strings. Block before disk write.
 
-**Why this matters for TipTip:** An enforcement layer that catches credential patterns before they are written to disk — before they can accidentally be committed to GitLab. *(Note: This is a heuristic guard and does not replace CI tools like `gitleaks`.)*
+Heuristic guard that catches credentials before they're committed. *(Does not replace CI tools like `gitleaks`.)*
 
 **settings.json (Global) entry:**
 ```json
@@ -443,9 +439,7 @@ exit 0
 
 ### 4.6 Long Task Notification — Notification (Engineering-Wide)
 
-**Purpose:** When Claude sends a progress notification, surface it visibly in the terminal.
-
-**Why this matters for TipTip:** During autonomous workflow runs (covered in Guide 6), this hook provides visibility into what Claude is doing.
+**Purpose:** Surface Claude's progress notifications in the terminal during autonomous runs (Guide 6).
 
 **settings.json (Global) entry:**
 ```json
@@ -485,10 +479,9 @@ exit 0
 
 ### 4.7 Task Summary on Stop — Stop (Engineering-Wide)
 
-**Purpose:** When Claude finishes a task, generate a brief summary and append it to `.claude-session-log.md`. 
-*(Be sure to add `.claude-session-log.md` to your repository's `.gitignore`)*
+**Purpose:** On task completion, append a brief summary to `.claude-session-log.md`. Add this file to `.gitignore`.
 
-**Why this matters for TipTip:** Engineers reviewing what Claude did currently have to scroll through the entire session. This provides a succinct audit file.
+Saves engineers from scrolling through entire sessions to understand what changed.
 
 **settings.json entry:**
 ```json
@@ -715,12 +708,10 @@ echo '{"tool_name": "Write", "tool_input": {"content": "api_key=abc123secret"}}'
 - **Suggest new hooks via `aiad-claude` issues.** The current hook set covers the most common cases. Engineers who identify a recurring quality problem — Claude repeatedly producing code that violates a specific pattern — should open an issue on `aiad-claude` proposing a hook that catches it automatically.
 
 ### The Improvement Loop
-1. Hook fires unexpectedly or misses a real problem.
-2. Engineer identifies the specific case that is not handled correctly.
-3. Engineer opens an MR on `aiad-claude` with tests enforcing correct behavior.
-4. Lead reviews and merges.
-5. Engineers pull the updated hook from `aiad-claude`.
-6. Team pulls the updated `.claude/settings.json`.
+
+Hook fires unexpectedly or misses a real problem → engineer identifies the case → MR on `aiad-claude` with tests → lead reviews and merges → team pulls update.
+
+*Expected and normal.*
 
 > 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* Use the **`hookify` plugin** to create hooks conversationally instead of writing JSON manually — run `/hookify` and describe what you want in plain language.
 

@@ -6,133 +6,132 @@
 
 ## 1. What is CLAUDE.md?
 
-`CLAUDE.md` is a markdown file that Claude Code automatically reads at the start of every session. It acts as persistent project memory. Because Claude does not retain context or remember conversations between sessions, `CLAUDE.md` is how you give Claude standing instructions, conventions, and codebase knowledge that should always be in context.
+`CLAUDE.md` is a markdown file Claude Code reads at the start of every session — it's persistent project memory. Claude doesn't retain context between sessions, so without this file, every session starts cold with zero knowledge of TipTip's stack, patterns, or conventions.
 
-Without it, every Claude Code session starts cold — it has no initial knowledge of TipTip's stack, patterns, or team conventions. With it, Claude Code immediately understands the TipTip codebase, writes idiomatic code, and avoids common mistakes.
+With it, Claude immediately writes idiomatic code and avoids common mistakes.
 
-It can live at different levels:
-- **Globally** (`~/.claude/CLAUDE.md`) for cross-repo defaults.
-- At the **project root** for repo-specific context.
-- In **subdirectories** (e.g., `.claude/rules/` or sub-package folders) for package-specific rules.
+It lives at different levels:
+- **Global** (`~/.claude/CLAUDE.md`) — cross-repo defaults
+- **Project root** (`./CLAUDE.md`) — repo-specific context
+- **Subdirectories** (e.g., `.claude/rules/` or sub-package folders) — package-specific rules
 
-> **Note on `/memory`:** You can use the `/memory` command at any time during a Claude Code session to verify exactly what instructions and context Claude is currently reading.
+> **Note on `/memory`:** Run `/memory` during any session to check exactly what Claude is reading.
 
-**Supporting References:**
-- [How Claude remembers your project (Official)](https://docs.anthropic.com/en/docs/claude-code/memory) — Anthropic's official guide on auto memory and `CLAUDE.md`.
-- [CLAUDE.md file reference (Official)](https://code.claude.com/docs/en/memory#claude-md-files) — Documentation on how `CLAUDE.md` files are loaded and parsed.
-- [Writing a good CLAUDE.md (HumanLayer)](https://www.humanlayer.dev/blog/writing-a-good-claude-md) — A practical guide explaining why less is more, progressive disclosure, and why LLMs need explicit onboarding.
+**References:**
+- [How Claude remembers your project (Official)](https://docs.anthropic.com/en/docs/claude-code/memory)
+- [CLAUDE.md file reference (Official)](https://code.claude.com/docs/en/memory#claude-md-files)
+- [Writing a good CLAUDE.md (HumanLayer)](https://www.humanlayer.dev/blog/writing-a-good-claude-md) — practical guide on progressive disclosure and why less is more
 
 ---
 
 ## 2. Why CLAUDE.md — Not agents.md
 
-An earlier direction in TipTip's AI coding tool adoption pointed toward using the open standard `agents.md` (from agents.md) as the format for writing context files. This guide intentionally steps back from that approach.
+TipTip previously considered `agents.md` (the cross-tool community standard). We're not using it. Here's why:
 
-- **Lowest Common Denominator:** `agents.md` is a community standard designed for cross-tool compatibility (Claude Code, Cursor, Cline, Copilot all reading the same file). While that is its strength, it also restrains the capabilities to the lowest common denominator across all tools.
-- **Claude Code-First:** TipTip is standardizing on Claude Code as the primary AI coding tool. There is no cross-tool compatibility requirement right now.
-- **Richer Capabilities:** Claude Code's native `CLAUDE.md` is richer and more capable. It supports `@file` references for progressive disclosure, slash command definitions, tool permissions, and specific memory behaviors that `agents.md` does not account for.
-- **No Unnecessary Abstraction:** Maintaining the `agents.md` format introduces an abstraction layer with no practical benefit for a team that is Claude Code-first. Keeping it native means TipTip engineers learn one format deeply, not two formats shallowly.
-- **Future-Proofing:** If TipTip ever adopts a second AI coding tool in the future, the `CLAUDE.md` files can be adapted or translated at that point. Optimizing for multi-tool compatibility now is premature.
+- `agents.md` targets cross-tool compatibility (Claude Code, Cursor, Cline, Copilot all reading one file). That's its strength — but it caps you at the **lowest common denominator** across all tools.
+- TipTip is Claude Code-first. We have no cross-tool requirement right now.
+- Claude Code's native `CLAUDE.md` is richer — supports `@file` references, slash command definitions, tool permissions, and memory behaviors that `agents.md` doesn't account for.
+- Maintaining `agents.md` adds an abstraction layer with zero practical benefit for a Claude Code-first team.
+- If we ever adopt a second tool, we can adapt the files then. Optimizing for multi-tool now is premature.
 
-**Conclusion:** TipTip's context files will exclusively follow Anthropic's native `CLAUDE.md` format and conventions.
+**Verdict:** TipTip context files exclusively follow Anthropic's native `CLAUDE.md` format.
 
 ---
 
 ## 3. How Claude Code Reads CLAUDE.md
 
-When you start a session, Claude Code loads your instructions in a specific, additive order:
+Claude loads instructions in a specific, additive order at session start:
 
-1. **Global `CLAUDE.md`** (`~/.claude/CLAUDE.md`) — Loaded for every session regardless of which repo you are in.
-2. **Project root `CLAUDE.md`** (`./CLAUDE.md`) — Loaded when `claude` is run in that specific directory.
-3. **Subdirectory `CLAUDE.md`** (e.g., `./packagename/CLAUDE.md`) — Loaded when Claude navigates into or operates within a subfolder.
+1. **Global** (`~/.claude/CLAUDE.md`) — loaded for every session, every repo
+2. **Project root** (`./CLAUDE.md`) — loaded when `claude` runs in that directory
+3. **Subdirectory** (e.g., `./packagename/CLAUDE.md`) — loaded when Claude navigates into a subfolder
 
-All levels are additive — global + project + subfolder instructions all stack into Claude's context window.
+All levels stack — global + project + subfolder instructions all enter the context window.
 
 | Level | Path | What belongs here |
 |---|---|---|
-| **Global** | `~/.claude/CLAUDE.md` | TipTip-wide engineering standards that apply universally to every repo. |
-| **Project** | `<repo-root>/CLAUDE.md` | Repo-specific context: the specific tech stack, architecture patterns, and known issues. |
-| **Subfolder** | `<repo-root>/packages/pkg/CLAUDE.md` | Extremely specific rules for an isolated package (e.g., strict security constraints for a `/payments` module). |
+| **Global** | `~/.claude/CLAUDE.md` | TipTip-wide standards that apply universally to every repo |
+| **Project** | `<repo-root>/CLAUDE.md` | Repo-specific context: tech stack, architecture patterns, known issues |
+| **Subfolder** | `<repo-root>/packages/pkg/CLAUDE.md` | Extremely specific rules for an isolated package (e.g., strict security constraints for `/payments`) |
 
 ---
 
-## 4. TipTip's Recommended Approach: Global + Per-Repo
+## 4. TipTip's Approach: Global + Per-Repo
 
-We evaluated three approaches (Global only, Per-repo only, and Global + Per-repo) and determined that **Global + Per-Repo** is the optimal strategy for TipTip. 
+We evaluated three approaches and picked **Global + Per-Repo**:
 
-The global file handles "how we work at TipTip" (universal across all engineers and repos), while the per-repo file handles "how this specific codebase works" (precise and relevant per session). This prevents context window bloat (you won't load Go conventions into a Flutter session like you would with a massive single global file) and prevents convention drift across projects (which happens with per-repo only files). This structure scales cleanly as TipTip adds more repos, services, or platforms.
+- **Global file** = "how we work at TipTip" (universal across engineers and repos)
+- **Per-repo file** = "how this specific codebase works" (precise, relevant per session)
+
+This prevents context window bloat (no Go conventions loading in a Flutter session) and prevents convention drift across projects (which happens with per-repo-only files). Scales cleanly as we add repos.
 
 ### What goes in the Global CLAUDE.md
 
-The global file covers standards that apply regardless of which repo is open:
-- Company name and engineering team identity.
-- Universal coding principles (e.g., write tests, no magic numbers, no hardcoded credentials).
-- Git conventions: branch naming format, commit message format, PR size guidelines.
-- Code review standards and reviewer expectations.
-- Security rules: never log PII, never commit credentials, encryption at rest expectations.
-- Incident and escalation channels.
-- Language policy: English for all code, comments, and documentation (Bahasa Indonesia is acceptable in internal Slack and PR descriptions).
-- A reference instructing Claude to check the project-level `CLAUDE.md` for stack-specific context.
+Standards that apply regardless of which repo is open:
+- Company name and engineering team identity
+- Universal coding principles (write tests, no magic numbers, no hardcoded credentials)
+- Git conventions: branch naming, commit format, PR size
+- Code review standards
+- Security: never log PII, never commit credentials, encryption at rest
+- Incident and escalation channels
+- Language policy: English for code/comments/docs (Bahasa Indonesia fine in Slack and PR descriptions)
+- Reference to check the project-level `CLAUDE.md` for stack-specific context
 
-*Note: The global `CLAUDE.md` is intentionally stack-agnostic. Stack-specific globals (Go, React/Next.js, Flutter) are maintained as separate stack-level files.*
+*The global file is intentionally stack-agnostic. Stack-specific globals (Go, React/Next.js, Flutter) are separate files.*
 
 ### What goes in a Per-Repo CLAUDE.md
 
-The per-repo file covers what is specific to that repository:
-- Service or product name and its domain responsibility within TipTip.
-- Tech stack and core dependencies.
-- Folder structure overview.
-- Patterns and conventions specific to this repo.
-- Known technical debt or fragile areas Claude should be careful with.
-- Instructions on how to run the project locally, run tests, and build.
-- Environment variable structure (names only, **never** actual secret values).
-- Anything Claude consistently gets wrong in this specific repo based on past experience.
+What's specific to that repository:
+- Service/product name and its domain responsibility
+- Tech stack and core dependencies
+- Folder structure overview
+- Repo-specific patterns and conventions
+- Known tech debt or fragile areas Claude should be careful with
+- How to run locally, run tests, and build
+- Environment variable names (**never** actual secret values)
+- What Claude consistently gets wrong in this repo
 
 ---
 
 ## 5. The Four Global Template Files
 
-TipTip maintains four global `CLAUDE.md` files to cover our primary stacks. Engineers should select and install the relevant one(s) for their machine based on the repositories they work on. If you work across multiple stacks, you can use the `@` import functionality in your primary `~/.claude/CLAUDE.md` to reference the specific stack files dynamically.
-
-Below are the templates. **Copy and paste the ones relevant to your work:**
+TipTip maintains four global `CLAUDE.md` files for our primary stacks. Install the ones relevant to your work. If you work across stacks, use `@` imports in your primary `~/.claude/CLAUDE.md` to reference specific stack files.
 
 ---
 
 ### Template 1: Global — TipTip Engineering (stack-agnostic)
-Contains universal principles, Git conventions, security rules, and language policy applicable across all TipTip repositories. Essential for ensuring consistent code quality and security standards.
+Universal principles, Git conventions, security rules, language policy.
 [View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/global/tiptip-engineering.md)
 
 ---
 
 ### Template 2: Global — Go Stack
-Provides specific Go-based guidelines covering error handling, design architecture, and anti-patterns for Go 1.22+. Prevents Claude from hallucinating non-standard packages or improper Go concurrency models.
+Go-specific guidelines: error handling, architecture, anti-patterns for Go 1.22+. Prevents Claude from hallucinating non-standard packages.
 [View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/stacks/golang.md)
 
 ---
 
 ### Template 3: Global — React / Next.js Stack
-Establishes App Router defaults, state management preferences, and styling constraints for Next.js applications. Ensures Claude generates modern React code adhering to TipTip's specific Next.js conventions.
+App Router defaults, state management, styling constraints for Next.js.
 [View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/stacks/nextjs.md)
 
 ---
 
 ### Template 4: Global — Flutter Stack
-Defines architecture, state management (Riverpod), and UI testing standards for TipTip Dart/Flutter applications. Prevents outdated patterns and ensures proper API data handling.
+Architecture, Riverpod state management, UI testing standards for Dart/Flutter.
 [View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/stacks/flutter.md)
 
 ---
 
 ### Template 5: Per-Repo Sample — Go Service (Creator Service)
-Demonstrates how to structure a repository-specific `CLAUDE.md` for a hypothetical internal Go service. Illustrates how to document domain constraints (currency formats, transaction logic), external integration pointers, and specific warnings for known tech debt.
+Example repo-level `CLAUDE.md` for an internal Go service. Shows how to document domain constraints (currency formats, transaction logic), external integrations, and tech debt warnings.
 [View Template](file:///Users/panji.gautama/Documents/Project/ai-guidance-tiptip/claude-templates/per-repo/creator-service-sample.md)
 
 ---
 
 ### Automated Installation Script
 
-To easily install these global setup and stack templates onto your machine, use the interactive wizard script. It will automatically copy the relevant files and configure the imports.
-
-Run the script from the root of the cloned `aiad-claude` repository and follow the prompts:
+Run the interactive wizard to install templates automatically:
 
 ```bash
 bash install-claude-templates.sh
@@ -142,52 +141,43 @@ bash install-claude-templates.sh
 
 ## 6. Tips & Tricks for Repository-Level CLAUDE.md
 
-### Generating and Refining with `/init`
-- **Initial Generation**: Use the `/init` command within a Claude Code session. Claude will scan your project's code and recent commits to automatically draft a relevant `CLAUDE.md`. [[Docs: /init Command]](https://docs.anthropic.com/en/docs/claude-code/overview#init)
-- **Iterative Refinement**: Run `/init` periodically as your architecture evolves. Claude updates the existing file with newly discovered patterns while preserving your custom additions. [[Docs: Updating Memory]](https://docs.anthropic.com/en/docs/claude-code/memory#updating-project-memory)
+### Generating with `/init`
+- Run `/init` inside a session — Claude scans your code and recent commits to draft a `CLAUDE.md`. [[Docs: /init Command]](https://docs.anthropic.com/en/docs/claude-code/overview#init)
+- Run `/init` periodically as architecture evolves. Claude updates the file with new patterns while preserving your custom additions. [[Docs: Updating Memory]](https://docs.anthropic.com/en/docs/claude-code/memory#updating-project-memory)
 
-### Best Practices for Content
-- **1. Omit Standard Boilerplate:** Exclude generic advice (e.g., "write clean code"). Focus exclusively on TipTip-specific exceptions, custom commands, and non-obvious rules. [[Ref: The "does this help" filter]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
-- **2. Document Frequent Mistakes:** Explicitly document the specific, repetitive corrections you find yourself giving Claude for the repository. [[Ref: CLAUDE.md Best Practices]](https://docs.anthropic.com/en/docs/claude-code/memory#best-practices-for-claudemd)
-- **3. Enforce Brevity:** Keep the file under 300 lines. A bloated context file wastes tokens and dilutes instruction-following capabilities. [[Ref: Keep CLAUDE.md succinct]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
+### Content rules
+- **Skip generic advice.** Omit "write clean code" — focus on TipTip-specific exceptions and non-obvious rules. [[Ref]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
+- **Document frequent mistakes.** If you keep correcting Claude on the same thing, put it in the file. [[Ref]](https://docs.anthropic.com/en/docs/claude-code/memory#best-practices-for-claudemd)
+- **Keep it under 300 lines.** Bloated context wastes tokens and dilutes instruction-following. [[Ref]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
 
 ---
 
 ## 7. What to Expect from Engineers
 
-For `CLAUDE.md` to be effective, it must be treated as living documentation, owned and maintained by the engineering team.
+### Engineering Leads
+- **Own the global stack CLAUDE.md** for your domain (Go lead → `golang.md`, Frontend lead → `nextjs.md`, Mobile lead → `flutter.md`)
+- Review global `CLAUDE.md` changes via PR — these files affect every engineer
+- **Ensure every active repo has a repo-level `CLAUDE.md`** before the team uses Claude Code on it
+- Bootstrap the initial per-repo file yourself — don't delegate the first version to junior engineers (requires deep architectural knowledge)
+- Use the per-repo `CLAUDE.md` as an onboarding test: if a new engineer reads it and it doesn't accurately describe the repo, it needs updating
+- Schedule a quarterly review of global files
 
-### Engineering Lead Responsibilities
-Engineering leads are responsible for:
-- **Owning the global stack CLAUDE.md** for their domain (e.g., the Go lead owns `golang.md`, Frontend lead owns `nextjs.md`, Mobile lead owns `flutter.md`).
-- Reviewing and approving changes to global `CLAUDE.md` files via PR. Because these files affect every engineer on the team, changes should be deliberate.
-- **Ensuring every active repository under their domain has a repo-level `CLAUDE.md`** before the team begins using Claude Code on that repo.
-- Bootstrapping the initial per-repo `CLAUDE.md` for new repositories. Do not delegate the first version to junior engineers, as it requires deep knowledge of the repo's architectural patterns and intent.
-- Using the per-repo `CLAUDE.md` as part of the onboarding process. If a new engineer reads the `CLAUDE.md` and it does not accurately describe the repo, that is a strong signal it needs updating.
-- Scheduling a quarterly review of global `CLAUDE.md` files to ensure they reflect current TipTip standards, not legacy ones.
-
-### Individual Engineer Responsibilities
-Individual engineers are responsible for:
-- Reading the repo's `CLAUDE.md` before their first Claude Code session on a new repo.
-- Treating `CLAUDE.md` as living documentation. Never delete content from `CLAUDE.md` without a team discussion — flag anomalies rather than removing them unilaterally.
-- Executing the **refinement loop**:
-  1. Use Claude Code on a task.
-  2. Claude produces output that misses a TipTip convention or pattern.
-  3. Identify what context was missing.
-  4. Update `CLAUDE.md` with that context.
-  5. Verify with `/memory` that Claude is reading the update.
-  6. Next session: Claude gets it right.
-  *(This loop is how the file matures. It is expected and normal).*
-- Treating `CLAUDE.md` updates as meaningful PRs. Include a brief description of why the change was made (e.g., "Added note about `pgx` because Claude kept suggesting `sqlx`").
-- **Updating Templates**: If you believe the global templates or stack templates are inaccurate or missing information, you are strictly encouraged to submit a Pull Request to update the source templates located in the `/claude-templates/` directory. This process is critical to maintaining consistent accuracy and upholding TipTip's quality bar across the organization.
+### Individual Engineers
+- Read the repo's `CLAUDE.md` before your first session on a new repo
+- Treat it as living documentation — never delete content without team discussion
+- **Run the refinement loop:**
+  1. Use Claude on a task → Claude misses a TipTip convention → identify the missing context → update `CLAUDE.md` → verify with `/memory` → next session it gets it right
+  *(This loop is how the file matures. Expected and normal.)*
+- Treat updates as meaningful PRs with a brief description (e.g., "Added note about `pgx` because Claude kept suggesting `sqlx`")
+- **Update templates**: if global/stack templates are inaccurate, submit a PR to `/claude-templates/`
 
 ### Quality Bar
-- **Accuracy over completeness:** Stale context is worse than no context. If `CLAUDE.md` says a repo uses `sqlx` but it migrated to `pgx` 6 months ago, Claude will confidently generate broken code.
-- **Avoid vagueness:** "Write clean code" tells Claude nothing. Give concrete examples.
-- **Respect the context window:** A `CLAUDE.md` that is too long wastes tokens and degrades LLM performance. Aim for under 300 lines per file.
-- **The 10-minute rule:** Read the `CLAUDE.md` aloud. If it sounds like generic advice applicable to any company, it needs more TipTip-specific detail. If it takes 10 minutes to read, it needs to be trimmed or split using `@` file imports.
+- **Accuracy > completeness** — stale context is worse than no context. If the file says `sqlx` but you migrated to `pgx` 6 months ago, Claude will confidently generate broken code.
+- **Avoid vagueness** — "Write clean code" tells Claude nothing. Give concrete examples.
+- **Respect the context window** — aim for under 300 lines per file.
+- **The 10-minute rule** — read it aloud. If it sounds like generic advice for any company, add more TipTip detail. If it takes 10 minutes to read, trim it or split using `@` imports.
 
-> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Future Improvement** — as `CLAUDE.md` files grow, engineering leads and the team should consider breaking rules into a modular **`.rules` folder** (`~/.claude/rules/`) with separate `.md` files grouped by concern (e.g., `security.md`, `coding-style.md`, `testing.md`, `git-workflow.md`). This keeps rules organized, composable, and prevents any single file from growing unwieldy.
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* As `CLAUDE.md` grows, consider breaking rules into a modular **`.rules` folder** (`~/.claude/rules/`) with separate `.md` files per concern (e.g., `security.md`, `coding-style.md`, `testing.md`). Keeps things composable.
 
 ---
 
@@ -195,7 +185,7 @@ Individual engineers are responsible for:
 
 | Task / Item | Command / Location |
 |---|---|
-| View what Claude is reading | `/memory` (run inside Claude Code session) |
+| View what Claude is reading | `/memory` (inside Claude Code session) |
 | Global `CLAUDE.md` location | `~/.claude/CLAUDE.md` |
 | Go stack global | `~/.claude/stacks/golang.md` |
 | React/Next.js stack global | `~/.claude/stacks/nextjs.md` |

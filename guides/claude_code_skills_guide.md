@@ -1,52 +1,43 @@
 # Guide 3 of 7: Skills
 
-> ⚠️ Prerequisites: Complete Guide 1 (Setup) and Guide 2 (CLAUDE.md & Project Memory) before proceeding with this guide.
+> ⚠️ Prerequisites: Complete Guide 1 (Setup) and Guide 2 (CLAUDE.md & Project Memory) before proceeding.
 
 ---
 
 ## 1. What Are Skills?
 
-Skills are reusable, invocable prompt templates stored as markdown files that Claude Code can execute on demand.
+Skills are reusable prompt templates stored as markdown files — saved workflows you invoke with a short command (e.g., `/explain-code`) instead of typing long instructions every session.
 
-They are the equivalent of saved workflows — instead of typing the same long instructions every session, you define them once as a skill and invoke them with a short command (e.g., `/explain-code`).
+They're context-aware (reads your `CLAUDE.md` and working directory), version-controlled, and can call tools, run shell commands, and chain actions — mini-workflows, not just text templates.
 
-**Key aspects of Skills:**
-- **Context-aware:** They run with full awareness of the project's `CLAUDE.md`, the current working directory, and any files Claude has already read.
-- **Structured and repeatable:** The difference between a skill and a regular prompt is that a skill is structured, repeatable, and version-controlled. A regular prompt is ad hoc and ephemeral.
-- **Workflow orchestrators:** Skills can call other tools, run shell commands, read files, and chain actions — they are not just text templates, they are mini-workflows.
+Two levels:
+- **Global** (`~/.claude/skills/`) — available in every project
+- **Project-level** (`.agents/skills/<skill-name>/SKILL.md`) — repo-specific, in its own directory
 
-Skills live at two levels:
-- **Global skills:** Located in `~/.claude/skills/` — available in every project.
-- **Project-level skills:** Located in `.agents/skills/<skill-name>/SKILL.md` in the repo root — available only in that repository. Each skill lives in its own directory with a `SKILL.md` entry point.
-
-*For more details, see the [Anthropic Skills Documentation](https://docs.anthropic.com/en/docs/claude-code/skills).*
+*[Anthropic Skills Documentation](https://docs.anthropic.com/en/docs/claude-code/skills)*
 
 ---
 
 ## 2. Why Skills Before MCP?
 
-This guide covers Skills before MCP Integrations (Guide 4) for several critical reasons:
-
-- **Zero-cost infrastructure:** Skills are simple markdown files. There are no API keys, no OAuth setups, no external service dependencies, and no additional token overhead beyond what the skill itself uses.
-- **Zero complexity:** MCP integrations add real complexity: network dependencies, authentication, extra context window consumption per tool call, and potential points of failure. Skills have none of these.
-- **Mental models for MCP:** Skills teach engineers how Claude Code thinks about tasks. Writing a skill requires you to articulate a workflow clearly. That same clarity is what makes MCP configurations effective later.
-- **High ROI:** For TipTip's current phase (onboarding, cost control, building habits), Skills deliver 80% of the productivity gain at 0% of the setup complexity of MCP.
-- **Composability:** Once MCP is set up in Guide 4, skills can call MCP tools as part of their workflow. Skills are not replaced by MCP; they orchestrate it.
+Skills come first because:
+- **Zero infrastructure** — markdown files, no API keys, no OAuth, no network deps
+- **Zero complexity** — MCP adds auth, network deps, extra token overhead. Skills have none of that.
+- **Mental model** — writing a skill forces you to articulate a workflow clearly. Same clarity makes MCP effective later.
+- **High ROI** — 80% of the productivity gain at 0% of the setup complexity
+- **Composability** — once MCP is live (Guide 4), skills orchestrate MCP tools as part of their workflow
 
 ---
 
 ## 3. TipTip's Skills Repository
 
-All skills needed for TipTip's Claude Code setup are available at our central repository:
-[https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude)
+Canonical source: [https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude)
 
-- **The Canonical Set:** Engineers should clone or pull this repository to get the canonical TipTip skill set.
-- **Tailored for TipTip:** Skills from this repository are pre-tailored for TipTip's stack and conventions — they reference TipTip's `CLAUDE.md` conventions and produce TipTip-flavored output.
-- **Manual vs Simple Setup:** Some skills (particularly superpowers from third parties) require manual setup steps beyond just copying the file — these are called out explicitly in Section 5.
-- **No private forks:** Engineers should **NOT** create private local copies of skills that diverge from the canonical repository. If a skill needs improvement, open a merge request to `aiad-claude` so the whole team benefits.
+- Pre-tailored for TipTip's stack and conventions
+- Some third-party skills (superpowers) require manual setup — called out in Section 5
+- **No private forks** — if a skill needs improvement, open an MR to `aiad-claude`
 
-**Installation Command:**
-To install project-level skills from the repository, clone it and copy the skills into your project:
+**Install:**
 ```bash
 git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /tmp/aiad-claude
 mkdir -p .agents/skills
@@ -68,15 +59,13 @@ Invoking a skill in a Claude Code session is straightforward:
 
 ---
 
-## 5. How to Choose the Right Skill
+## 5. Choosing the Right Skill
 
-Choose the right skill with this decision framework:
-
-- **Prefer skills with CLI integration when available.** If a skill wraps a CLI tool (e.g., `gh` for GitLab/GitHub operations, `gcloud`, `docker`) rather than making API calls, it is generally more reliable, faster, and produces more predictable output. CLI-backed skills consume fewer tokens because the CLI returns structured output.
-- **Match skill scope to task scope.** Use narrow skills for narrow tasks. Do not invoke a full code-review skill just to check a single function — that wastes context window and costs more tokens.
-- **Project-level overrides global.** If a repo has a local skill tailored to its domain (`.agents/skills/<skill-name>/SKILL.md`), it takes precedence over the global one. Check for project-level skills before assuming only global ones are available.
-- **Repeated manual prompting is a skill gap.** If no skill exists for a task you do repeatedly, that is a signal to create one.
-- **Avoid stacking multiple heavy skills in a single session.** Each skill adds context. Running three large skills consecutively in one session can bloat the context window and degrade output quality. Split into separate sessions if needed.
+- **Prefer CLI-backed skills** — CLI returns structured output, fewer tokens, more reliable
+- **Match scope** — don't invoke full code-review to check one function
+- **Project-level overrides global** — check for repo-specific skills first
+- **Repeated prompting = skill gap** — if you type the same instructions twice, create a skill
+- **Don't stack heavy skills** in one session — context bloat degrades output. Split sessions.
 
 ---
 
@@ -154,30 +143,28 @@ These skills are relevant for engineers working on TipTip's React, Next.js, and 
 
 ## 9. Skills and LLM Cost
 
-This section outlines how skills affect token consumption and API cost, and gives practical guidance on efficient use.
+### How cost works
 
-### How Skills Affect Cost
+- Every skill invocation adds content to the context window (on top of conversation + `CLAUDE.md`)
+- Large skills (500+ lines) compound cost — that content is re-sent with every subsequent message
+- Skills triggering multiple tool calls (file reads, shell execs) multiply cost further
+- Well-structured skills direct lightweight steps to `ANTHROPIC_SMALL_FAST_MODEL`
 
-- **Context Window Padding:** Every skill invocation adds the skill's content to the context window on top of the existing conversation and `CLAUDE.md` content.
-- **Cost Compounding:** A large skill (500+ lines) invoked at the start of a long session will compound cost because that skill content is re-sent with every subsequent message in the conversation.
-- **Tool Triggers Multiplier:** Skills that trigger multiple tool calls (file reads, shell executions) multiply the token cost further — each tool result is added to context.
-- **Model Distribution:** Background model calls (`ANTHROPIC_SMALL_FAST_MODEL`) are used for lightweight skill steps; main model calls are used for reasoning-heavy steps. Well-structured skills can direct lighter work to the small model.
+### Do this
 
-### Best Practices (Do This)
+- Keep skills focused — one thing done well costs less than three things attempted
+- Use project-level skills for repo-specific tasks (they assume `CLAUDE.md` context, so they stay concise)
+- Invoke skills at session start, not mid-session (clean context = cheaper + better output)
+- Use CLI-backed skills where possible — structured output, fewer tokens
+- Use GLM-4.7 Flash ($0.06/1M input) for background tasks: mass file reading, linting, repetitive generation
 
-- **Keep skills focused and narrow.** A skill that does one thing well costs less than a skill that tries to do three things. Split broad skills into composable smaller ones.
-- **Use project-level skills for repo-specific tasks.** They tend to be more concise because they can assume repo context from `CLAUDE.md` rather than re-explaining it in the skill body.
-- **Invoke skills at the start of a session, not mid-session.** Starting fresh with a skill gives Claude a clean context. Mid-session skill invocation stacks on top of an already-large context, increasing cost and potentially degrading output quality.
-- **Use CLI-backed skills where possible.** CLI output is structured and concise. Asking Claude to reason through unstructured data is more expensive.
-- **Prefer GLM-4.7 Flash for skill-driven background tasks.** At $0.06/1M input, it is the right tool for skills that do mass file reading, linting passes, or repetitive generation tasks.
+### Don't do this
 
-### What to Avoid (Do Not Do This)
-
-- **Do not invoke a heavy skill just to ask a simple question.** If you only need to understand one function, ask directly — do not trigger a full code-review skill.
-- **Do not chain multiple heavy skills in one session.** Running `pr-description`, then `code-review`, then `tdd` in a single session will balloon the context window. Use separate sessions for separate tasks.
-- **Do not write skills with redundant context.** If your `CLAUDE.md` already defines TipTip's error handling pattern, do not repeat it verbatim inside the skill. Reference it instead (e.g., "following error handling patterns in CLAUDE.md").
-- **Do not use flagship models (GLM-4.7) for skills that only need lightweight output.** For skills that generate boilerplate, summaries, or simple diffs, configure them to use the small fast model.
-- **Do not let skills go stale.** An outdated skill that reflects old conventions will produce wrong output confidently. Stale skills waste tokens and engineer time.
+- Don't invoke heavy skills for simple questions — just ask directly
+- Don't chain `pr-description` → `code-review` → `tdd` in one session — context bloat. Separate sessions.
+- Don't repeat `CLAUDE.md` content inside skills — reference it instead
+- Don't use flagship models for boilerplate output — use the small fast model
+- Don't let skills go stale — outdated skills produce wrong output confidently
 
 ---
 
@@ -202,19 +189,15 @@ This section outlines how skills affect token consumption and API cost, and give
 
 ### The Improvement Loop
 
-The expected behavior for skill improvement follows this loop:
-1. Engineer invokes a skill.
-2. Output misses a TipTip pattern or produces a suboptimal result.
-3. Engineer identifies what the skill is missing.
-4. Engineer opens an MR on `aiad-claude` with the fix and a brief description of what was wrong and what was improved.
-5. Lead reviews and merges.
-6. All engineers pull the update and benefit.
+Invoke skill → output misses a TipTip pattern → identify the gap → open MR on `aiad-claude` with the fix → lead merges → everyone benefits.
 
-*This loop is how the skill set matures. It is expected and normal.*
+*This is how the skill set matures. Expected and normal.*
 
-> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Skills vs Commands** — Skills (`~/.claude/skills/`) are broader workflow definitions, while Commands (`~/.claude/commands/`) are quick executable prompts invoked via `/slash`. Skills and commands can be **chained together** in a single prompt for multi-step workflows (e.g., `/refactor-clean` followed by `/tdd`).
+### Skills vs Commands
+**Skills vs Commands** — Skills (`~/.claude/skills/`) are broader workflow definitions, while Commands (`~/.claude/commands/`) are quick executable prompts invoked via `/slash`. Skills and commands can be **chained together** in a single prompt for multi-step workflows (e.g., `/refactor-clean` followed by `/tdd`).
 
-> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Plugins** extend Claude Code with bundled tools, skills, and MCPs. **LSP Plugins** are particularly useful if you run Claude Code outside editors — they give Claude real-time type checking, go-to-definition, and intelligent completions without an IDE. Strongly suggested plugins to install/enable:
+### Plugins
+**Plugins** extend Claude Code with bundled tools, skills, and MCPs. **LSP Plugins** are particularly useful if you run Claude Code outside editors — they give Claude real-time type checking, go-to-definition, and intelligent completions without an IDE. Strongly suggested plugins to install/enable depending on your team:
 >
 > | Plugin | Description |
 > |---|---|

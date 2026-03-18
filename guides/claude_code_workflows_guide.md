@@ -7,22 +7,21 @@
 
 ## 1. From Assistant to Autonomous Agent
 
-Guides 1–5 established the setup and configuration of Claude Code at TipTip. This guide represents a conceptual shift: using Claude Code at full capability as an autonomous engineering collaborator.
+Guides 1–5 covered setup and configuration. This guide is the shift: using Claude Code as an autonomous engineering collaborator.
 
-There is a fundamental difference between two modes of working with Claude Code:
-- **Interactive mode:** Engineer and Claude work back and forth conversationally. The engineer reviews each step, approves actions, and course-corrects in real time. Best for exploratory work, unfamiliar codebases, or tasks where requirements are not fully defined.
-- **Autonomous mode:** The engineer defines the task clearly upfront, and Claude executes it independently across multiple files and tool calls. The engineer reviews the final result. Best for well-defined, repeatable tasks where CLAUDE.md, skills, and MCPs provide sufficient context for Claude to operate without hand-holding.
+Two modes:
+- **Interactive** — engineer and Claude work back-and-forth. Best for exploratory work, unfamiliar codebases, unclear requirements.
+- **Autonomous** — engineer defines the task upfront, Claude executes independently. Best for well-defined, repeatable tasks where CLAUDE.md + skills + MCPs provide sufficient context.
 
-Neither mode is superior — they serve different task types. The skill is knowing which to use and how to set up each for success. The foundations from Guides 1–5 make autonomous mode reliable: CLAUDE.md constrains Claude's conventions, hooks enforce quality gates, skills provide repeatable workflows, and MCPs provide live context. Without these, autonomous mode produces unconstrained output that requires heavy human review.
+Neither is superior — the skill is knowing which to use. The foundations from Guides 1–5 make autonomous mode reliable: CLAUDE.md constrains conventions, hooks enforce quality, skills provide workflows, MCPs provide live context.
 
 ---
 
 ## 2. The Task File Pattern
 
-The task file is the primary tool for structuring autonomous work. A task file is a markdown document (customarily `task.md`) that Claude Code reads as its instructions for an autonomous session. It is the equivalent of a well-written Jira ticket handed to a junior developer: providing context, goals, acceptance criteria, constraints, and out-of-scope boundaries.
+The task file (`task.md`) is how you structure autonomous work — the equivalent of a well-written Jira ticket handed to a junior developer: context, goals, acceptance criteria, constraints, boundaries.
 
-**Why task files matter:**
-Claude has no memory between sessions. A task file is the single source of truth for what a specific session should accomplish. It also serves as a record of intent — reviewers can read what Claude was asked to do alongside what it actually produced. Task files are ephemeral working documents. They live in the repo root during the session and should be deleted before committing. Note: Make sure to add `task.md` to `.gitignore`.
+Claude has no memory between sessions. The task file is the single source of truth for what a session should accomplish. Also serves as an audit trail — reviewers see what Claude was asked alongside what it produced. Task files are ephemeral: live in repo root during the session, add `task.md` to `.gitignore`.
 
 ### Task File Structure
 
@@ -169,7 +168,7 @@ Below are 7 realistic TipTip scenarios structured as recipes.
 **The task file:**
 Use the `workflow_1_new_endpoint.md` template from `aiad-claude/tasks/`. Copy it to your repo root, rename to `task.md`, and fill in the placeholders.
 
-#### How to Execute (VS Code)
+#### Sample on How to Execute (VS Code)
 
 1. Open VS Code in the service repo: `code ~/repos/creator-service`
 2. Open the integrated terminal (`Ctrl+\`` or `Cmd+\``).
