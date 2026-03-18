@@ -230,7 +230,7 @@ The key principle: **do not give engineers all seven guides at once.** Overloadi
 
 **Expected behavior by end of Week 1:**
 - Engineer runs Claude Code daily for at least one task.
-- At minimum: `pr-description` and `commit-message` skills are used for every applicable MR and commit.
+- At minimum: `pr-description` and `git-commit` skills are used for every applicable MR and commit.
 - Engineer has identified at least one thing the `CLAUDE.md` for their repo got wrong or was missing, and has opened an MR to fix it.
 
 **Lead action during Week 1:**
