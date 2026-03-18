@@ -17,7 +17,7 @@ They are the equivalent of saved workflows — instead of typing the same long i
 
 Skills live at two levels:
 - **Global skills:** Located in `~/.claude/skills/` — available in every project.
-- **Project-level skills:** Located in `.claude/skills/` in the repo root — available only in that repository.
+- **Project-level skills:** Located in `.agents/skills/<skill-name>/SKILL.md` in the repo root — available only in that repository. Each skill lives in its own directory with a `SKILL.md` entry point.
 
 *For more details, see the [Anthropic Skills Documentation](https://docs.anthropic.com/en/docs/claude-code/skills).*
 
@@ -46,11 +46,11 @@ All skills needed for TipTip's Claude Code setup are available at our central re
 - **No private forks:** Engineers should **NOT** create private local copies of skills that diverge from the canonical repository. If a skill needs improvement, open a merge request to `aiad-claude` so the whole team benefits.
 
 **Installation Command:**
-To install global skills from the repository, clone it and copy the skills locally:
+To install project-level skills from the repository, clone it and copy the skills into your project:
 ```bash
 git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /tmp/aiad-claude
-mkdir -p ~/.claude/skills
-cp -R /tmp/aiad-claude/skills/* ~/.claude/skills/
+mkdir -p .agents/skills
+cp -R /tmp/aiad-claude/.agents/skills/* .agents/skills/
 ```
 
 ---
@@ -60,7 +60,7 @@ cp -R /tmp/aiad-claude/skills/* ~/.claude/skills/
 Invoking a skill in a Claude Code session is straightforward:
 
 - **Invocation syntax:** Use the slash command defined in the skill's frontmatter (e.g., `/write-test`).
-- **Discovery:** Claude automatically discovers skills in `~/.claude/skills/` and `.claude/skills/`. You can see available skills dynamically, or ask Claude "What skills are available?"
+- **Discovery:** AI assistants automatically discover skills in `.agents/skills/` (project-level). Claude Code also checks `~/.claude/skills/` for global skills. You can see available skills dynamically, or ask your assistant "What skills are available?"
 - **Passing parameters:** You can pass arguments directly. For example: `/explain-code src/auth/login.ts` passes the file path as context.
 - **Interaction with CLAUDE.md:** When the skill runs, Claude blends the skill’s instructions with the rules defined in your project's `CLAUDE.md`.
 - **End-to-End Example:** 
@@ -74,7 +74,7 @@ Choose the right skill with this decision framework:
 
 - **Prefer skills with CLI integration when available.** If a skill wraps a CLI tool (e.g., `gh` for GitLab/GitHub operations, `gcloud`, `docker`) rather than making API calls, it is generally more reliable, faster, and produces more predictable output. CLI-backed skills consume fewer tokens because the CLI returns structured output.
 - **Match skill scope to task scope.** Use narrow skills for narrow tasks. Do not invoke a full code-review skill just to check a single function — that wastes context window and costs more tokens.
-- **Project-level overrides global.** If a repo has a local code-review skill tailored to its domain (`.claude/skills/code-review`), it takes precedence over the global one. Check for project-level skills before assuming only global ones are available.
+- **Project-level overrides global.** If a repo has a local code-review skill tailored to its domain (`.agents/skills/code-review/SKILL.md`), it takes precedence over the global one. Check for project-level skills before assuming only global ones are available.
 - **Repeated manual prompting is a skill gap.** If no skill exists for a task you do repeatedly, that is a signal to create one.
 - **Avoid stacking multiple heavy skills in a single session.** Each skill adds context. Running three large skills consecutively in one session can bloat the context window and degrade output quality. Split into separate sessions if needed.
 
@@ -93,7 +93,7 @@ These skills apply regardless of our stack. Every TipTip engineer should have th
 | `rfc-review`           | `aiad-claude` | Reviews Engineering Spec / RFC documents using the Atlassian Confluence MCP. Flags architectural risks or convention violations.              | When drafting or reading an RFC in Confluence before finalizing it.    | `/rfc-review`                            | Copy from `aiad-claude` repo. (Requires MCP) [Link](https://gitlab.com/tiptiptv/common/aiad-claude)                         |
 | `write-test`           | `aiad-claude` | Generates unit/integration tests matching the existing test style in the repo based on CLAUDE.md.                                             | When adding coverage to a new or modified feature.                     | `/write-test src/auth/login.ts`          | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude)                                        |
 | `debug-trace`          | `aiad-claude` | Structured debugging workflow — starts from an error message, traces through call stack, forms hypotheses, and suggests fixes with reasoning. | When encountering a stack trace, panic, or build crash.                | `/debug-trace "panic: runtime error..."` | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude)                                        |
-| `commit-message`       | `aiad-claude` | Generates conventional commit messages from staged diff representing TipTip formatting.                                                       | When committing staged changes to Git.                                 | `/commit-message`                        | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude)                                        |
+| `git-commit`           | `aiad-claude` | Generates Conventional Commits messages from staged diff. Analyzes changes, categorizes by type/scope, and produces spec-compliant commit messages.             | When committing staged changes to Git.                                 | `/git-commit`                            | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude)                                        |
 | `systematic-debugging` | `superpowers` | 4-phase root cause process including root-cause-tracing, defense-in-depth, condition-based-waiting techniques.                                | When deep-diving into complex, hard-to-reproduce bugs across services. | `/systematic-debugging`                  | Run: `/plugin install superpowers@claude-plugins-official` in VS Code terminal. [Link](https://github.com/obra/superpowers) |
 
 ### Nice-to-Have Skills (Engineering-Wide)
@@ -221,7 +221,7 @@ The expected behavior for skill improvement follows this loop:
 | Review Engineering Spec / RFC          | `rfc-review`                  | Engineering-wide | `aiad`                   |
 | Generate tests                         | `write-test`                  | Engineering-wide | `aiad`                   |
 | Debug from error trace                 | `debug-trace`                 | Engineering-wide | `aiad`                   |
-| Generate commit message                | `commit-message`              | Engineering-wide | `aiad`                   |
+| Generate commit message                | `git-commit`                  | Engineering-wide | `aiad`                   |
 | Systematic trace & root cause analysis | `systematic-debugging`        | Engineering-wide | `superpowers`            |
 | Basic feature planning                 | `plan`                        | Engineering-wide | `everything-claude-code` |
 | Update documentation                   | `update-docs`                 | Engineering-wide | `everything-claude-code` |
