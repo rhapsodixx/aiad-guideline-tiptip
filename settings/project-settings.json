@@ -1,0 +1,45 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+             "type": "command",
+             "command": ".claude/hooks/pre-tool-use-sql-guard.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+             "type": "command",
+             "command": ".claude/hooks/post-tool-use-go-lint.sh"
+          },
+          {
+             "type": "command",
+             "command": ".claude/hooks/post-tool-use-eslint.sh"
+          },
+          {
+             "type": "command",
+             "command": ".claude/hooks/post-tool-use-prettier.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+             "type": "command",
+             "command": ".claude/hooks/stop-session-summary.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

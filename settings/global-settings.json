@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+             "type": "command",
+             "command": "~/.claude/hooks/pre-tool-use-secret-guard.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+             "type": "command",
+             "command": "~/.claude/hooks/notification-progress.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
