@@ -617,19 +617,20 @@ Engineers should not write hooks from scratch — pull from `aiad-claude`.
 
 To streamline setup, we provide an interactive installation script that installs global hooks and interactively sets up project-level hooks for your specific stack.
 
-**Prerequisite:** Ensure TipTip's Claude Code resource repository is cloned to `/tmp`:
+**Prerequisite:** Clone TipTip's Claude Code resource repository to any directory of your choice (e.g., `/tmp/aiad-claude`):
 ```bash
-git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /tmp/aiad-claude
+git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /path/to/aiad-claude
 ```
 
-Run the following command from the root of your project repository:
+Run the following command from the root of the cloned `aiad-claude` repository:
 
 ```bash
+cd /path/to/aiad-claude
 bash scripts/install-hooks.sh
 ```
 
 The script will:
-1. Verify the `aiad-claude` repository exists in `/tmp/aiad-claude`.
+1. Verify it is being run from the `aiad-claude` repository root (checks for `hooks/global` and `settings` directories).
 2. Install the required global hooks (like secret guard and notifications) to `~/.claude/hooks/`.
 3. Prompt you to select your stack (Backend/Go or Frontend/Next.js) and install the corresponding project-level hooks into `.claude/hooks/` for your current repository.
 4. Automatically apply `chmod +x` to make all installed hooks executable.
@@ -643,21 +644,21 @@ If you prefer to install hooks manually or are using an unsupported environment,
 **Installation Commands:**
 ```bash
 # Clone TipTip's Claude Code resource repository
-git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /tmp/aiad-claude
+git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /path/to/aiad-claude
 
 # Install global hooks (secret guard, notifications)
 mkdir -p ~/.claude/hooks
-cp /tmp/aiad-claude/hooks/global/* ~/.claude/hooks/
+cp /path/to/aiad-claude/hooks/global/* ~/.claude/hooks/
 chmod +x ~/.claude/hooks/*.sh
 
 # Install project-level hooks (run inside your repo directory)
 mkdir -p .claude/hooks
-cp /tmp/aiad-claude/hooks/backend/* .claude/hooks/   # for Go repos
+cp /path/to/aiad-claude/hooks/backend/* .claude/hooks/   # for Go repos
 # OR
-cp /tmp/aiad-claude/hooks/frontend/* .claude/hooks/  # for Next.js repos
+cp /path/to/aiad-claude/hooks/frontend/* .claude/hooks/  # for Next.js repos
 chmod +x .claude/hooks/*.sh
 ```
-Lastly, copy the relevant settings block from `/tmp/aiad-claude/settings/project-settings.json` to your local `.claude/settings.json`.
+Lastly, copy the relevant settings block from `/path/to/aiad-claude/settings/project-settings.json` to your local `.claude/settings.json`.
 
 **The improvement expectation:** If a hook produces false positives, misses a case, or could enforce a better standard, open a merge request on `aiad-claude` rather than modifying your local copy. The improvement benefits every engineer on the team.
 

@@ -35,9 +35,9 @@ Most direct signal of whether Claude Code is part of daily workflow or just an e
 
 #### Skill Invocation Frequency
 
-Which skills are used daily, rarely, or never. If `pr-description`, `code-review`, and `tdd` aren't invoked regularly, either engineers aren't using Claude for those tasks or the skills aren't trusted.
+Which skills are used daily, rarely, or never. If `pr-description`, `code-review-golang`/`code-review-nextjs`, and `tdd` aren't invoked regularly, either engineers aren't using Claude for those tasks or the skills aren't trusted.
 
-**Targets (week 8):** `pr-description` on 60%+ of MRs, `code-review` once per engineer per sprint, `tdd` once per engineer per week on active feature work.
+**Targets (week 8):** `pr-description` on 60%+ of MRs, `code-review-golang` or `code-review-nextjs` (as applicable) once per engineer per sprint, `tdd` once per engineer per week on active feature work.
 
 **How to track:** Add a logging line to each skill's markdown that appends to `.claude-skill-log.jsonl`. Aggregate weekly.
 
@@ -95,15 +95,15 @@ The ultimate quality signal. If Claude-assisted code requires more rework than n
 
 ### Metrics Summary
 
-| Metric | Category | Target (Week 8) | Tracking |
-|---|---|---|---|
-| PR volume with Claude | Activity | 70%+ feature PRs | GitLab MR labels |
-| Skill invocation | Activity | 3 must-have skills weekly | Skill log file |
-| MCP usage | Activity | Jira + Context7 in 80% of feature sessions | Stop hook + dashboard |
-| Session length & tokens | Activity | Avg <30 min, cost within baseline | Z.ai dashboard + Stop hook |
-| Hook intervention rate | Quality | Lint on 20%+ writes, 90%+ first-try resolve | Hook log file |
-| `CLAUDE.md` update freq | Quality | 1+ per active repo per month | GitLab MR history |
-| Rework rate | Quality | ≤ non-Claude code | Lead assessment |
+| Metric                  | Category | Target (Week 8)                             | Tracking                   |
+| ----------------------- | -------- | ------------------------------------------- | -------------------------- |
+| PR volume with Claude   | Activity | 70%+ feature PRs                            | GitLab MR labels           |
+| Skill invocation        | Activity | 3 must-have skills weekly                   | Skill log file             |
+| MCP usage               | Activity | Jira + Context7 in 80% of feature sessions  | Stop hook + dashboard      |
+| Session length & tokens | Activity | Avg <30 min, cost within baseline           | Z.ai dashboard + Stop hook |
+| Hook intervention rate  | Quality  | Lint on 20%+ writes, 90%+ first-try resolve | Hook log file              |
+| `CLAUDE.md` update freq | Quality  | 1+ per active repo per month                | GitLab MR history          |
+| Rework rate             | Quality  | ≤ non-Claude code                           | Lead assessment            |
 
 *These don't need perfect precision. Directional signal — are engineers using it, is the output improving? A lead who checks MR labels, glances at Z.ai, and asks the team weekly gets 80% of the signal with 20% of the effort.*
 
@@ -210,14 +210,14 @@ No new guides — just habit building.
 
 #### Summary
 
-| Phase | Weeks | Guides | Key Milestone |
-|---|---|---|---|
-| Core Setup | 1 | 1, 2, 3 | Skills daily; `CLAUDE.md` refined once |
-| Habits | 2–3 | *(practice)* | 4 skills used; sharing in `#aiad-discussion` |
-| MCPs | 3–4 | 4 | Jira MCP for tickets; Context7 active |
-| Hooks | 4–5 | 5 | Lint hook firing; hooks committed |
-| Workflows | 5–6 | 6 | Two cookbook workflows completed |
-| Full proficiency | 6+ | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
+| Phase            | Weeks | Guides           | Key Milestone                                     |
+| ---------------- | ----- | ---------------- | ------------------------------------------------- |
+| Core Setup       | 1     | 1, 2, 3          | Skills daily; `CLAUDE.md` refined once            |
+| Habits           | 2–3   | *(practice)*     | 4 skills used; sharing in `#aiad-discussion`      |
+| MCPs             | 3–4   | 4                | Jira MCP for tickets; Context7 active             |
+| Hooks            | 4–5   | 5                | Lint hook firing; hooks committed                 |
+| Workflows        | 5–6   | 6                | Two cookbook workflows completed                  |
+| Full proficiency | 6+    | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
 
 *Guide 7 is not part of the onboarding sequence. Engineers read it as a reference once proficient. Required reading for leads from day one.*
 
@@ -231,7 +231,7 @@ Primary channel for Claude Code knowledge sharing.
 
 **What goes here:**
 - Workflow discoveries: *"Running the postgres skill before writing a migration saves schema mistakes — here's how"*
-- Skill improvement proposals: *"The code-review skill misses our new error handling pattern"*
+- Skill improvement proposals: *"The code-review-golang skill misses our new error handling pattern"*
 - Unusual Claude behavior: *"Claude keeps suggesting sqlx despite the CLAUDE.md rule"*
 - MCP issues: *"Jira MCP token expires every 30 days — reminder to rotate"*
 - Cost observations: *"Session cost spiked — forgot Serena, Claude read 40 files manually"*
@@ -306,7 +306,7 @@ Claude sessions have no audit trail for data access. Even well-intentioned debug
 
 Not prohibited, but requires thorough human review — more than standard review. Auth bugs are among the most consequential. Claude can produce plausible auth code with subtle logical errors.
 
-**Guidance:** Write auth with Claude, invoke `code-review` focused on security, require a second reviewer who knows TipTip's auth architecture.
+**Guidance:** Write auth with Claude, invoke `code-review-golang` or `code-review-nextjs` (as applicable) focused on security, require a second reviewer who knows TipTip's auth architecture.
 
 ---
 
@@ -320,19 +320,19 @@ Not prohibited, but high-stakes. Must follow creator-service `CLAUDE.md` constra
 
 ### Usage Summary
 
-| Task | Usage | Requirement |
-|---|---|---|
-| Feature code | Autonomous ✅ | Standard MR review |
-| Tests | Autonomous ✅ | Verify edge case coverage |
-| PR description | Autonomous ✅ | Read before submitting |
-| Code review | Autonomous ✅ | Validate assessment |
-| SQL review | Interactive ✅ | Never execute on production |
-| Auth/authz | Interactive ⚠️ | Mandatory second reviewer |
-| Payment logic | Interactive ⚠️ | Domain expert review |
-| Infra changes | Interactive ⚠️ | Senior review before apply |
-| Production DB | Prohibited ❌ | Deployment pipeline only |
-| Security config | Prohibited ❌ | Human authorship required |
-| PII outside rules | Prohibited ❌ | Follow data access process |
+| Task              | Usage         | Requirement                 |
+| ----------------- | ------------- | --------------------------- |
+| Feature code      | Autonomous ✅  | Standard MR review          |
+| Tests             | Autonomous ✅  | Verify edge case coverage   |
+| PR description    | Autonomous ✅  | Read before submitting      |
+| Code review       | Autonomous ✅  | Validate assessment         |
+| SQL review        | Interactive ✅ | Never execute on production |
+| Auth/authz        | Interactive ⚠️ | Mandatory second reviewer   |
+| Payment logic     | Interactive ⚠️ | Domain expert review        |
+| Infra changes     | Interactive ⚠️ | Senior review before apply  |
+| Production DB     | Prohibited ❌  | Deployment pipeline only    |
+| Security config   | Prohibited ❌  | Human authorship required   |
+| PII outside rules | Prohibited ❌  | Follow data access process  |
 
 ---
 
@@ -357,45 +357,45 @@ Leads are accountable for making these guidelines real:
 
 ### Monthly Metrics Checklist
 
-| Metric | How | Time |
-|---|---|---|
-| PR volume with Claude label | GitLab MR filter | 5 min |
-| Skill invocation | Collect skill logs | 10 min |
-| MCP usage | Stop hook + Context7 dashboard | 10 min |
-| Session tokens | Z.ai dashboard | 5 min |
-| Hook interventions | Hook log files | 5 min |
-| `CLAUDE.md` updates | GitLab MR history | 5 min |
-| Rework rate | Qualitative in retro | 10 min |
+| Metric                      | How                            | Time   |
+| --------------------------- | ------------------------------ | ------ |
+| PR volume with Claude label | GitLab MR filter               | 5 min  |
+| Skill invocation            | Collect skill logs             | 10 min |
+| MCP usage                   | Stop hook + Context7 dashboard | 10 min |
+| Session tokens              | Z.ai dashboard                 | 5 min  |
+| Hook interventions          | Hook log files                 | 5 min  |
+| `CLAUDE.md` updates         | GitLab MR history              | 5 min  |
+| Rework rate                 | Qualitative in retro           | 10 min |
 
 ### Migration Checklist
 
-| Criteria | Check |
-|---|---|
-| Monthly Z.ai cost > (Claude Max price × team size) | [ ] |
-| GLM rework rate materially worse than Claude | [ ] |
-| Team needs Projects for shared memory | [ ] |
-| 70%+ engineers fully proficient | [ ] |
-| Stable `CLAUDE.md` for all active repos | [ ] |
-| Dedicated AI tooling budget line | [ ] |
+| Criteria                                           | Check |
+| -------------------------------------------------- | ----- |
+| Monthly Z.ai cost > (Claude Max price × team size) | [ ]   |
+| GLM rework rate materially worse than Claude       | [ ]   |
+| Team needs Projects for shared memory              | [ ]   |
+| 70%+ engineers fully proficient                    | [ ]   |
+| Stable `CLAUDE.md` for all active repos            | [ ]   |
+| Dedicated AI tooling budget line                   | [ ]   |
 
 ### Knowledge Sharing
 
-| Channel | Purpose | Cadence |
-|---|---|---|
-| `#aiad-discussion` (Google Chat) | Daily Q&A, discoveries, issues | Ongoing |
-| Monthly demo | Workflow showcases | Monthly |
-| `aiad-claude` MRs | Formal tooling improvements | As needed |
-| Confluence quarterly review | Metrics, findings, updates | Quarterly |
+| Channel                          | Purpose                        | Cadence   |
+| -------------------------------- | ------------------------------ | --------- |
+| `#aiad-discussion` (Google Chat) | Daily Q&A, discoveries, issues | Ongoing   |
+| Monthly demo                     | Workflow showcases             | Monthly   |
+| `aiad-claude` MRs                | Formal tooling improvements    | As needed |
+| Confluence quarterly review      | Metrics, findings, updates     | Quarterly |
 
 ### Key Links
 
-| Resource | Link |
-|---|---|
+| Resource                        | Link                                             |
+| ------------------------------- | ------------------------------------------------ |
 | TipTip `aiad-claude` repository | `https://gitlab.com/tiptiptv/common/aiad-claude` |
-| Claude Code docs | `https://docs.anthropic.com/en/docs/claude-code` |
-| Z.ai pricing / dashboard | `https://z.ai` |
-| Claude Max pricing | `https://www.anthropic.com/pricing` |
-| `#aiad-discussion` | Google Chat |
+| Claude Code docs                | `https://docs.anthropic.com/en/docs/claude-code` |
+| Z.ai pricing / dashboard        | `https://z.ai`                                   |
+| Claude Max pricing              | `https://www.anthropic.com/pricing`              |
+| `#aiad-discussion`              | Google Chat                                      |
 
 ---
 **End of TipTip's Claude Code guide series.** Guides 1–7 establish the foundation. Standardizing and improving workflows lives in `#aiad-discussion` and `aiad-claude`.

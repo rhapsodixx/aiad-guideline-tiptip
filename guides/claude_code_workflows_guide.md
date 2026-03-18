@@ -218,7 +218,7 @@ Use the `workflow_2_refactor.md` template from `aiad-claude/tasks/`. Copy it to 
 **When to use:** Doing a thorough self-review or pre-review before submitting to peers.
 **Recommended mode:** Autonomous (short session, clear output)
 **MCPs:** GitLab <!-- Reason: Directly pulls the MR diff and review comments from the repository -->, Jira <!-- Reason: Pulls the linked ticket to check the original acceptance criteria -->, Context7 <!-- Reason: Checks newly added library usage against current API documentation -->, Serena <!-- Reason: Enables navigation to symbol definitions affected by the MR diff -->
-**Skills:** `code-review`, `pr-description`
+**Skills:** `code-review-golang` or `code-review-nextjs`, `pr-description`
 
 **Step-by-step instructions:**
 1. Start a session in the repo with the feature branch checked out.

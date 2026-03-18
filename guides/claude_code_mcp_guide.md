@@ -289,11 +289,6 @@ claude mcp add --transport stdio postgres --env POSTGRES_URL=postgresql://localh
 
 ---
 
-### 5.2 GitLab MCP — Repository and MR Context
-**Classification:** Must-Have (Backend + Frontend)
-
-Claude fetches MR diffs, pipeline status, and review comments directly. The `code-review` skill (Guide 3) can pull the MR diff from GitLab instead of relying on locally staged changes.
-
 **Installation — Claude Code CLI:**
 ```bash
 claude mcp add --transport stdio gitlab -- npx -y @modelcontextprotocol/server-gitlab
