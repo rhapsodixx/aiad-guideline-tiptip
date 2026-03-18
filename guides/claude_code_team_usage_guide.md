@@ -471,6 +471,8 @@ Engineering leads are accountable for bringing these guidelines into reality. Be
 7. **Boundary enforcement:** Ensuring the prohibited usage list in Section 6 is understood by every engineer on the team. If a prohibited use is observed, addressing it directly and updating `CLAUDE.md` or hook configuration to prevent recurrence.
 8. **`aiad-claude` stewardship:** Owning the review and merge of MRs to `aiad-claude` for their domain (backend lead for Go files, frontend lead for Next.js files). MRs should not sit unreviewed for more than one week.
 
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Don't overcomplicate** — treat Claude Code configuration like **fine-tuning, not architecture**. Context window is precious — disable unused MCPs and plugins. Use parallel execution (fork conversations, git worktrees). Automate the repetitive with hooks. Scope your subagents with limited tools for focused execution.
+
 ---
 
 ## 8. Quick Reference

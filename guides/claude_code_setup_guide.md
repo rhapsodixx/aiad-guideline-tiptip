@@ -145,6 +145,7 @@ Claude Code operates primarily as a Command Line Interface (CLI) and can run in 
 | IDE                    | Compatibility | Plugin/Extension                   | Best Use Case                                           | Notes                                                                                                                                                                          |
 | :--------------------- | :------------ | :--------------------------------- | :------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Visual Studio Code** | Excellent     | Yes (Official Anthropic Extension) | **Recommended** for the best Claude Code GUI experience | Provides a native graphical interface for Claude Code, including inline graphical diffs, plan reviews, `@-mentions`, and conversation history.                                 |
+| **Zed**                | Excellent     | Native terminal + Agent panel      | Fast prototyping, POCs, and exploratory coding with Claude | Rust-based, extremely fast startup. Native AI assistant panel. Ideal for lightweight, high-velocity sessions.                                                                  |
 | **GoLand** (JetBrains) | Very Good     | Yes (JetBrains Plugin)             | Native Go development with Claude                       | Integrates the CLI into the IDE terminal and provides shortcuts for interactive diff viewing and real-time diagnostic sharing.                                                 |
 | **Antigravity**        | Excellent     | Works via terminal (VS Code fork)  | Advanced native multi-agent orchestration               | Google's agent-first IDE. While it supports Claude Code perfectly via its terminal (being a VS Code fork), Antigravity is designed around its own native agent orchestrations. |
 | **KiloCode**           | Good          | Works via terminal / Custom Agents | Highly customizable, multi-model workflows              | Open-source platform that excels in extreme customization (models, modes, permissions). TipTip previously explored this.                                                       |
@@ -152,6 +153,16 @@ Claude Code operates primarily as a Command Line Interface (CLI) and can run in 
 
 ### Why Visual Studio Code?
 We highly recommend using **Visual Studio Code** when working with Claude Code. Anthropic has released an official VS Code extension that transforms the terminal-based CLI tool into a rich graphical experience. The native UI for viewing inline code diffs, reviewing plans before execution, and managing conversation history makes it vastly superior and more intuitive than using a standalone terminal or other IDEs.
+
+### Why Zed as a Secondary Option?
+
+[Zed](https://zed.dev/) is recommended as a **secondary alternative** for **fast prototyping, testing, and proof-of-concept work** — not as a replacement for VS Code. Built in **Rust**, Zed is dramatically faster than VS Code (which runs on **Electron**) in startup time, file navigation, and rendering. Its native AI assistant panel pairs well with Claude Code for quick exploratory sessions where speed and minimal friction matter.
+
+> ⚠️ **macOS only:** Zed is currently recommended only for engineers running **macOS**. Windows support is still in early stages and not yet reliable for daily use.
+
+VS Code remains the **primary recommendation** because its Electron-based ecosystem, while heavier, is far more mature — its extension marketplace is richer, debugging tools are more robust, and team-wide extension consistency is easier to maintain. For iterative product development in a startup context, stability and tooling depth matter more than raw speed.
+
+**Rule of thumb:** For daily product development (features, bug fixes, code reviews) → use **VS Code**. For quick POCs, spike explorations, or testing new ideas on macOS → **Zed** is a strong secondary choice.
 
 ### Why not KiloCode or Cursor natively? (The shift to pure Claude Code)
 
@@ -162,6 +173,8 @@ However, we are moving towards using **Claude Code directly** (via VS Code or CL
 2. **First-class CLAUDE.md integration:** Claude Code relies natively on a hierarchical `CLAUDE.md` memory system to maintain architectural context and rules across sessions, making team alignment much easier.
 3. **Seamless Git & Tooling integration:** Claude Code natively handles creating branches, committing code, and opening pull requests as part of its autonomous loop, turning it into a true junior developer rather than just a smart autocomplete engine. 
 4. **Standardization:** By standardizing on the official Claude Code CLI/Extension powered by GLM models, we guarantee a uniform, highly capable agentic experience for all engineers, rather than maintaining complex custom agency configurations in KiloCode.
+
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Keyboard shortcuts** — `Ctrl+U` deletes an entire input line (faster than backspace), `!` prefixes a quick bash command, `@` searches for files, `/` initiates slash commands, `Shift+Enter` enables multi-line input, `Tab` toggles thinking display, and `Esc Esc` interrupts Claude or restores code.
 
 ---
 

@@ -722,6 +722,10 @@ echo '{"tool_name": "Write", "tool_input": {"content": "api_key=abc123secret"}}'
 5. Engineers pull the updated hook from `aiad-claude`.
 6. Team pulls the updated `.claude/settings.json`.
 
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* Use the **`hookify` plugin** to create hooks conversationally instead of writing JSON manually — run `/hookify` and describe what you want in plain language.
+
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* Add a **tmux reminder hook** (`PreToolUse`) that fires before long-running commands (e.g., `npm`, `pnpm`, `yarn`, `cargo`, `pytest`) — if the session isn't in tmux, the hook warns to use `tmux` for session persistence so logs aren't lost if the terminal disconnects.
+
 ---
 
 ## 9. Quick Reference

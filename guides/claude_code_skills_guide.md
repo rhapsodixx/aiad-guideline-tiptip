@@ -212,6 +212,17 @@ The expected behavior for skill improvement follows this loop:
 
 *This loop is how the skill set matures. It is expected and normal.*
 
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Skills vs Commands** — Skills (`~/.claude/skills/`) are broader workflow definitions, while Commands (`~/.claude/commands/`) are quick executable prompts invoked via `/slash`. Skills and commands can be **chained together** in a single prompt for multi-step workflows (e.g., `/refactor-clean` followed by `/tdd`).
+
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Plugins** extend Claude Code with bundled tools, skills, and MCPs. **LSP Plugins** are particularly useful if you run Claude Code outside editors — they give Claude real-time type checking, go-to-definition, and intelligent completions without an IDE. Strongly suggested plugins to install/enable:
+>
+> | Plugin | Description |
+> |---|---|
+> | `typescript-lsp@claude-plugins-official` | TypeScript intelligence |
+> | `pyright-lsp@claude-plugins-official` | Python type checking |
+> | `hookify@claude-plugins-official` | Create hooks conversationally |
+> | `mgrep@Mixedbread-Grep` | Better search than ripgrep |
+
 ---
 
 ## 11. Quick Reference

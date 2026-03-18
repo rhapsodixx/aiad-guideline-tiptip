@@ -488,6 +488,10 @@ The skill orchestrates; the MCPs supply the data. However, be cautious of **cont
 - **Report MCP failures promptly.** If an MCP server stops responding or returns wrong data, it degrades Claude's output silently. Report to the `#claude-code` Slack channel.
 - **Keep MCP credentials current.** API tokens expire. If Claude starts failing on Jira or Confluence lookups, check token expiry first.
 
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Context window management is critical.** Your 200K context window before compacting might only be ~70K with too many tools enabled, and performance degrades significantly. Have 20–30 MCPs in config, but **keep under 10 enabled and under 80 tools active** per session.
+
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Disable unused MCPs per project** — keep all MCPs in user config but disable everything unused for a given project via `disabledMcpServers` in your project config. Navigate to `/plugins` or run `/mcp` to manage them.
+
 ---
 
 ## 10. Quick Reference

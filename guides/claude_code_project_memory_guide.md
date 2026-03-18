@@ -187,6 +187,8 @@ Individual engineers are responsible for:
 - **Respect the context window:** A `CLAUDE.md` that is too long wastes tokens and degrades LLM performance. Aim for under 300 lines per file.
 - **The 10-minute rule:** Read the `CLAUDE.md` aloud. If it sounds like generic advice applicable to any company, it needs more TipTip-specific detail. If it takes 10 minutes to read, it needs to be trimmed or split using `@` file imports.
 
+> 💡 *Tip from [The Shorthand Guide to Everything Claude Code](https://x.com/affaanmustafa/status/2012378465664745795):* **Future Improvement** — as `CLAUDE.md` files grow, engineering leads and the team should consider breaking rules into a modular **`.rules` folder** (`~/.claude/rules/`) with separate `.md` files grouped by concern (e.g., `security.md`, `coding-style.md`, `testing.md`, `git-workflow.md`). This keeps rules organized, composable, and prevents any single file from growing unwieldy.
+
 ---
 
 ## 8. Quick Reference

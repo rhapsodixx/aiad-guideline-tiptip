@@ -169,6 +169,17 @@ Below are 7 realistic TipTip scenarios structured as recipes.
 **The task file:**
 Use the `workflow_1_new_endpoint.md` template from `aiad-claude/tasks/`. Copy it to your repo root, rename to `task.md`, and fill in the placeholders.
 
+#### How to Execute (VS Code)
+
+1. Open VS Code in the service repo: `code ~/repos/creator-service`
+2. Open the integrated terminal (`Ctrl+\`` or `Cmd+\``).
+3. Copy the task template: `cp ~/repos/aiad-claude/tasks/workflow_1_new_endpoint.md ./task.md`
+4. Open `task.md` in the editor, fill in all `[PLACEHOLDER]` values, and save.
+5. Launch Claude Code in the terminal: `claude`
+6. Verify MCPs are loaded: type `/mcp` and confirm Jira, Context7, PostgreSQL, and GitLab are active.
+7. Start execution: type `Please execute the implementation plan detailed in task.md.`
+8. After completion, review: run `git diff`, check test output with `go test ./...`, and verify route registration in the router file.
+
 **Common failure modes:** Claude drifts to sqlx (hook should catch via CLAUDE.md, but verify manually), missing context propagation on the HTTP request, or test tables not covering negative edge cases.
 
 ---
@@ -187,6 +198,17 @@ Use the `workflow_1_new_endpoint.md` template from `aiad-claude/tasks/`. Copy it
 
 **The task file:**
 Use the `workflow_2_refactor.md` template from `aiad-claude/tasks/`. Copy it to your repo root, rename to `task.md`, and fill in the placeholders.
+
+#### How to Execute (VS Code)
+
+1. Open VS Code in the target repo: `code ~/repos/<service-name>`
+2. Open the integrated terminal (`Ctrl+\`` or `Cmd+\``).
+3. Copy the task template: `cp ~/repos/aiad-claude/tasks/workflow_2_refactor.md ./task.md`
+4. Open `task.md`, define the before/after pattern with concrete code examples, and save.
+5. Launch Claude Code: `claude`
+6. Verify MCPs: type `/mcp` and confirm **Serena** (critical for this workflow), Context7, and PostgreSQL are active.
+7. Start execution: type `Please execute the implementation plan detailed in task.md.`
+8. After completion: run `git diff` to verify changes are scoped to the target module only, then run `go test ./...` to confirm all tests pass.
 
 **Common failure modes:** Claude overzealously refactors files outside scope. Stricter constraints fix this. For overly convoluted spaghetti code, you may need to drop into interactive mode.
 
@@ -216,6 +238,16 @@ Review the current branch's changes against the Jira ticket linked in the MR. Us
 6. When all criteria pass, generate a PR description using the pr-description skill.
 ```
 
+#### How to Execute (VS Code)
+
+1. Open VS Code in the repo with the feature branch checked out: `code ~/repos/<service-name>`
+2. Confirm you are on the correct branch: `git branch --show-current`
+3. Open the integrated terminal and launch Claude Code: `claude`
+4. Verify MCPs: type `/mcp` and confirm GitLab, Jira, Context7, and Serena are active.
+5. Paste the prompt above into the Claude Code session, replacing `[TICKET-ID]` with the actual Jira ticket key.
+6. Let Claude run autonomously. It will pull the MR diff, check acceptance criteria, implement fixes if needed, and generate a PR description.
+7. After completion: review `git diff` for any auto-applied changes, verify the generated PR description, and check that all acceptance criteria are marked PASS.
+
 **Common failure modes:** GitLab MCP token expiry (check your token), or Claude assessing a PASS on a criterion due to superficial reading. Validate the reasoning, not just the verdict.
 
 ---
@@ -234,6 +266,17 @@ Review the current branch's changes against the Jira ticket linked in the MR. Us
 
 **The task file:**
 Use the `workflow_4_generate_tests.md` template from `aiad-claude/tasks/`. Copy it to your repo root, rename to `task.md`, and fill in the placeholders.
+
+#### How to Execute (VS Code)
+
+1. Open VS Code in the target repo: `code ~/repos/<service-name>`
+2. Open the integrated terminal (`Ctrl+\`` or `Cmd+\``).
+3. Copy the task template: `cp ~/repos/aiad-claude/tasks/workflow_4_generate_tests.md ./task.md`
+4. Open `task.md`, fill in the target file path and coverage expectations, and save.
+5. Launch Claude Code: `claude`
+6. Verify MCPs: type `/mcp` and confirm Serena, PostgreSQL, and Context7 are active.
+7. Start execution: type `Please execute the implementation plan detailed in task.md.`
+8. After completion: run `go test ./... -cover` to verify coverage, check that no tests use `time.Sleep`, and review mock implementations for correctness.
 
 ---
 
@@ -265,6 +308,15 @@ Please review this query for:
 Suggest improvements or a safer alternative if relevant.
 Do NOT execute this query. Review only.
 ```
+
+#### How to Execute (VS Code)
+
+1. Open VS Code in the service repo: `code ~/repos/<service-name>`
+2. Ensure your local dev database is running and migrations are up to date: `make migrate-up` (or equivalent).
+3. Open the integrated terminal and launch Claude Code: `claude`
+4. Verify MCPs: type `/mcp` and confirm **PostgreSQL** is active and pointing to your **local dev DB** (never production).
+5. Paste the prompt above into the session, replacing `[paste SQL query here]` with your actual query.
+6. Review Claude's schema verification, performance analysis, and suggested rewrites. Apply improvements manually.
 
 **Common failure modes:** Claude validates against a stale schema (make sure you ran migrations locally first). If Claude mistakenly tries to execute the query despite the instruction, immediately check your local DB state and report the session behavior.
 
@@ -298,6 +350,16 @@ Using this context and the current codebase, create an engineering implementatio
 
 Do not write any code yet. Output the plan as a markdown document I can review and refine before implementation begins.
 ```
+
+#### How to Execute (VS Code)
+
+1. Open VS Code in the primary affected repo: `code ~/repos/<service-name>`
+2. Open the integrated terminal and launch Claude Code: `claude`
+3. Verify MCPs: type `/mcp` and confirm Jira, Confluence, Serena, Context7, and Sequential Thinking are active.
+4. Paste the prompt above, replacing `[TICKET-ID]` and `[page-URL]` with actual values.
+5. **Stay interactive** — push back on Claude's plan if scope is too broad, edge cases are missing, or risks are underestimated.
+6. Once the plan is satisfactory, ask Claude to generate sequential `task.md` files for each implementation step.
+7. Review and save the generated plan and task files before starting implementation.
 
 **Common failure modes:** Claude hallucinates a plan that looks plausible but misses a key upstream service dependency. Enforce Serena usage so Claude reads actual symbol usages, not just filenames.
 
@@ -335,6 +397,16 @@ Using the systematic-debugging skill, work through this systematically:
 
 Do not apply any fix yet — present the diagnosis and proposed fix for my review first.
 ```
+
+#### How to Execute (VS Code)
+
+1. Open VS Code in the affected service repo: `code ~/repos/<service-name>`
+2. Open the integrated terminal and launch Claude Code: `claude`
+3. Verify MCPs: type `/mcp` and confirm Serena, Context7, PostgreSQL, and Sequential Thinking are active.
+4. Paste the prompt above, replacing the Sentry error details with the actual error message, stack trace, environment, timestamp, and frequency.
+5. **Stay interactive** — review Claude's root cause hypothesis before allowing any fix. Push back if the diagnosis seems superficial.
+6. Once you agree on the root cause and fix approach, tell Claude to proceed with the patch and regression test.
+7. After completion: run `go test ./...` to confirm the regression test fails without the patch (revert temporarily) and passes with it.
 
 **Common failure modes:** Fixing the symptom instead of the root cause. Insist on a test that fails without the patch and passes with it.
 
