@@ -56,8 +56,9 @@ Add the following export commands to your shell profile (e.g., `~/.zshrc` or `~/
 ```bash
 export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
 export ANTHROPIC_API_KEY="your_zai_api_key_here"
-export ANTHROPIC_MODEL="glm-4.7"
-export ANTHROPIC_SMALL_FAST_MODEL="glm-4.7-flash"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="GLM-4.7"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="GLM-4.7"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="GLM-4.5-Air"
 ```
 
 After saving the file, apply the changes:
@@ -72,13 +73,36 @@ For current session testing, you can use the `$env:` syntax. For persistence acr
 ```powershell
 [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://api.z.ai/api/anthropic", "User")
 [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", "your_zai_api_key_here", "User")
-[System.Environment]::SetEnvironmentVariable("ANTHROPIC_MODEL", "glm-4.7", "User")
-[System.Environment]::SetEnvironmentVariable("ANTHROPIC_SMALL_FAST_MODEL", "glm-4.7-flash", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_OPUS_MODEL", "GLM-4.7", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_SONNET_MODEL", "GLM-4.7", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_HAIKU_MODEL", "GLM-4.5-Air", "User")
 ```
 
 Restart your PowerShell terminal to ensure the variables are loaded.
 
-Once your environment variables are set, simply run Claude Code in your project directory:
+### Alternative: Claude Code Settings File (Cross-Platform)
+
+Instead of shell environment variables, you can configure everything directly in Claude Code's settings file at `~/.claude/settings.json`. This keeps the configuration scoped to Claude Code and works identically on macOS, Linux, and Windows.
+
+Edit or create the file `~/.claude/settings.json` and add the `env` block:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.z.ai/api/anthropic",
+    "ANTHROPIC_API_KEY": "your_zai_api_key_here",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.7",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.7",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air"
+  }
+}
+```
+
+> 💡 **Which method to choose?** The `settings.json` approach is recommended because it keeps the configuration scoped to Claude Code — your shell stays clean and the config is portable. Use the shell environment variable approach only if you need other tools (beyond Claude Code) to read the same API key or base URL.
+
+> ⚠️ If you already have a `~/.claude/settings.json` with other settings, merge the `env` block into the existing file rather than overwriting it.
+
+Once your configuration is set (via either method), simply run Claude Code in your project directory:
 ```bash
 claude
 ```
@@ -180,15 +204,15 @@ However, we are moving towards using **Claude Code directly** (via VS Code or CL
 
 ## 9. Model Recommendation
 
-For optimal performance in Claude Code workflows, we recommend setting **GLM-4.7** as your standard `ANTHROPIC_MODEL` and **GLM-4.7 Flash** as your `ANTHROPIC_SMALL_FAST_MODEL`.
+For optimal performance in Claude Code workflows, we recommend mapping Claude Code's three model tiers to GLM models: **GLM-4.7** for both `ANTHROPIC_DEFAULT_OPUS_MODEL` and `ANTHROPIC_DEFAULT_SONNET_MODEL`, and **GLM-4.5 Air** for `ANTHROPIC_DEFAULT_HAIKU_MODEL`.
 
-**Why GLM-4.7 and GLM-4.7 Flash?**
+**Why GLM-4.7 and GLM-4.5 Air?**
 1. **Agentic Workflow Tuning:** GLM-4.7 is explicitly tuned to support comprehensive "task completion" and "interleaved thinking" modes ideal for agentic tools like Claude Code, Cline, and Roo Code.
 2. **Idiomatic Go Code Generation:** Based on technical benchmarks, GLM-4.7 excels at generating idiomatic Go code. It successfully implements proper Go error handling patterns, well-structured interface design, and correct goroutine usage, which are highly relevant and essential for TipTip's backend microservices.
 3. **TypeScript Type Inference:** GLM-4.7 provides robust multilingual coding support with a strong grasp of TypeScript types and generics, heavily benefiting our React/Next.js stacks.
 4. **Frontend Code Quality:** It incorporates "Vibe Coding" capabilities, outputting cleaner, highly polished, and modern React frontend interfaces that resemble high-quality, human-designed output.
 5. **Context Window:** The 203K token context easily handles searching and analyzing TipTip's large proprietary codebase.
-6. **Cost-Effectiveness:** GLM-4.7 Flash, priced at just $0.06 per 1M input tokens, is exceptionally cheap for background tasks and minor file searches, making it the most cost-effective tool-capable small model currently available.
+6. **Cost-Effectiveness:** GLM-4.5 Air, priced at just $0.13 per 1M input tokens, is highly cost-effective for lightweight queries, fast reviews, and background tasks — making it the ideal Haiku-tier model.
 
 *Note regarding DeepSeek:* While DeepSeek V3.2 is cheaper on output tokens, its privacy policies mandate that data is stored natively on servers in mainland China, raising data residency and sovereignty concerns. For TipTip's proprietary codebase, GLM is preferred because Z.ai offers region-aware routing and distinct international endpoints, alongside stronger commitments tailored for enterprise data security and compliance.
 
@@ -198,14 +222,16 @@ For **macOS / Linux**:
 ```bash
 export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
 export ANTHROPIC_API_KEY="your_zai_api_key_here"
-export ANTHROPIC_MODEL="glm-4.7"
-export ANTHROPIC_SMALL_FAST_MODEL="glm-4.7-flash"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="GLM-4.7"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="GLM-4.7"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="GLM-4.5-Air"
 ```
 
 For **Windows (PowerShell)**:
 ```powershell
 [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://api.z.ai/api/anthropic", "User")
 [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", "your_zai_api_key_here", "User")
-[System.Environment]::SetEnvironmentVariable("ANTHROPIC_MODEL", "glm-4.7", "User")
-[System.Environment]::SetEnvironmentVariable("ANTHROPIC_SMALL_FAST_MODEL", "glm-4.7-flash", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_OPUS_MODEL", "GLM-4.7", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_SONNET_MODEL", "GLM-4.7", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_HAIKU_MODEL", "GLM-4.5-Air", "User")
 ```

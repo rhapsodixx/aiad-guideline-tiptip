@@ -168,7 +168,7 @@ This section outlines how skills affect token consumption and API cost, and give
 - **Context Window Padding:** Every skill invocation adds the skill's content to the context window on top of the existing conversation and `CLAUDE.md` content.
 - **Cost Compounding:** A large skill (500+ lines) invoked at the start of a long session will compound cost because that skill content is re-sent with every subsequent message in the conversation.
 - **Tool Triggers Multiplier:** Skills that trigger multiple tool calls (file reads, shell executions) multiply the token cost further — each tool result is added to context.
-- **Model Distribution:** Background model calls (`ANTHROPIC_SMALL_FAST_MODEL`) are used for lightweight skill steps; main model calls are used for reasoning-heavy steps. Well-structured skills can direct lighter work to the small model.
+- **Model Distribution:** Background model calls (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) are used for lightweight skill steps; main model calls are used for reasoning-heavy steps. Well-structured skills can direct lighter work to the small model.
 
 ### Best Practices (Do This)
 
@@ -176,14 +176,14 @@ This section outlines how skills affect token consumption and API cost, and give
 - **Use project-level skills for repo-specific tasks.** They tend to be more concise because they can assume repo context from `CLAUDE.md` rather than re-explaining it in the skill body.
 - **Invoke skills at the start of a session, not mid-session.** Starting fresh with a skill gives Claude a clean context. Mid-session skill invocation stacks on top of an already-large context, increasing cost and potentially degrading output quality.
 - **Use CLI-backed skills where possible.** CLI output is structured and concise. Asking Claude to reason through unstructured data is more expensive.
-- **Prefer GLM-4.7 Flash for skill-driven background tasks.** At $0.06/1M input, it is the right tool for skills that do mass file reading, linting passes, or repetitive generation tasks.
+- **Prefer GLM-4.5 Air for skill-driven background tasks.** At $0.13/1M input, it is cost-effective for skills that do mass file reading, linting passes, or repetitive generation tasks.
 
 ### What to Avoid (Do Not Do This)
 
 - **Do not invoke a heavy skill just to ask a simple question.** If you only need to understand one function, ask directly — do not trigger a full review skill.
 - **Do not chain multiple heavy skills in one session.** Running `pr-description`, then `tdd` in a single session will balloon the context window. Use separate sessions for separate tasks.
 - **Do not write skills with redundant context.** If your `CLAUDE.md` already defines TipTip's error handling pattern, do not repeat it verbatim inside the skill. Reference it instead (e.g., "following error handling patterns in CLAUDE.md").
-- **Do not use flagship models (GLM-4.7) for skills that only need lightweight output.** For skills that generate boilerplate, summaries, or simple diffs, configure them to use the small fast model.
+- **Do not use flagship models (GLM-4.7) for skills that only need lightweight output.** For skills that generate boilerplate, summaries, or simple diffs, configure them to use the Haiku-tier model (GLM-4.5 Air).
 - **Do not let skills go stale.** An outdated skill that reflects old conventions will produce wrong output confidently. Stale skills waste tokens and engineer time.
 
 ---

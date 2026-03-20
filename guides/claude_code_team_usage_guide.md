@@ -140,9 +140,9 @@ Migrate when the majority of these are true:
 
 ### What Changes on Migration
 
-- Guide 1 env vars change: `ANTHROPIC_BASE_URL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL`, `ANTHROPIC_SMALL_FAST_MODEL` all update. Migration checklist published as a Guide 1 amendment
+- Guide 1 env vars change: `ANTHROPIC_BASE_URL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL` all update. Migration checklist published as a Guide 1 amendment
 - Everything else is compatible: `CLAUDE.md`, skills, MCPs, hooks — no changes needed
-- Model guidance changes: `ANTHROPIC_MODEL` → native Claude, `ANTHROPIC_SMALL_FAST_MODEL` → Haiku 3/3.5
+- Model guidance changes: `ANTHROPIC_DEFAULT_OPUS_MODEL` → native Claude Opus, `ANTHROPIC_DEFAULT_SONNET_MODEL` → native Claude Sonnet, `ANTHROPIC_DEFAULT_HAIKU_MODEL` → native Claude Haiku
 
 ### Current Position
 
