@@ -9,6 +9,9 @@ The mission of this repository is to ensure TipTip engineers share the same high
 **Where to Start**
 If you are new to AI Assisted Development at TipTip, your immediate first step is to configure your local environment and install the required tools. Start by reading and following [**Guide 1 of 7: Setup**](guides/claude_code_setup_guide.md) to install Claude Code and configure your IDE.
 
+**Skills & Plugins**
+TipTip-authored skills live in `.agents/skills/` organized by team (`engineering-wide/`, `backend/`, `frontend-web/`, `frontend-mobile/`). Third-party plugins (superpowers, everything-claude-code, Vercel, PlanetScale) are listed in [**PLUGINS.md**](PLUGINS.md) with install commands per role.
+
 ---
 
 ### Credits & Inspiration

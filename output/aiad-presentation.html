@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Assisted Development at TipTip — CTO Presentation</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js"></script>
+<style>
+  :root {
+    --tt-dark: #0a0e1a;
+    --tt-navy: #111827;
+    --tt-teal: #14b8a6;
+    --tt-teal-dim: rgba(20,184,166,0.15);
+    --tt-blue: #3b82f6;
+    --tt-purple: #8b5cf6;
+    --tt-red: #ef4444;
+    --tt-amber: #f59e0b;
+    --tt-green: #22c55e;
+    --tt-gray: #9ca3af;
+    --tt-white: #f1f5f9;
+  }
+  .reveal { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+  .reveal .slides { text-align: left; }
+  .reveal .slides section { padding: 40px 60px; }
+  .reveal h1, .reveal h2, .reveal h3 { color: var(--tt-white); font-weight: 700; text-transform: none; letter-spacing: -0.02em; }
+  .reveal h1 { font-size: 2.4em; }
+  .reveal h2 { font-size: 1.6em; margin-bottom: 0.6em; }
+  .reveal h3 { font-size: 1.15em; color: var(--tt-teal); margin-bottom: 0.4em; }
+  .reveal p, .reveal li { color: var(--tt-gray); font-size: 0.72em; line-height: 1.6; }
+  .reveal strong { color: var(--tt-white); }
+  .reveal .slides section { background: var(--tt-dark); }
+  .reveal blockquote { border-left: 4px solid var(--tt-teal); background: var(--tt-teal-dim); padding: 16px 24px; border-radius: 8px; margin: 20px 0; font-style: normal; }
+  .reveal blockquote p { color: var(--tt-white); font-size: 0.8em; }
+
+  /* Title slide */
+  .title-slide h1 { font-size: 2.2em; line-height: 1.15; }
+  .title-slide .subtitle { color: var(--tt-teal); font-size: 0.9em; margin-top: 8px; }
+  .title-slide .meta { color: var(--tt-gray); font-size: 0.55em; margin-top: 40px; }
+
+  /* Accent pill */
+  .pill { display: inline-block; background: var(--tt-teal-dim); color: var(--tt-teal); padding: 4px 14px; border-radius: 20px; font-size: 0.6em; font-weight: 600; margin-bottom: 16px; }
+  .pill-red { background: rgba(239,68,68,0.15); color: var(--tt-red); }
+  .pill-amber { background: rgba(245,158,11,0.15); color: var(--tt-amber); }
+  .pill-blue { background: rgba(59,130,246,0.15); color: var(--tt-blue); }
+  .pill-green { background: rgba(34,197,94,0.15); color: var(--tt-green); }
+
+  /* Comparison table */
+  .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 0.62em; }
+  .compare-table th { background: var(--tt-navy); color: var(--tt-teal); padding: 10px 16px; text-align: left; font-weight: 600; }
+  .compare-table td { padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--tt-gray); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .col-bad { color: var(--tt-red); }
+  .compare-table .col-good { color: var(--tt-green); }
+
+  /* Architecture layers */
+  .arch-stack { display: flex; flex-direction: column; gap: 6px; margin: 20px 0; }
+  .arch-layer { display: flex; align-items: center; gap: 16px; padding: 12px 20px; border-radius: 10px; border-left: 4px solid; }
+  .arch-layer .layer-num { font-size: 1.1em; font-weight: 800; min-width: 28px; }
+  .arch-layer .layer-title { font-weight: 700; color: var(--tt-white); font-size: 0.72em; }
+  .arch-layer .layer-desc { color: var(--tt-gray); font-size: 0.58em; }
+  .l1 { border-color: var(--tt-blue); background: rgba(59,130,246,0.08); }
+  .l1 .layer-num { color: var(--tt-blue); }
+  .l2 { border-color: var(--tt-teal); background: rgba(20,184,166,0.08); }
+  .l2 .layer-num { color: var(--tt-teal); }
+  .l3 { border-color: var(--tt-purple); background: rgba(139,92,246,0.08); }
+  .l3 .layer-num { color: var(--tt-purple); }
+  .l4 { border-color: var(--tt-red); background: rgba(239,68,68,0.08); }
+  .l4 .layer-num { color: var(--tt-red); }
+  .l5 { border-color: var(--tt-amber); background: rgba(245,158,11,0.08); }
+  .l5 .layer-num { color: var(--tt-amber); }
+
+  /* Flow diagram */
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+  .flow-step { background: var(--tt-navy); border: 1px solid rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 10px; font-size: 0.6em; color: var(--tt-white); text-align: center; min-width: 110px; }
+  .flow-arrow { color: var(--tt-teal); font-size: 1.2em; }
+
+  /* Timeline */
+  .timeline { display: flex; gap: 4px; margin: 20px 0; }
+  .timeline-phase { flex: 1; padding: 12px 10px; border-radius: 10px; text-align: center; }
+  .timeline-phase .phase-week { font-size: 0.5em; font-weight: 700; margin-bottom: 4px; }
+  .timeline-phase .phase-title { font-size: 0.58em; font-weight: 700; color: var(--tt-white); }
+  .timeline-phase .phase-desc { font-size: 0.46em; color: var(--tt-gray); margin-top: 4px; }
+  .tp1 { background: rgba(59,130,246,0.12); }
+  .tp1 .phase-week { color: var(--tt-blue); }
+  .tp2 { background: rgba(20,184,166,0.12); }
+  .tp2 .phase-week { color: var(--tt-teal); }
+  .tp3 { background: rgba(139,92,246,0.12); }
+  .tp3 .phase-week { color: var(--tt-purple); }
+  .tp4 { background: rgba(245,158,11,0.12); }
+  .tp4 .phase-week { color: var(--tt-amber); }
+  .tp5 { background: rgba(34,197,94,0.12); }
+  .tp5 .phase-week { color: var(--tt-green); }
+
+  /* Boundary table */
+  .boundary-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.58em; margin: 12px 0; }
+  .boundary-table th { background: var(--tt-navy); color: var(--tt-teal); padding: 8px 12px; text-align: left; font-weight: 600; }
+  .boundary-table td { padding: 7px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--tt-gray); }
+  .boundary-table .status-ok { color: var(--tt-green); font-weight: 700; }
+  .boundary-table .status-warn { color: var(--tt-amber); font-weight: 700; }
+  .boundary-table .status-no { color: var(--tt-red); font-weight: 700; }
+
+  /* Metrics grid */
+  .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+  .metric-card { background: var(--tt-navy); border-radius: 10px; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.06); }
+  .metric-card .metric-label { font-size: 0.5em; color: var(--tt-gray); text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric-card .metric-value { font-size: 1.1em; font-weight: 800; color: var(--tt-teal); margin: 4px 0; }
+  .metric-card .metric-how { font-size: 0.46em; color: var(--tt-gray); }
+
+  /* Cadence */
+  .cadence-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px 0; }
+  .cadence-card { background: var(--tt-navy); border-radius: 12px; padding: 16px 20px; border-left: 4px solid var(--tt-teal); }
+  .cadence-card .cadence-freq { font-size: 0.5em; color: var(--tt-teal); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .cadence-card .cadence-name { font-size: 0.7em; font-weight: 700; color: var(--tt-white); margin: 4px 0; }
+  .cadence-card .cadence-desc { font-size: 0.52em; color: var(--tt-gray); }
+
+  /* Chart container */
+  .chart-container { max-width: 700px; margin: 16px auto; height: 260px; }
+
+  /* CTA */
+  .cta-box { background: linear-gradient(135deg, rgba(20,184,166,0.15), rgba(59,130,246,0.15)); border: 1px solid var(--tt-teal); border-radius: 14px; padding: 30px 36px; text-align: center; margin-top: 24px; }
+  .cta-box h2 { text-align: center; margin-bottom: 12px; }
+  .cta-box p { text-align: center; }
+
+  /* Two col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .col-card { background: var(--tt-navy); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.06); }
+  .col-card h3 { margin-top: 0; }
+  .col-card ul { padding-left: 0; list-style: none; }
+  .col-card li { padding: 3px 0; font-size: 0.62em; }
+  .col-card li::before { content: "→ "; color: var(--tt-teal); font-weight: 700; }
+
+  /* Icon inline */
+  .icon { font-size: 1.2em; margin-right: 6px; }
+
+  /* Override reveal defaults */
+  .reveal ul { list-style: none; padding-left: 0; }
+  .reveal li { padding: 3px 0; }
+  .reveal li::before { content: "▸ "; color: var(--tt-teal); font-weight: 700; }
+  .reveal .no-bullet li::before { content: ""; }
+
+  /* Repo tree */
+  .repo-tree { background: var(--tt-navy); border-radius: 12px; padding: 20px 24px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.58em; color: var(--tt-gray); line-height: 1.8; border: 1px solid rgba(255,255,255,0.08); }
+  .repo-tree .folder { color: var(--tt-blue); font-weight: 700; }
+  .repo-tree .file { color: var(--tt-teal); }
+  .repo-tree .desc { color: var(--tt-gray); opacity: 0.6; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: Title -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Welcome. Today I'm presenting our engineering-wide strategy for AI-assisted development. This is not a demo or a tutorial — it's a strategic alignment session. By the end, you'll understand our approach, what's expected of you, and why we chose centralization over individual experimentation. -->
+<section class="title-slide">
+  <div class="pill">Engineering Strategy</div>
+  <h1>AI-Assisted Development<br>at TipTip</h1>
+  <p class="subtitle">A Centralized Approach to Engineering with AI</p>
+  <p class="meta">Presented by the CTO &nbsp;·&nbsp; Q1 2026 &nbsp;·&nbsp; Engineering All-Hands</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: The Thesis -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Let me start with the core thesis. AI-assisted development is no longer experimental — it's a standard engineering competency. But the way we adopt it matters more than whether we adopt it. We're going centralized. One toolchain. One repository. Everyone contributes, everyone benefits. -->
+<section>
+  <div class="pill">The Thesis</div>
+  <h2>AI-Assisted Development Is Now a<br>Standard Engineering Competency</h2>
+  <blockquote>
+    <p>"When one engineer learns something, the entire team should benefit immediately.<br>That only happens with a centralized, version-controlled approach."</p>
+  </blockquote>
+  <p style="margin-top: 24px; font-size: 0.72em;">
+    This is <strong>not optional.</strong> We expect every engineer to use AI in their daily workflow.<br>
+    Today's session defines <strong>how</strong> we do it — together, not in isolation.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3: The Problem — Fragmented Adoption -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Before I show you what we're building, let me paint the picture of what happens when teams adopt AI tools without coordination. I've seen this firsthand. Each engineer picks their own tool, writes their own prompts, makes their own mistakes — and learns in isolation. Knowledge dies with the session. Prompt quality varies wildly. There's no shared standard. This is the fragmented approach, and it fails at scale. -->
+<section>
+  <div class="pill pill-red">The Problem</div>
+  <h2>What Happens Without Centralization</h2>
+  <ul>
+    <li><strong>10 engineers, 10 different prompt styles</strong> — no shared quality baseline</li>
+    <li><strong>Knowledge dies with the session</strong> — private prompts are never reused</li>
+    <li><strong>Each engineer trains AI independently</strong> — repeating the same mistakes</li>
+    <li><strong>No guardrails</strong> — quality depends on individual discipline, not systems</li>
+    <li><strong>Cost is invisible</strong> — no way to measure ROI or flag waste</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: Comparison Chart -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Here's the comparison on concrete dimensions. Fragmented adoption gives you fast individual starts but zero compounding. Centralized adoption requires upfront investment — our 7 guides, the aiad-claude repository — but every improvement compounds across the entire team. This is the same principle behind shared libraries and style guides. We're extending it to how we use AI. -->
+<section>
+  <div class="pill pill-red">The Problem</div>
+  <h2>Fragmented vs. Centralized</h2>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Dimension</th><th>⛓️‍💥 Fragmented</th><th>🔗 Centralized</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Knowledge sharing</strong></td><td class="col-bad">Stays with individual</td><td class="col-good">Propagates via MR to everyone</td></tr>
+      <tr><td><strong>Quality consistency</strong></td><td class="col-bad">Varies by engineer</td><td class="col-good">Enforced by hooks &amp; shared skills</td></tr>
+      <tr><td><strong>Onboarding speed</strong></td><td class="col-bad">Each person starts from zero</td><td class="col-good">Day-one idiomatic output via CLAUDE.md</td></tr>
+      <tr><td><strong>Cost visibility</strong></td><td class="col-bad">Unmeasurable per-person spend</td><td class="col-good">Tracked via shared dashboard &amp; hooks</td></tr>
+      <tr><td><strong>Convention drift</strong></td><td class="col-bad">Inevitable over time</td><td class="col-good">Prevented by version-controlled config</td></tr>
+      <tr><td><strong>Improvement velocity</strong></td><td class="col-bad">Linear — one person learns</td><td class="col-good">Exponential — one fix helps everyone</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: Why Claude Code -->
+<!-- ============================================================ -->
+<!-- Speaker notes: We evaluated Cursor, Copilot, Cline, Windsurf, KiloCode. We chose Claude Code because it's agent-first — not autocomplete embedded in an editor. It has native support for persistent project memory via CLAUDE.md, reusable skills, MCP integrations for live data, hooks for enforcement, and subagents for parallel execution. These five capabilities are what make centralization possible. No other tool gives us all five. -->
+<section>
+  <div class="pill pill-blue">The Tool</div>
+  <h2>Why Claude Code</h2>
+  <p style="margin-bottom: 16px;">Not autocomplete. An <strong>autonomous engineering agent</strong> with 5 capabilities that enable centralization:</p>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Capability</th><th>What It Does</th><th>Why It Enables Centralization</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>CLAUDE.md</strong></td><td>Persistent project memory</td><td>Shared context — Claude writes TipTip-idiomatic code from session one</td></tr>
+      <tr><td><strong>Skills</strong></td><td>Reusable workflow templates</td><td>Version-controlled in one repo — everyone runs the same workflows</td></tr>
+      <tr><td><strong>MCP</strong></td><td>Live data from Jira, DB, Confluence</td><td>Shared config committed to repos — consistent data access</td></tr>
+      <tr><td><strong>Hooks</strong></td><td>Pre/post tool execution enforcement</td><td>Quality gates that cannot be bypassed — system enforces, not willpower</td></tr>
+      <tr><td><strong>Subagents</strong></td><td>Parallel task delegation</td><td>Complex workflows broken into managed, reviewable pieces</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6: The 5-Layer Architecture -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Here's the system we've built. Five layers, each building on the one below. CLAUDE.md tells Claude who we are. Skills tell it how to work. MCP gives it live data. Hooks enforce what it cannot do. Workflows combine everything into repeatable patterns. Every layer is version-controlled in a single GitLab repository. Not on your laptop. Not in your head. In the repo. -->
+<section>
+  <div class="pill pill-teal">Our System</div>
+  <h2>The 5-Layer Centralized Architecture</h2>
+  <div class="arch-stack">
+    <div class="arch-layer l5">
+      <span class="layer-num">5</span>
+      <div><span class="layer-title">Workflows</span><br><span class="layer-desc">Execution patterns — task files, interactive vs autonomous, 7 cookbook recipes</span></div>
+    </div>
+    <div class="arch-layer l4">
+      <span class="layer-num">4</span>
+      <div><span class="layer-title">Hooks</span><br><span class="layer-desc">Quality gates — linting, SQL guard, secret leak detection. Cannot be bypassed.</span></div>
+    </div>
+    <div class="arch-layer l3">
+      <span class="layer-num">3</span>
+      <div><span class="layer-title">MCP Integrations</span><br><span class="layer-desc">Live data — Jira tickets, Confluence docs, PostgreSQL schemas, Figma designs</span></div>
+    </div>
+    <div class="arch-layer l2">
+      <span class="layer-num">2</span>
+      <div><span class="layer-title">Skills</span><br><span class="layer-desc">Workflow templates — PR descriptions, code reviews, TDD, debugging. Shared &amp; versioned.</span></div>
+    </div>
+    <div class="arch-layer l1">
+      <span class="layer-num">1</span>
+      <div><span class="layer-title">CLAUDE.md</span><br><span class="layer-desc">Project memory — TipTip conventions, stack rules, repo-specific constraints. Loaded every session.</span></div>
+    </div>
+  </div>
+  <p style="text-align: center; font-size: 0.6em; color: var(--tt-teal); margin-top: 8px;">▲ All 5 layers are version-controlled in <strong>one GitLab repository</strong></p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: Layer Deep-Dive — CLAUDE.md + Skills -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Let me zoom into the bottom two layers. CLAUDE.md is how Claude knows about TipTip. Without it, every session starts cold. With it, Claude writes idiomatic TipTip code from the first line — pgx not sqlx, our error handling patterns, our folder structure. We maintain it at two levels: global for company-wide standards, per-repo for service-specific constraints. Skills are reusable workflows. Instead of each engineer typing "review this Go code checking for security issues and our patterns," they type /code-review-golang and get a standardized multi-agent review. Same quality, every time, every engineer. -->
+<section>
+  <div class="pill pill-blue">Layers 1 &amp; 2</div>
+  <h2>Project Memory + Workflow Templates</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>📋 CLAUDE.md — What Claude Knows</h3>
+      <ul>
+        <li><strong>Global file:</strong> TipTip-wide standards (Git, security, language policy)</li>
+        <li><strong>Stack files:</strong> Go, Next.js, Flutter-specific conventions</li>
+        <li><strong>Per-repo:</strong> Service architecture, tech debt warnings, run commands</li>
+        <li>Loaded at session start → idiomatic output from line one</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h3>⚡ Skills — How Claude Works</h3>
+      <ul>
+        <li><strong>/pr-description</strong> — TipTip-format MR descriptions</li>
+        <li><strong>/code-review-golang</strong> — Multi-agent security + quality review</li>
+        <li><strong>/code-review-nextjs</strong> — Frontend review with severity grading</li>
+        <li><strong>/tdd</strong> — Full RED→GREEN→REFACTOR workflow</li>
+        <li><strong>/git-commit</strong> — Conventional Commits from diff</li>
+        <li><strong>/systematic-debugging</strong> — 4-phase root cause analysis</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: Layer Deep-Dive — MCP + Hooks -->
+<!-- ============================================================ -->
+<!-- Speaker notes: MCP gives Claude live data from our systems. Instead of copy-pasting a Jira ticket description, Claude pulls it directly. Instead of guessing the database schema, it inspects it. We have 10 MCPs configured — Jira, Confluence, GitLab, PostgreSQL, Figma, Context7 for library docs, Serena for semantic code navigation, and more. Hooks are the enforcement layer. After every file write, Go code gets linted automatically. Before any command, destructive SQL is blocked. Before any file write, secrets are scanned. These are deterministic shell scripts — Claude cannot override them. The system enforces standards, not willpower. -->
+<section>
+  <div class="pill pill-purple">Layers 3 &amp; 4</div>
+  <h2>Live Data + Quality Enforcement</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>🔌 MCP — What Claude Accesses Live</h3>
+      <ul>
+        <li><strong>Jira</strong> — Pull tickets, acceptance criteria, linked issues</li>
+        <li><strong>Confluence</strong> — ADRs, API contracts, RFCs</li>
+        <li><strong>PostgreSQL</strong> — Schema inspection (dev/staging only)</li>
+        <li><strong>GitLab</strong> — MR diffs, reviewer comments</li>
+        <li><strong>Context7</strong> — Up-to-date library documentation</li>
+        <li><strong>Serena</strong> — Semantic code navigation (symbol-level)</li>
+        <li><strong>Figma</strong> — Design tokens, component structure</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h3>🛡️ Hooks — What Claude Cannot Bypass</h3>
+      <ul>
+        <li><strong>Go Lint</strong> — go vet + golangci-lint after every edit</li>
+        <li><strong>ESLint</strong> — Auto-fix TypeScript/React after writes</li>
+        <li><strong>Prettier</strong> — Format on save, always</li>
+        <li><strong>SQL Guard</strong> — Block DROP, TRUNCATE, unqualified DELETE</li>
+        <li><strong>Secret Guard</strong> — Block AWS keys, private keys, credentials</li>
+        <li>Hooks are <strong>deterministic scripts</strong> — not suggestions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: The Central Repository -->
+<!-- ============================================================ -->
+<!-- Speaker notes: All of this — skills, hooks, CLAUDE.md templates, task templates, settings — lives in one GitLab repository: aiad-claude. This is the single source of truth. When you clone it, you get the entire team's AI tooling configuration. When you improve it, everyone benefits on their next pull. This is NOT a documentation repo. It's infrastructure. Treat changes here with the same rigor as code changes. -->
+<section>
+  <div class="pill pill-green">Single Source of Truth</div>
+  <h2>The Central Repository: aiad-claude</h2>
+  <div class="two-col">
+    <div>
+      <div class="repo-tree">
+        <span class="folder">aiad-claude/</span><br>
+        &nbsp;&nbsp;├── <span class="folder">.agents/skills/</span> <span class="desc">← shared skills</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">code-review-golang/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">code-review-nextjs/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">pr-description/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">git-commit/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">rfc-review/</span><br>
+        &nbsp;&nbsp;├── <span class="folder">hooks/</span> <span class="desc">← quality gates</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">global/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">backend/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">frontend/</span><br>
+        &nbsp;&nbsp;├── <span class="folder">claude-templates/</span> <span class="desc">← CLAUDE.md files</span><br>
+        &nbsp;&nbsp;├── <span class="folder">tasks/</span> <span class="desc">← task file templates</span><br>
+        &nbsp;&nbsp;├── <span class="folder">settings/</span> <span class="desc">← hook configs</span><br>
+        &nbsp;&nbsp;└── <span class="folder">guides/</span> <span class="desc">← 7 onboarding guides</span>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-top: 0;">Key Principles</h3>
+      <ul>
+        <li><strong>One repository</strong> for all AI tooling configuration</li>
+        <li><strong>Version-controlled</strong> — every change is reviewed via MR</li>
+        <li><strong>No private forks</strong> — improvements go upstream, not sideways</li>
+        <li>Changes here are <strong>infrastructure changes</strong> — review accordingly</li>
+      </ul>
+      <blockquote style="margin-top: 16px;">
+        <p style="font-size: 0.65em;">"Private prompts die with the session.<br>Shared skills live in the repository forever."</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: The Improvement Loop -->
+<!-- ============================================================ -->
+<!-- Speaker notes: This is the mechanism that makes centralization compound. It's the same loop we already use for code contributions, extended to our AI tooling. An engineer encounters an issue — a skill produces wrong output, a hook misses a case. They identify the fix, open an MR on aiad-claude, the lead reviews and merges, everyone pulls the update. This is expected and normal. The skill set matures through use, not through planning meetings. -->
+<section>
+  <div class="pill pill-green">The Flywheel</div>
+  <h2>The Improvement Loop</h2>
+  <p style="font-size: 0.68em; margin-bottom: 20px;">The same contribution model we use for code — extended to how we use AI.</p>
+  <div class="flow">
+    <div class="flow-step" style="border-left: 3px solid var(--tt-blue);">
+      <strong style="color: var(--tt-blue);">1. Use</strong><br>
+      Engineer invokes<br>a skill or hook fires
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-left: 3px solid var(--tt-amber);">
+      <strong style="color: var(--tt-amber);">2. Encounter</strong><br>
+      Output misses a<br>TipTip pattern
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-left: 3px solid var(--tt-purple);">
+      <strong style="color: var(--tt-purple);">3. Identify</strong><br>
+      Engineer pinpoints<br>what's missing
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-left: 3px solid var(--tt-teal);">
+      <strong style="color: var(--tt-teal);">4. MR</strong><br>
+      Fix submitted to<br>aiad-claude
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-left: 3px solid var(--tt-green);">
+      <strong style="color: var(--tt-green);">5. Merge</strong><br>
+      Lead reviews,<br>team pulls
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-left: 3px solid var(--tt-green); background: rgba(34,197,94,0.1);">
+      <strong style="color: var(--tt-green);">6. Compound</strong><br>
+      Every engineer<br>benefits immediately
+    </div>
+  </div>
+  <blockquote style="margin-top: 20px;">
+    <p style="font-size: 0.68em;">This is <strong>expected and normal</strong>. The skill set matures through use, not through planning meetings.</p>
+  </blockquote>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11: What This Means — Engineers -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Now — what this means for you concretely. For individual engineers: you are expected to use the shared skills as your default workflow. If /pr-description exists, you don't write your own prompt. If a skill produces wrong output, you report it upstream via MR — you don't fix it locally and move on. No private forks. The improvement loop only works if everyone contributes back. -->
+<section>
+  <div class="pill pill-amber">Expectations</div>
+  <h2>What This Means for Individual Engineers</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>✅ Do</h3>
+      <ul>
+        <li>Use shared skills as <strong>default workflow</strong> for covered tasks</li>
+        <li><strong>Report</strong> when a skill produces wrong output — open an MR</li>
+        <li>Write <strong>task.md</strong> for anything touching 2+ files</li>
+        <li>Review AI output <strong>before committing</strong> — you own the code</li>
+        <li>Share discoveries in <strong>#aiad-discussion</strong></li>
+        <li>Keep MCP tokens current — check expiry proactively</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h3>🚫 Don't</h3>
+      <ul>
+        <li>Create <strong>private copies</strong> of canonical skills</li>
+        <li>Manually re-prompt when <strong>a skill already exists</strong></li>
+        <li>Disable hooks because they're <strong>"annoying"</strong></li>
+        <li>Run autonomous sessions on <strong>unfamiliar codebases</strong></li>
+        <li>Stockpile <strong>uncommitted changes</strong> across sessions</li>
+        <li>Let wandering sessions <strong>burn tokens</strong> — kill after 10 min stall</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12: What This Means — Leads -->
+<!-- ============================================================ -->
+<!-- Speaker notes: For engineering leads — you have a heavier responsibility. You own the CLAUDE.md and skills for your domain. Backend lead owns Go files, frontend lead owns Next.js files. You're responsible for hooks being committed to active repos before the team uses Claude Code on them. You run the adoption metrics monthly. You pair with new engineers during their first week. You're accountable for making these guidelines real, not just documented. -->
+<section>
+  <div class="pill pill-amber">Expectations</div>
+  <h2>What This Means for Engineering Leads</h2>
+  <ul>
+    <li><strong>Own your domain's CLAUDE.md + skills</strong> — backend lead → Go files, frontend lead → Next.js files</li>
+    <li><strong>Commit hooks to every active repo</strong> before the team uses Claude Code on it</li>
+    <li><strong>Run the 7 adoption metrics monthly</strong> — directional signal, not precision reports</li>
+    <li><strong>Pair with each new engineer</strong> during Week 1 of onboarding — the sequence doesn't work on paper alone</li>
+    <li><strong>Participate in #aiad-discussion</strong> actively — if it goes quiet, prompt the team</li>
+    <li><strong>Facilitate monthly demo</strong> — if no volunteer, present yourself</li>
+    <li><strong>Enforce boundaries</strong> from Section 6 of Guide 7 — address prohibited use directly</li>
+    <li><strong>Review aiad-claude MRs</strong> within one week — don't let tooling improvements stall</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13: 6-Week Onboarding Timeline -->
+<!-- ============================================================ -->
+<!-- Speaker notes: We are NOT giving all 7 guides at once. Overloading leads to incomplete setup and surface-level usage. Instead, we use a phased 6-week onboarding. Week 1 is core setup — install, configure, run 5 must-have skills. Weeks 2-3 are habit building — no new guides, just daily use. Weeks 3-4 add MCPs. Weeks 4-5 add hooks. Weeks 5-6 add autonomous workflows. Full proficiency by week 6. -->
+<section>
+  <div class="pill pill-blue">Onboarding</div>
+  <h2>6-Week Phased Onboarding</h2>
+  <p style="font-size: 0.65em; margin-bottom: 12px;">Key principle: <strong>don't give engineers all 7 guides at once.</strong> Build proficiency through use at each stage.</p>
+  <div class="timeline">
+    <div class="timeline-phase tp1">
+      <div class="phase-week">Week 1</div>
+      <div class="phase-title">Core Setup</div>
+      <div class="phase-desc">Guides 1-3<br>Install, CLAUDE.md,<br>5 must-have skills</div>
+    </div>
+    <div class="timeline-phase tp2">
+      <div class="phase-week">Weeks 2-3</div>
+      <div class="phase-title">Habits</div>
+      <div class="phase-desc">Practice only<br>4+ skills daily,<br>share in #aiad</div>
+    </div>
+    <div class="timeline-phase tp3">
+      <div class="phase-week">Weeks 3-4</div>
+      <div class="phase-title">MCPs</div>
+      <div class="phase-desc">Guide 4<br>Jira, Context7,<br>PostgreSQL live</div>
+    </div>
+    <div class="timeline-phase tp4">
+      <div class="phase-week">Weeks 4-5</div>
+      <div class="phase-title">Hooks</div>
+      <div class="phase-desc">Guide 5<br>Lint, SQL guard,<br>secret detection</div>
+    </div>
+    <div class="timeline-phase tp5">
+      <div class="phase-week">Weeks 5-6</div>
+      <div class="phase-title">Workflows</div>
+      <div class="phase-desc">Guide 6<br>Task files,<br>autonomous mode</div>
+    </div>
+  </div>
+  <p style="text-align: center; font-size: 0.55em; color: var(--tt-gray); margin-top: 12px;">Guide 7 (Team Usage) is a <strong>reference for leads</strong>, not part of the onboarding sequence.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14: Hard Boundaries -->
+<!-- ============================================================ -->
+<!-- Speaker notes: This slide is non-negotiable. These are boundaries, not suggestions. Production database mutations via Claude — prohibited. Infrastructure changes without human review — prohibited. Security config generation — prohibited. PII operations outside CLAUDE.md rules — prohibited. Auth logic and payment code — allowed but with mandatory extra review. The hooks catch some of this, but the real boundary is engineering discipline. Read this table. Internalize it. -->
+<section>
+  <div class="pill pill-red">Non-Negotiable</div>
+  <h2>What NOT to Use Claude Code For</h2>
+  <table class="boundary-table">
+    <thead>
+      <tr><th>Task</th><th>Status</th><th>Requirement</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Feature code, tests, PR descriptions</td><td class="status-ok">✅ Autonomous</td><td>Standard MR review</td></tr>
+      <tr><td>Code review (Go / Next.js)</td><td class="status-ok">✅ Autonomous</td><td>Validate assessment</td></tr>
+      <tr><td>Auth / authorization logic</td><td class="status-warn">⚠️ Interactive</td><td>Mandatory second reviewer</td></tr>
+      <tr><td>Payment / financial logic</td><td class="status-warn">⚠️ Interactive</td><td>Domain expert review, int64 for currency</td></tr>
+      <tr><td>Infrastructure changes (Terraform, K8s)</td><td class="status-warn">⚠️ Interactive</td><td>Senior review before apply</td></tr>
+      <tr><td>Production database mutations</td><td class="status-no">❌ Prohibited</td><td>Deployment pipeline only</td></tr>
+      <tr><td>Security config (API keys, CORS, JWT)</td><td class="status-no">❌ Prohibited</td><td>Human authorship required</td></tr>
+      <tr><td>PII operations outside CLAUDE.md rules</td><td class="status-no">❌ Prohibited</td><td>Follow data access process</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size: 0.58em; color: var(--tt-red); text-align: center; margin-top: 12px;">⚠️ Hooks are a safety net, not authorization. <strong>Engineering discipline is the real boundary.</strong></p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15: Measuring Success — Metrics Dashboard -->
+<!-- ============================================================ -->
+<!-- Speaker notes: How do we know this is working? Seven metrics across two categories — activity and quality. Activity tells us if engineers are using it. Quality tells us if they're using it well. The targets are directional, not precision. A lead who checks MR labels, glances at Z.ai, and asks the team weekly gets 80% of the signal with 20% of the effort. -->
+<section>
+  <div class="pill">Measuring Success</div>
+  <h2>7 Adoption Metrics</h2>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Activity</div>
+      <div class="metric-value">70%+</div>
+      <div class="metric-how">Feature PRs with Claude attribution (Week 8)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Activity</div>
+      <div class="metric-value">3 skills</div>
+      <div class="metric-how">Must-have skills invoked weekly per engineer</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Activity</div>
+      <div class="metric-value">80%</div>
+      <div class="metric-how">Feature sessions with Jira + Context7 MCP</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Activity</div>
+      <div class="metric-value">&lt;30 min</div>
+      <div class="metric-how">Average session length target</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Quality</div>
+      <div class="metric-value">90%</div>
+      <div class="metric-how">Hook issues resolved on first try by Claude</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Quality</div>
+      <div class="metric-value">1+/mo</div>
+      <div class="metric-how">CLAUDE.md updates per active repo per month</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Quality</div>
+      <div class="metric-value">≤ baseline</div>
+      <div class="metric-how">Rework rate vs non-Claude code</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 16: Adoption Curve Chart -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Here's the target adoption curve over 8 weeks. We expect slow ramp in weeks 1-2 as engineers complete setup. Acceleration in weeks 3-5 as habits form and MCPs come online. Plateau at 70%+ by week 8. The key insight: centralized approach means the curve compounds — each engineer's improvements accelerate the next engineer's adoption. -->
+<section>
+  <div class="pill">Measuring Success</div>
+  <h2>Target Adoption Curve</h2>
+  <div class="chart-container">
+    <canvas id="adoptionChart"></canvas>
+  </div>
+  <p style="text-align: center; font-size: 0.58em; color: var(--tt-gray);">Centralized approach means the curve <strong style="color: var(--tt-teal);">compounds</strong> — each engineer's improvements accelerate the next.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 17: Knowledge Sharing Cadence -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Knowledge sharing is not optional — it's how the centralized approach compounds. Four channels at four cadences. Daily: #aiad-discussion on Google Chat for discoveries, issues, tips. Monthly: one engineer demo — 15 minutes walkthrough, 15 minutes discussion. As-needed: MRs to aiad-claude for systematic improvements. Quarterly: leads publish a review to Confluence covering metrics, CLAUDE.md health, skill utilization. -->
+<section>
+  <div class="pill pill-green">Knowledge Sharing</div>
+  <h2>The Sharing Rhythm</h2>
+  <div class="cadence-grid">
+    <div class="cadence-card">
+      <div class="cadence-freq">Daily / Ongoing</div>
+      <div class="cadence-name">#aiad-discussion</div>
+      <div class="cadence-desc">Google Chat — workflow discoveries, skill issues, MCP tips, cost observations. Primary channel for peer learning.</div>
+    </div>
+    <div class="cadence-card">
+      <div class="cadence-freq">Monthly</div>
+      <div class="cadence-name">Engineer Demo</div>
+      <div class="cadence-desc">30 min: one engineer shows a workflow that saved time. 15-min walkthrough + 15-min discussion. If no volunteer, lead presents.</div>
+    </div>
+    <div class="cadence-card">
+      <div class="cadence-freq">As Needed</div>
+      <div class="cadence-name">aiad-claude MRs</div>
+      <div class="cadence-desc">Anything from #aiad-discussion that represents a systematic improvement → MR to the central repository. Formal path for tooling changes.</div>
+    </div>
+    <div class="cadence-card">
+      <div class="cadence-freq">Quarterly</div>
+      <div class="cadence-name">Lead Review</div>
+      <div class="cadence-desc">Metrics trends, CLAUDE.md accuracy, skill utilization, MCP health, onboarding assessment. Output: Confluence page + action items.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 18: Current Setup & Cost -->
+<!-- ============================================================ -->
+<!-- Speaker notes: A quick note on our current setup. We're using GLM models via Z.ai — pay per token, no seat commitment. This is deliberately cost-efficient for onboarding. GLM-4.7 for the main model at $0.38 per million input tokens. GLM-4.5 Air for lightweight tasks at $0.13. We have a future migration path to Claude Max subscription once we prove ROI and reach the cost crossover point. Do NOT self-upgrade to individual subscriptions — that fragments the team. -->
+<section>
+  <div class="pill pill-blue">Infrastructure</div>
+  <h2>Current Setup &amp; Cost Model</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>Now: GLM via Z.ai</h3>
+      <ul>
+        <li><strong>Pay-per-token</strong> — no seat commitment</li>
+        <li><strong>GLM-4.7</strong> — main model ($0.38/1M input)</li>
+        <li><strong>GLM-4.5 Air</strong> — lightweight tasks ($0.13/1M input)</li>
+        <li>Full access to Claude Code tooling ecosystem</li>
+        <li>Cost-efficient for onboarding phase</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h3>Future: Claude Max Migration</h3>
+      <ul>
+        <li>Migrate when per-seat is cheaper than per-token</li>
+        <li>Native Claude models for higher reasoning quality</li>
+        <li>Shared Projects for cross-machine memory</li>
+        <li>Requires 70%+ team proficiency first</li>
+        <li><strong>Do NOT self-upgrade</strong> — team coordination required</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 19: Closing — The Centralized Thesis -->
+<!-- ============================================================ -->
+<!-- Speaker notes: Let me close with why this matters. We are not just adopting a tool. We are building a shared engineering capability. One repository — aiad-claude. One toolchain — Claude Code. One improvement loop — MR, review, merge, everyone benefits. When one engineer discovers a better way to review Go code, every engineer gets it on their next pull. When one engineer finds a hook that catches a security pattern, every repo is protected. That is the power of centralization. Your action item: start Guide 1 this week. Your lead will pair with you. Welcome to AI-assisted development at TipTip. -->
+<section>
+  <div class="cta-box">
+    <h2>One Repository. One Toolchain.<br>Everyone Contributes. Everyone Benefits.</h2>
+    <p style="font-size: 0.75em; color: var(--tt-white); margin: 16px 0;">
+      AI-assisted development is no longer optional.<br>
+      It is a <strong>standard engineering competency</strong> at TipTip.
+    </p>
+    <p style="font-size: 0.65em; color: var(--tt-teal); margin-top: 20px;">
+      <strong>Your next step:</strong> Start <strong>Guide 1 — Setup</strong> this week.<br>
+      Your lead will pair with you on your first real task.
+    </p>
+    <p style="font-size: 0.55em; color: var(--tt-gray); margin-top: 24px;">
+      📂 gitlab.com/tiptiptv/common/aiad-claude &nbsp;&nbsp;·&nbsp;&nbsp; 💬 #aiad-discussion
+    </p>
+  </div>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  width: 1280,
+  height: 720,
+  margin: 0.04,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  controls: true,
+  progress: true,
+  center: false,
+});
+
+// Adoption curve chart
+Reveal.on('slidechanged', function(event) {
+  if (event.currentSlide.querySelector('#adoptionChart') && !window._chartDrawn) {
+    window._chartDrawn = true;
+    const ctx = document.getElementById('adoptionChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+        datasets: [
+          {
+            label: 'PR Volume with Claude (%)',
+            data: [10, 20, 35, 50, 58, 65, 68, 72],
+            borderColor: '#14b8a6',
+            backgroundColor: 'rgba(20,184,166,0.1)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#14b8a6',
+            pointRadius: 5,
+          },
+          {
+            label: 'Skill Adoption (%)',
+            data: [5, 15, 30, 45, 55, 62, 67, 70],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59,130,246,0.08)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#3b82f6',
+            pointRadius: 5,
+          },
+          {
+            label: 'MCP Usage (%)',
+            data: [0, 5, 15, 40, 55, 65, 75, 80],
+            borderColor: '#8b5cf6',
+            backgroundColor: 'rgba(139,92,246,0.08)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#8b5cf6',
+            pointRadius: 5,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#9ca3af', font: { size: 12 } }
+          },
+          y: {
+            min: 0, max: 100,
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: {
+              color: '#9ca3af',
+              font: { size: 12 },
+              callback: function(v) { return v + '%'; }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#9ca3af', font: { size: 12 }, usePointStyle: true, pointStyle: 'circle' }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

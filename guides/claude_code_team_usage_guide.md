@@ -35,7 +35,7 @@ Most direct signal of whether Claude Code is part of daily workflow or just an e
 
 #### Skill Invocation Frequency
 
-Which skills are used daily, rarely, or never. If `pr-description`, `code-review-golang`/`code-review-nextjs`, and `tdd` aren't invoked regularly, either engineers aren't using Claude for those tasks or the skills aren't trusted.
+Which skills are used daily, rarely, or never. If `pr-description`, `code-review-golang`/`code-review-nextjs`/`code-review-flutter` (as applicable per stack), and `tdd` aren't invoked regularly, either engineers aren't using Claude for those tasks or the skills aren't trusted.
 
 **Targets (week 8):** `pr-description` on 60%+ of MRs, `code-review-golang` or `code-review-nextjs` (as applicable) once per engineer per sprint, `tdd` once per engineer per week on active feature work.
 
@@ -160,7 +160,7 @@ Key principle: **don't give engineers all seven guides at once.** Overloading le
 
 #### Phase 1 — Week 1: Core Setup (Guides 1, 2, 3)
 
-**Complete:** Install Claude Code, configure Z.ai/GLM, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set, practice 5 must-have skills on real tasks.
+**Complete:** Install Claude Code, configure Z.ai/GLM, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set from `aiad-claude` (engineering-wide + your stack's directory) and required plugins from `PLUGINS.md`, practice 5 must-have skills on real tasks.
 
 **By end of week:** Engineer runs Claude daily. `pr-description` and `git-commit` used for every applicable MR. At least one `CLAUDE.md` fix MR opened.
 

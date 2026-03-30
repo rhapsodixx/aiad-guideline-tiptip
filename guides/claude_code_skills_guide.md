@@ -11,8 +11,8 @@ Skills are reusable prompt templates stored as markdown files — saved workflow
 They're context-aware (reads your `CLAUDE.md` and working directory), version-controlled, and can call tools, run shell commands, and chain actions — mini-workflows, not just text templates.
 
 Two levels:
-- **Global** (`~/.claude/skills/`) — available in every project
-- **Project-level** (`.agents/skills/<skill-name>/SKILL.md`) — repo-specific, in its own directory
+- **Global** (`~/.claude/skills/`) — available in every project (personal skills only)
+- **Project-level** (`.agents/skills/<team>/<skill-name>/SKILL.md`) — repo-specific, organized by team, in its own directory
 
 *For more details, see the [Anthropic Skills Documentation](https://docs.anthropic.com/en/docs/claude-code/skills).*
 
@@ -31,21 +31,62 @@ Skills come first because:
 
 ## 3. TipTip's Skills Repository
 
-All skills needed for TipTip's Claude Code setup are available at our central repository:
+All TipTip-authored skills are available at our central repository:
 [https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude)
 
 - **The Canonical Set:** Engineers should clone or pull this repository to get the canonical TipTip skill set.
 - **Tailored for TipTip:** Skills from this repository are pre-tailored for TipTip's stack and conventions — they reference TipTip's `CLAUDE.md` conventions and produce TipTip-flavored output.
-- **Manual vs Simple Setup:** Some skills (particularly superpowers from third parties) require manual setup steps beyond just copying the file — these are called out explicitly in Section 5.
+- **Two sources of skills:** TipTip-authored skills live in `aiad-claude`. Third-party plugins (superpowers, everything-claude-code, Vercel, PlanetScale) are installed separately — see [`PLUGINS.md`](../PLUGINS.md) for the full manifest and install commands.
 - **No private forks:** Engineers should **NOT** create private local copies of skills that diverge from the canonical repository. If a skill needs improvement, open a merge request to `aiad-claude` so the whole team benefits.
 
-**Installation Command:**
-To install project-level skills from the repository, clone it and copy the skills into your project:
+### Directory Structure
+
+Skills in `aiad-claude` are organized by team/stack:
+
+```
+.agents/skills/
+├── engineering-wide/        ← Every engineer, every stack
+│   ├── git-commit/
+│   ├── pr-description/
+│   ├── prd-review/
+│   ├── rfc-review/
+│   ├── refine-prompt/
+│   ├── refine-prompt-gravity/
+│   └── system-design/
+│
+├── backend/                 ← Go stack engineers
+│   └── code-review-golang/
+│
+├── frontend-web/            ← Next.js / React engineers
+│   └── code-review-nextjs/
+│
+└── frontend-mobile/         ← Flutter engineers
+    └── code-review-flutter/
+```
+
+**Why organize by team?** Engineers think "I'm a backend dev" not "I need an aiad-claude skill." Grouping by team makes discoverability instant and ownership clear (backend lead owns `backend/`, frontend lead owns `frontend-web/` and `frontend-mobile/`).
+
+### Installation
+
+To install project-level skills from the repository, clone it and copy the skills for your stack:
+
 ```bash
 git clone git@gitlab.com:tiptiptv/common/aiad-claude.git /tmp/aiad-claude
+
+# Copy all skills (recommended — full set)
 mkdir -p .agents/skills
 cp -R /tmp/aiad-claude/.agents/skills/* .agents/skills/
+
+# Or copy only your team's skills + engineering-wide
+cp -R /tmp/aiad-claude/.agents/skills/engineering-wide .agents/skills/
+cp -R /tmp/aiad-claude/.agents/skills/backend .agents/skills/       # for Go repos
+# OR
+cp -R /tmp/aiad-claude/.agents/skills/frontend-web .agents/skills/  # for Next.js repos
+# OR
+cp -R /tmp/aiad-claude/.agents/skills/frontend-mobile .agents/skills/ # for Flutter repos
 ```
+
+> **Global `~/.claude/skills/` usage:** Reserve this for personal skills that are not shared with the team. All team-shared skills belong in `aiad-claude` and are installed at the project level. Do not duplicate aiad-claude skills into your global directory — this causes drift.
 
 ---
 
@@ -54,7 +95,7 @@ cp -R /tmp/aiad-claude/.agents/skills/* .agents/skills/
 Invoking a skill in a Claude Code session is straightforward:
 
 - **Invocation syntax:** Use the slash command defined in the skill's frontmatter (e.g., `/tdd`).
-- **Discovery:** AI assistants automatically discover skills in `.agents/skills/` (project-level). Claude Code also checks `~/.claude/skills/` for global skills. You can see available skills dynamically, or ask your assistant "What skills are available?"
+- **Discovery:** AI assistants automatically discover skills in `.agents/skills/` and its subdirectories (project-level). The team directory structure (`engineering-wide/`, `backend/`, etc.) is transparent to Claude — skills are discovered regardless of nesting depth. Claude Code also checks `~/.claude/skills/` for global skills. You can see available skills dynamically, or ask your assistant "What skills are available?"
 - **Passing parameters:** You can pass arguments directly. For example: `/explain-code src/auth/login.ts` passes the file path as context.
 - **Interaction with CLAUDE.md:** When the skill runs, Claude blends the skill’s instructions with the rules defined in your project's `CLAUDE.md`.
 - **End-to-End Example:** 
@@ -95,10 +136,11 @@ These skills apply regardless of our stack. Every TipTip engineer should have th
 | `build-fix` | `everything-claude-code` | Multi-language build error diagnosis and fixing (Go, TypeScript/JavaScript, Python, Rust, Java). Incrementally fixes compilation errors with minimal, surgical changes. | `medium` — diagnoses specific errors, applies surgical fixes | When encountering build failures, type errors, or compilation crashes. | `/everything-claude-code:build-fix` | Run: `/plugin install everything-claude-code@everything-claude-code` in VS Code terminal. [Link](https://github.com/affaan-m/everything-claude-code) |
 | `git-commit` | `aiad-claude` | Generates Conventional Commits messages from staged diff. Analyzes changes, categorizes by type/scope, and produces spec-compliant commit messages. | `low` — single-shot message from staged diff | When committing staged changes to Git. | `/git-commit` | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
 | `systematic-debugging` | `superpowers` | 4-phase root cause process including root-cause-tracing, defense-in-depth, condition-based-waiting techniques. | `max` — iterative hypothesis-verify loop across services | When deep-diving into complex, hard-to-reproduce bugs across services. | `/systematic-debugging` | Run: `/plugin install superpowers@claude-plugins-official` in VS Code terminal. [Link](https://github.com/obra/superpowers) |
-| `code-review-golang` | `aiad-claude` | Orchestrates Go backend code reviews through two specialist sub-agents — a Senior Go Engineer and a Security Engineer — producing a unified, severity-graded review report. | `max` — multi-agent orchestration, security + quality scoring | When reviewing Go code before submitting an MR or during peer review. | `/code-review-golang review internal/handler/user.go` | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
-| `code-review-nextjs` | `aiad-claude` | Orchestrates Next.js/React/TypeScript code reviews through two specialist sub-agents — a Senior Frontend Engineer and a Security Engineer — producing a unified, severity-graded review report. | `max` — multi-agent orchestration, security + quality scoring | When reviewing Next.js/React/TypeScript code before submitting an MR or during peer review. | `/code-review-nextjs review src/app/dashboard/page.tsx` | Copy from `aiad-claude` repo. [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+| `code-review-golang` | `aiad-claude` | Orchestrates Go backend code reviews through two specialist sub-agents — a Senior Go Engineer and a Security Engineer — producing a unified, severity-graded review report. | `max` — multi-agent orchestration, security + quality scoring | When reviewing Go code before submitting an MR or during peer review. | `/code-review-golang review internal/handler/user.go` | Copy from `aiad-claude` repo (`backend/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+| `code-review-nextjs` | `aiad-claude` | Orchestrates Next.js/React/TypeScript code reviews through two specialist sub-agents — a Senior Frontend Engineer and a Security Engineer — producing a unified, severity-graded review report. | `max` — multi-agent orchestration, security + quality scoring | When reviewing Next.js/React/TypeScript code before submitting an MR or during peer review. | `/code-review-nextjs review src/app/dashboard/page.tsx` | Copy from `aiad-claude` repo (`frontend-web/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+| `code-review-flutter` | `aiad-claude` | Orchestrates Flutter/Dart code reviews through two specialist sub-agents — a Senior Flutter Engineer and a Security Engineer — producing a unified, severity-graded review report with mobile-specific security focus. | `max` — multi-agent orchestration, mobile security + quality scoring | When reviewing Flutter/Dart code before submitting an MR or during peer review. | `/code-review-flutter review lib/features/auth/presentation/login_page.dart` | Copy from `aiad-claude` repo (`frontend-mobile/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
 
-> 💡 **On `code-review-golang` / `code-review-nextjs` and existing review skills:** These two skills establish TipTip's **standardized review baseline** — ensuring all engineers apply the same checklist and severity grading. They are **complementary** to specialized tools like `go-review` (everything-claude-code) or Vercel's best-practice skills, not replacements. If your team or engineering lead decides to consolidate on a single code review skill, that's fine — formalize the decision via a pull request to `aiad-claude`.
+> 💡 **On `code-review-golang` / `code-review-nextjs` / `code-review-flutter` and existing review skills:** These three skills establish TipTip's **standardized review baseline** — ensuring all engineers apply the same checklist and severity grading. They are **complementary** to specialized tools like `go-review` (everything-claude-code) or Vercel's best-practice skills, not replacements. If your team or engineering lead decides to consolidate on a single code review skill, that's fine — formalize the decision via a pull request to `aiad-claude`.
 
 ### Nice-to-Have Skills (Engineering-Wide)
 
@@ -109,6 +151,9 @@ These skills apply regardless of our stack. Every TipTip engineer should have th
 | `subagent-driven-development` | `superpowers` | Fast iteration with two-stage review (spec compliance, then code quality). | `max` — two-stage multi-agent coordination | When attempting rapid complex refactors. | `/subagent-driven-development` | Run: `/plugin install superpowers@claude-plugins-official` in VS Code. [Link](https://github.com/obra/superpowers) |
 | `plan` | `everything-claude-code` | Basic feature implementation planning and task breakdown. | `medium` — scoped feature breakdown, moderate reasoning | Before starting moderate-sized tickets. | `/everything-claude-code:plan` | Run: `/plugin install everything-claude-code@everything-claude-code` in VS Code. [Link](https://github.com/affaan-m/everything-claude-code) |
 | `update-docs` | `everything-claude-code` | Automatically updates documentation based on codebase changes. | `low` — additive doc updates, single-pass | When finishing a feature that changes APIs. | `/everything-claude-code:update-docs` | Run: `/plugin install everything-claude-code@everything-claude-code` in VS Code. [Link](https://github.com/affaan-m/everything-claude-code) |
+| `system-design` | `aiad-claude` | Diagnose design problems and guide architecture decisions. State-based diagnostic from requirements clarity to walking skeleton. | `high` — iterative diagnostic with artifacts (ADRs, component maps) | When starting system design after requirements are validated, or when architecture feels uncertain. | `/system-design` | Copy from `aiad-claude` repo (`engineering-wide/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+
+> 💡 **Third-party plugins:** The engineering-wide skills above include both aiad-claude skills and third-party plugin skills. For full plugin install commands, see [`PLUGINS.md`](../PLUGINS.md).
 
 ---
 
@@ -159,7 +204,27 @@ These skills are relevant for engineers working on TipTip's React, Next.js, and 
 
 ---
 
-## 9. Skills and LLM Cost
+## 9. Mobile Skills (Flutter Stack)
+
+These skills are relevant for engineers working on TipTip's Flutter mobile applications.
+
+### Must-Have Skills (Mobile)
+
+| Skill | Source | Description | Recommended Claude Code Effort | When to use | Sample Invocation | VS Code Install & Repo |
+|---|---|---|---|---|---|---|
+| `code-review-flutter` | `aiad-claude` | Orchestrates Flutter/Dart code reviews through two specialist sub-agents — a Senior Flutter Engineer and a Security Engineer — producing a unified, severity-graded review report with mobile-specific security focus (OWASP Mobile Top 10). | `max` — multi-agent orchestration, mobile security + quality scoring | When reviewing Flutter/Dart code before submitting an MR or during peer review. | `/code-review-flutter review lib/features/auth/presentation/login_page.dart` | Copy from `aiad-claude` repo (`frontend-mobile/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+
+> 💡 **`code-review-flutter` focus areas:** Beyond standard code quality, this skill's Security Engineer agent is specifically tuned for mobile attack vectors: insecure local storage (`SharedPreferences` vs `flutter_secure_storage`), API keys in Dart source (extractable from APK/IPA), missing certificate pinning, platform channel security, and release build obfuscation. These are distinct from web security concerns and reflect OWASP Mobile Top 10 priorities.
+
+### Nice-to-Have Skills (Mobile)
+
+No additional Flutter-specific skills from third-party plugins are mature enough to recommend at this time. As the Flutter Claude Code ecosystem develops, this section will be updated. Engineers who identify Flutter-specific skill gaps should open an issue on `aiad-claude`.
+
+> 💡 **Third-party plugins for mobile:** See [`PLUGINS.md`](../PLUGINS.md) for the latest plugin inventory. If Flutter-specific plugins become available in `everything-claude-code` or other sources, they will be listed here.
+
+---
+
+## 10. Skills and LLM Cost
 
 This section outlines how skills affect token consumption and API cost, and gives practical guidance on efficient use.
 
@@ -188,7 +253,7 @@ This section outlines how skills affect token consumption and API cost, and give
 
 ---
 
-## 10. What to Expect from Engineers
+## 11. What to Expect from Engineers
 
 ### Engineering Lead Responsibilities
 
@@ -234,30 +299,36 @@ The expected behavior for skill improvement follows this loop:
 
 ---
 
-## 11. Quick Reference
+## 12. Quick Reference
 
-| Task | Skill | Scope | Source | Recommended Claude Code Effort |
-|---|---|---|---|---|
-| Write PR description | `pr-description` | Engineering-wide | `aiad` | `low` |
-| Review Engineering Spec / RFC | `rfc-review` | Engineering-wide | `aiad` | `max` |
-| Generate tests (TDD workflow) | `tdd` | Engineering-wide | `everything-claude-code` | `high` |
-| Test coverage analysis & gap-filling | `test-coverage` | Engineering-wide | `everything-claude-code` | `high` |
-| Build error diagnosis & fixing | `build-fix` | Engineering-wide | `everything-claude-code` | `medium` |
-| Generate commit message | `git-commit` | Engineering-wide | `aiad` | `low` |
-| Systematic trace & root cause analysis | `systematic-debugging` | Engineering-wide | `superpowers` | `max` |
-| Basic feature planning | `plan` | Engineering-wide | `everything-claude-code` | `medium` |
-| Update documentation | `update-docs` | Engineering-wide | `everything-claude-code` | `low` |
-| Go idiomatic patterns | `golang-pattern` | Backend | `everything-claude-code` | `high` |
-| Go build error fixing | `go-build` | Backend | `everything-claude-code` | `medium` |
-| Go TDD & testing patterns | `go-test`, `golang-testing` | Backend | `everything-claude-code` | `high` |
-| Postgres optimizations & schema design | `postgres` | Backend | `planetscale` | `medium` |
-| Go automated code review | `go-review` | Backend | `everything-claude-code` | `medium` |
-| Next.js architecture best practices | `next-best-practices` | Frontend | `Vercel` | `high` |
-| React composition performance rules | `vercel-react-best-practices` | Frontend | `Vercel` | `medium` |
-| Go code review (multi-persona) | `code-review-golang` | Backend | `aiad` | `max` |
-| Next.js code review (multi-persona) | `code-review-nextjs` | Frontend | `aiad` | `max` |
+| Task | Skill | Scope | Source | Path in aiad-claude | Recommended Claude Code Effort |
+|---|---|---|---|---|---|
+| Write PR description | `pr-description` | Engineering-wide | `aiad-claude` | `engineering-wide/pr-description/` | `low` |
+| Review Engineering Spec / RFC | `rfc-review` | Engineering-wide | `aiad-claude` | `engineering-wide/rfc-review/` | `max` |
+| Review PRD | `prd-review` | Engineering-wide | `aiad-claude` | `engineering-wide/prd-review/` | `max` |
+| Refine a prompt (Claude) | `refine-prompt` | Engineering-wide | `aiad-claude` | `engineering-wide/refine-prompt/` | `low` |
+| Refine a prompt (Gemini) | `refine-prompt-gravity` | Engineering-wide | `aiad-claude` | `engineering-wide/refine-prompt-gravity/` | `low` |
+| System design & architecture | `system-design` | Engineering-wide | `aiad-claude` | `engineering-wide/system-design/` | `high` |
+| Generate commit message | `git-commit` | Engineering-wide | `aiad-claude` | `engineering-wide/git-commit/` | `low` |
+| Generate tests (TDD workflow) | `tdd` | Engineering-wide | `everything-claude-code` | *(plugin)* | `high` |
+| Test coverage analysis & gap-filling | `test-coverage` | Engineering-wide | `everything-claude-code` | *(plugin)* | `high` |
+| Build error diagnosis & fixing | `build-fix` | Engineering-wide | `everything-claude-code` | *(plugin)* | `medium` |
+| Systematic trace & root cause analysis | `systematic-debugging` | Engineering-wide | `superpowers` | *(plugin)* | `max` |
+| Basic feature planning | `plan` | Engineering-wide | `everything-claude-code` | *(plugin)* | `medium` |
+| Update documentation | `update-docs` | Engineering-wide | `everything-claude-code` | *(plugin)* | `low` |
+| Go code review (multi-persona) | `code-review-golang` | Backend | `aiad-claude` | `backend/code-review-golang/` | `max` |
+| Go idiomatic patterns | `golang-pattern` | Backend | `everything-claude-code` | *(plugin)* | `high` |
+| Go build error fixing | `go-build` | Backend | `everything-claude-code` | *(plugin)* | `medium` |
+| Go TDD & testing patterns | `go-test` | Backend | `everything-claude-code` | *(plugin)* | `high` |
+| Postgres optimizations & schema design | `postgres` | Backend | `planetscale` | *(external skill)* | `medium` |
+| Go automated code review | `go-review` | Backend | `everything-claude-code` | *(plugin)* | `medium` |
+| Next.js code review (multi-persona) | `code-review-nextjs` | Frontend Web | `aiad-claude` | `frontend-web/code-review-nextjs/` | `max` |
+| Next.js architecture best practices | `next-best-practices` | Frontend Web | `Vercel` | *(external skill)* | `high` |
+| React composition performance rules | `vercel-react-best-practices` | Frontend Web | `Vercel` | *(external skill)* | `medium` |
+| Flutter code review (multi-persona) | `code-review-flutter` | Frontend Mobile | `aiad-claude` | `frontend-mobile/code-review-flutter/` | `max` |
 
 **Reference Sources:**
+- TipTip AIAD Skills & Plugin Manifest: [`PLUGINS.md`](../PLUGINS.md)
 - TipTip AIAD - CLAUDE.md/Skills Repository: [https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude)
 - Superpowers source: [https://github.com/obra/superpowers](https://github.com/obra/superpowers)
 - everything-claude-code source: [https://github.com/affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code)

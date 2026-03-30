@@ -15,7 +15,7 @@ It lives at different levels:
 - **Project root** (`./CLAUDE.md`) — repo-specific context
 - **Subdirectories** (e.g., `.claude/rules/` or sub-package folders) — package-specific rules
 
-> **Note on `/memory`:** Run `/memory` during any session to check exactly what Claude is reading.
+> **Note on `/memory`:** You can use the `/memory` command at any time during a Claude Code session to verify exactly what instructions and context Claude is currently reading.
 
 **References:**
 - [How Claude remembers your project (Official)](https://docs.anthropic.com/en/docs/claude-code/memory)
@@ -141,14 +141,14 @@ bash install-claude-templates.sh
 
 ## 6. Tips & Tricks for Repository-Level CLAUDE.md
 
-### Generating with `/init`
-- Run `/init` inside a session — Claude scans your code and recent commits to draft a `CLAUDE.md`. [[Docs: /init Command]](https://docs.anthropic.com/en/docs/claude-code/overview#init)
-- Run `/init` periodically as architecture evolves. Claude updates the file with new patterns while preserving your custom additions. [[Docs: Updating Memory]](https://docs.anthropic.com/en/docs/claude-code/memory#updating-project-memory)
+### Generating and Refining with `/init`
+- **Initial Generation**: Use the `/init` command within a Claude Code session. Claude will scan your project's code and recent commits to automatically draft a relevant `CLAUDE.md`. [[Docs: /init Command]](https://docs.anthropic.com/en/docs/claude-code/overview#init)
+- **Iterative Refinement**: Run `/init` periodically as your architecture evolves. Claude updates the existing file with newly discovered patterns while preserving your custom additions. [[Docs: Updating Memory]](https://docs.anthropic.com/en/docs/claude-code/memory#updating-project-memory)
 
-### Content rules
-- **Skip generic advice.** Omit "write clean code" — focus on TipTip-specific exceptions and non-obvious rules. [[Ref]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
-- **Document frequent mistakes.** If you keep correcting Claude on the same thing, put it in the file. [[Ref]](https://docs.anthropic.com/en/docs/claude-code/memory#best-practices-for-claudemd)
-- **Keep it under 300 lines.** Bloated context wastes tokens and dilutes instruction-following. [[Ref]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
+### Best Practices for Content
+- **1. Omit Standard Boilerplate:** Exclude generic advice (e.g., "write clean code"). Focus exclusively on TipTip-specific exceptions, custom commands, and non-obvious rules. [[Ref: The "does this help" filter]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
+- **2. Document Frequent Mistakes:** Explicitly document the specific, repetitive corrections you find yourself giving Claude for the repository. [[Ref: CLAUDE.md Best Practices]](https://docs.anthropic.com/en/docs/claude-code/memory#best-practices-for-claudemd)
+- **3. Enforce Brevity:** Keep the file under 300 lines. A bloated context file wastes tokens and dilutes instruction-following capabilities. [[Ref: Keep CLAUDE.md succinct]](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
 
 ---
 
