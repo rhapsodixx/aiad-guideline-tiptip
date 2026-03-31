@@ -12,6 +12,8 @@ Guides 1–6 covered setup and usage for individual engineers. This guide covers
 
 Without measurement, adoption fragments. Some engineers become power users, others barely touch it, and the team doesn't converge on shared practices. This guide gives leads the tools to track adoption, maintain quality, onboard engineers, and decide when to migrate to an official subscription.
 
+Individual engineers benefit from understanding what is being measured and why — it sets expectations and helps them know what good usage looks like.
+
 ---
 
 ## 2. Adoption Metrics
@@ -29,7 +31,10 @@ Most direct signal of whether Claude Code is part of daily workflow or just an e
 - Weeks 4–6: 50% of feature PRs involve Claude
 - Week 8+: 70%+
 
-**How to track:** Add a `[claude-assisted]` label to GitLab MRs. Alternatively, the Stop hook appends session logs — aggregate weekly. Simplest: ask in `#aiad-discussion` what people used it for that week.
+**How to track:**
+- **Lightweight:** Add a `[claude-assisted]` label to GitLab MRs. Track label frequency in GitLab's MR analytics.
+- **Automated:** The Stop hook from Guide 5 appends session logs to `.claude-session-log.md`. Engineers commit this to a private tracking branch or push summaries to a shared sheet.
+- **Manual:** Ask in `#aiad-discussion` what people used Claude for that week — also drives knowledge sharing (Section 5).
 
 ---
 
@@ -39,7 +44,10 @@ Which skills are used daily, rarely, or never. If `pr-description`, `code-review
 
 **Targets (week 8):** `pr-description` on 60%+ of MRs, `code-review-golang` or `code-review-nextjs` (as applicable) once per engineer per sprint, `tdd` once per engineer per week on active feature work.
 
-**How to track:** Add a logging line to each skill's markdown that appends to `.claude-skill-log.jsonl`. Aggregate weekly.
+**How to track:**
+- Add a logging line to each skill's markdown that appends to `.claude-skill-log.jsonl`. Example: `{"skill": "pr-description", "timestamp": "...", "repo": "...", "user": "..."}`
+- Aggregate `.claude-skill-log.jsonl` files weekly (engineers paste into a shared Google Sheet or lead runs a collection script).
+- Alternative: the Stop hook can capture which skills were invoked during the session.
 
 ---
 
@@ -49,7 +57,10 @@ Are sessions running with or without MCP context? Sessions without Jira/Context7
 
 **Targets (week 8):** Jira MCP in 80% of feature sessions, Context7 at least once per session using library APIs, Serena in refactoring tasks.
 
-**How to track:** Stop hook logs, MCP dashboard request volume, or lead spot-checking session logs monthly.
+**How to track:**
+- The Stop hook can log MCP tool call names from the session summary.
+- **Dashboard proxy:** Check Context7 request volume (API key dashboard) and Jira audit logs.
+- **Manual:** Lead spot-checks a sample of session logs monthly for MCP tool calls.
 
 ---
 
@@ -59,7 +70,10 @@ Primary cost driver. Long sessions with high token counts = either complex high-
 
 **Targets:** Average session under 30 minutes. Flag sessions 3× the baseline. Flag engineers consistently 2× team average cost.
 
-**How to track:** Z.ai billing dashboard, Stop hook for session duration, `/cost` command at session end.
+**How to track:**
+- **Z.ai Dashboard:** Primary tracking if per-user/per-session token breakdown is available in billing.
+- **Stop hook:** Extend to log session duration (start time from first tool call, end time from stop event). Use `/cost` command at session end.
+- **Weekly aggregate:** Collect Stop hook logs from all engineers, sum tokens per engineer per week. Share aggregate (not individual) view so everyone understands consumption level.
 
 ---
 
@@ -71,6 +85,10 @@ How often hooks block or correct Claude's output. High intervention = `CLAUDE.md
 
 **Targets:** Secret/SQL guard: rare (~1 fire per engineer per week max). Lint hooks: firing on ~20% of writes (healthy enforcement), Claude resolving on first try 90%+ of the time.
 
+**How to track:**
+- Extend hook scripts from Guide 5 to append to `.claude-hook-log.jsonl` on every intervention. Log: hook name, triggering tool, intervention type, timestamp.
+- Aggregate weekly — same pattern as skill logging.
+
 ---
 
 #### CLAUDE.md Update Frequency
@@ -79,7 +97,7 @@ A file never updated after creation is either perfect (unlikely) or stale (much 
 
 **Targets:** 1+ update per active repo per month (first 3 months), settling to 1+ per quarter. Global files: lead-driven review once per quarter.
 
-**How to track:** GitLab MR history filtering on `CLAUDE.md` files. No tooling needed.
+**How to track:** GitLab MR history filtering on `CLAUDE.md` files. Track via GitLab contribution graphs on the `aiad-claude` repository for global files. No additional tooling needed.
 
 ---
 
@@ -89,7 +107,9 @@ The ultimate quality signal. If Claude-assisted code requires more rework than n
 
 **Targets (week 8):** Equal or fewer significant review comments vs non-Claude code. Zero security/data handling review comments at any time.
 
-**How to track:** Lead qualitative assessment during code review retros. Count GitLab review threads on Claude-labeled MRs vs non-labeled.
+**How to track:**
+- **Qualitative:** Lead assessment during monthly code review retros. A lead who reviews PRs regularly will develop intuition for quality trends.
+- **Quantitative:** Count GitLab review comment threads on Claude-labeled MRs vs non-labeled. Compare monthly.
 
 ---
 
@@ -164,17 +184,19 @@ Key principle: **don't give engineers all seven guides at once.** Overloading le
 
 **By end of week:** Engineer runs Claude daily. `pr-description` and `git-commit` used for every applicable MR. At least one `CLAUDE.md` fix MR opened.
 
-**Lead:** Pair with the engineer on their first real task (not a tutorial). Confirm per-repo `CLAUDE.md` is accurate. Point to `#aiad-discussion`.
+**Lead action:**
+- Pair with the engineer on their first real task (not a tutorial). Confirm per-repo `CLAUDE.md` is accurate.
+- Point to `#aiad-discussion` on Google Chat.
 
 ---
 
 #### Phase 2 — Weeks 2–3: Habits (Practice Guides 1–3)
 
-No new guides — just habit building.
+No new guides — just habit building. Engineer uses Claude for at least 3 different task types: writing code, generating tests, and reviewing their own code before MR submission. Use `systematic-debugging` on at least one real bug.
 
 **By end of week 3:** Engineer reaches for Claude automatically for covered tasks. 4+ distinct skills invoked. Shared at least one tip in `#aiad-discussion`.
 
-**Lead:** Light check-in at 1:1 — "what did you use Claude for this week?" If the answer is nothing, investigate.
+**Lead action:** Light check-in at 1:1 — "what did you use Claude for this week?" If the answer is nothing, investigate whether there is a setup issue or habit gap.
 
 ---
 
@@ -184,17 +206,20 @@ No new guides — just habit building.
 
 **By end of week 4:** No more manually copying Jira ticket descriptions into sessions. Engineer notices deprecated APIs via Context7.
 
-**Lead:** Verify `.mcp.json` is committed. Confirm PostgreSQL MCP points to local/staging — **not production**.
+**Lead action:**
+- Verify `.mcp.json` is committed. Confirm PostgreSQL MCP points to local/staging — **not production**.
 
 ---
 
 #### Phase 4 — Weeks 4–5: Hooks (Guide 5)
 
-**Complete:** Install hook scripts from `aiad-claude`. Verify at least one hook fires correctly in a real session.
+**Complete:** Install hook scripts from `aiad-claude`. Commit `.claude/settings.json` (or verify global `~/.claude/settings.json`). Verify at least one hook fires correctly in a real session.
 
-**By end of week 5:** Lint runs automatically after Claude edits. Engineer has seen the secret guard fire at least once.
+**By end of week 5:** Lint runs automatically after Claude edits. Engineer has seen the secret guard fire at least once (in a test scenario if not organically) and understands what it does.
 
-**Lead:** Confirm hooks are committed to repo (not just local). Test secret/SQL guards.
+**Lead action:**
+- Confirm hooks are committed to repo (not just local install).
+- Validate secret guard and SQL guard hooks are functioning (test invocation from terminal as shown in Guide 5).
 
 ---
 
@@ -202,9 +227,9 @@ No new guides — just habit building.
 
 **Complete:** Read Guide 6. Run at least 2 cookbook workflows on real tasks (Workflow 3 + one from 1/2/4/6).
 
-**By end of week 6:** Writing `task.md` for sessions touching 2+ files. Comfortable with interactive vs autonomous mode selection.
+**By end of week 6:** Writing `task.md` for sessions touching 2+ files. Has run at least one autonomous session end-to-end without unnecessary interruption. Comfortable with interactive vs autonomous mode selection.
 
-**Lead:** Review the engineer's first autonomous session output together — `task.md`, diff, what worked, what to improve. This is formal onboarding completion.
+**Lead action:** Review the engineer's first autonomous session output together — `task.md`, diff, what worked, what to improve. This is formal onboarding completion.
 
 ---
 
@@ -216,7 +241,7 @@ No new guides — just habit building.
 | Habits           | 2–3   | *(practice)*     | 4 skills used; sharing in `#aiad-discussion`      |
 | MCPs             | 3–4   | 4                | Jira MCP for tickets; Context7 active             |
 | Hooks            | 4–5   | 5                | Lint hook firing; hooks committed                 |
-| Workflows        | 5–6   | 6                | Two cookbook workflows completed                  |
+| Workflows        | 5–6   | 6                | Two cookbook workflows completed                   |
 | Full proficiency | 6+    | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
 
 *Guide 7 is not part of the onboarding sequence. Engineers read it as a reference once proficient. Required reading for leads from day one.*
@@ -235,8 +260,9 @@ Primary channel for Claude Code knowledge sharing.
 - Unusual Claude behavior: *"Claude keeps suggesting sqlx despite the CLAUDE.md rule"*
 - MCP issues: *"Jira MCP token expires every 30 days — reminder to rotate"*
 - Cost observations: *"Session cost spiked — forgot Serena, Claude read 40 files manually"*
+- Questions about which workflow to use for a new type of task
 
-**What doesn't:** Full session logs (use GitLab snippets), credentials/PII, non-Claude-specific coding questions.
+**What doesn't:** Full session logs (use GitLab snippets or Confluence — share the link), credentials/PII, non-Claude-specific coding questions.
 
 ### Monthly Demo (30 min)
 
@@ -246,27 +272,27 @@ One engineer shows a workflow that saved time or produced great output. 15-minut
 3. The output
 4. Time with vs without Claude
 
-Not a formal presentation. If nobody volunteers, the lead presents.
+Not a formal presentation — the purpose is to make good workflows visible so they spread naturally. If nobody volunteers, the lead presents.
 
 ### Formal Path: aiad-claude MRs
 
-Anything from `#aiad-discussion` that represents a systematic improvement (not a one-off) → MR to `https://gitlab.com/tiptiptv/common/aiad-claude`. The person who raises the issue in `#aiad-discussion` should (but is not required to) open the MR. If they don't, lead tags someone.
+Anything from `#aiad-discussion` that represents a systematic improvement (not a one-off) → MR to `https://gitlab.com/tiptiptv/common/aiad-claude`. The person who raises the issue in `#aiad-discussion` should (but is not required to) open the MR. If they don't, lead tags someone to pick it up.
 
 ### Quarterly Review
 
-Leads cover: metrics trends, `CLAUDE.md` accuracy, skill utilization, MCP health, onboarding assessment, Future Work status (Guide 6 Section 8). Output: Confluence page + list of `aiad-claude` MRs.
+Leads cover: metrics trends, `CLAUDE.md` accuracy, skill utilization, MCP health, onboarding assessment, Future Work status (Guide 6 Section 8). Output: Confluence page summarizing findings + list of `aiad-claude` MRs to open + any updates to this guide series.
 
 ---
 
 ## 6. What Not to Use Claude Code For
 
-> 🚨 **Required reading for all engineers.** These are boundaries, not suggestions.
+> 🚨 **Required reading for all engineers.** These are boundaries, not suggestions. They protect TipTip's systems and data.
 
 ### ❌ Never: Production Database Mutations
 
 No INSERT, UPDATE, DELETE, or schema-altering commands against production via Claude Code — regardless of hooks, review, or session type.
 
-The SQL guard hook is a dev-time safety net, not production authorization. Claude lacks audit trail integration with TipTip's production DB access controls. Production changes go through migration files → MR review → deployment pipeline.
+The SQL guard hook is a dev-time safety net, not production authorization. Claude Code lacks audit trail integration with TipTip's production database access controls. Any production change must go through the standard change management process: migration file reviewed in MR, applied by a human via the approved deployment pipeline.
 
 **Instead:** Use Claude to write and review migration files. PostgreSQL MCP only against local dev or staging.
 
@@ -276,7 +302,7 @@ The SQL guard hook is a dev-time safety net, not production authorization. Claud
 
 No autonomous Terraform, Kubernetes, CI/CD, or cloud config modifications affecting production/staging without human review first.
 
-Infrastructure blast radius extends beyond the file being edited. A K8s resource limit, security group change, or CI job tweak can down services or expose vulnerabilities.
+Infrastructure blast radius extends beyond the file being edited. A K8s resource limit, security group change, or CI job tweak can down services or expose vulnerabilities. Claude can generate and review these changes, but cannot understand the full blast radius the way a senior engineer can.
 
 **Instead:** Use Claude interactively to draft infra changes. Treat output as a draft requiring senior review. Never `terraform apply` or `kubectl apply` in autonomous sessions.
 
@@ -286,7 +312,7 @@ Infrastructure blast radius extends beyond the file being edited. A K8s resource
 
 No autonomous generation, modification, or rotation of: API keys, OAuth configs, JWT secrets, encryption keys, CORS rules, CSP policies, or any security configuration.
 
-Security misconfigurations are silent until exploited. Claude can reason about security but lacks full context of TipTip's threat model and compliance requirements.
+Security misconfigurations are silent until exploited. Claude can reason about security but lacks full context of TipTip's threat model, existing attack surface, and compliance requirements. These changes require human security judgment, not LLM pattern matching.
 
 **Instead:** Use Claude interactively to discuss security changes (good thinking partner). Actual changes must be human-written, second-reviewed, and manually applied. Never give Claude write access to `.env.production`, secrets managers, or vault configs.
 
@@ -296,9 +322,9 @@ Security misconfigurations are silent until exploited. Claude can reason about s
 
 No autonomous reading, processing, or reasoning about PII (email, phone, payment data, national IDs, UU PDP-covered data) beyond what `CLAUDE.md` security rules explicitly govern.
 
-Claude sessions have no audit trail for data access. Even well-intentioned debugging with real user PII may violate TipTip's data handling obligations.
+PII handling requires explicit consent, purpose limitation, and audit trail under Indonesia's Personal Data Protection Law (UU PDP). Claude sessions have no audit trail for data access — even well-intentioned debugging with real user PII may violate TipTip's data handling obligations.
 
-**Instead:** Anonymize or mock PII before sessions. If real data is genuinely needed, follow TipTip's data access process — Claude Code is not part of that process.
+**Instead:** Anonymize or mock PII before sessions. If real data is genuinely needed, follow TipTip's data access process — Claude Code is not part of that process. When in doubt, ask the engineering lead before the session, not after.
 
 ---
 

@@ -1,0 +1,257 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - navigation "breadcrumb" [ref=e6]:
+          - link "Home" [ref=e7] [cursor=pointer]:
+            - /url: /
+          - img [ref=e8]
+          - heading "Attraction" [level=6] [ref=e10]
+          - img [ref=e11]
+          - heading "Kecak Fire Dance Uluwatu" [level=6] [ref=e13]
+        - generic [ref=e14]:
+          - img "5f5f2f81-97d2-45d9-85e8-7f5eed1782a7_alt" [ref=e16] [cursor=pointer]
+          - generic [ref=e17]:
+            - img "f6626c13-f4f0-4453-ac03-8d252396f9b5_alt" [ref=e19] [cursor=pointer]
+            - img "87195262-2a7f-468d-8c80-9fca513d8e33_alt" [ref=e21] [cursor=pointer]
+            - img "faa5f900-0fb9-4226-a3ea-67274d3badf0_alt" [ref=e23] [cursor=pointer]
+            - img "581ad657-489d-4824-b4ac-ac405ea656df_alt" [ref=e25] [cursor=pointer]
+          - button "See all 7 photos" [ref=e26] [cursor=pointer]:
+            - img [ref=e28]
+            - heading "See all 7 photos" [level=6] [ref=e30]
+      - generic [ref=e31]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e38]: Same Day Booking
+        - generic [ref=e39]:
+          - heading "Kecak Fire Dance Uluwatu" [level=3] [ref=e40]
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - img [ref=e45]
+              - paragraph [ref=e48]: 4.7 (200+ ratings)
+            - paragraph [ref=e49]: •
+            - paragraph [ref=e50]: 1.0k+ sold
+          - generic [ref=e52] [cursor=pointer]:
+            - img [ref=e53]
+            - paragraph [ref=e56]: Uluwatu Temple (Pura Luhur Uluwatu), Pura Luhur Uluwatu, Pecatu, South Kuta, Badung Regency, Bali, Indonesia
+            - img [ref=e57]
+          - generic [ref=e59] [cursor=pointer]:
+            - img [ref=e60]
+            - paragraph [ref=e63]: CLOSED
+            - paragraph [ref=e64]: •
+            - paragraph [ref=e65]: "Opening hours: 16:00 20:00"
+            - img [ref=e66]
+          - generic [ref=e69]:
+            - img [ref=e70]
+            - paragraph [ref=e73]: Locally Curated
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76] [cursor=pointer]:
+              - img [ref=e77]
+              - paragraph [ref=e79]: Get Help
+            - separator [ref=e80]
+            - generic [ref=e81] [cursor=pointer]:
+              - img [ref=e82]
+              - paragraph [ref=e84]: Share This Page
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e87]: Start from
+              - heading "IDR 135,000" [level=6] [ref=e88]
+            - button "See Packages" [ref=e89] [cursor=pointer]
+  - main [ref=e91]:
+    - generic [ref=e92]:
+      - generic [ref=e94]:
+        - text: Activity Highlights
+        - list [ref=e96]:
+          - listitem [ref=e97]: "📅 Book Today, Enjoy Today : Same-day booking available, reserve before 12:00 PM Bali time (GMT+8), valid for selected package categories only."
+          - listitem [ref=e98]: "🔥 Legendary Sunset Kecak at a Cliffside Amphitheater : Experience Bali’s most iconic cultural performance with powerful chanting and a dramatic fire finale."
+          - listitem [ref=e99]: "✨ Hosted Cultural Experience with Real Insight : Go beyond a ticket with guided storytelling that reveals the meaning and symbolism behind every movement."
+          - listitem [ref=e100]: "🚗 Seamless Evening with Optional Private Transport : Enjoy ideal timing, smooth arrival, and zero parking or night-time hassle."
+          - listitem [ref=e101]: "🌇 Golden Hour Magic by the Ocean : Watch the horizon glow as rhythmic chants and fire dance create a cinematic, goosebump-worthy sunset moment."
+      - generic [ref=e102]:
+        - text: Available Packages
+        - generic [ref=e105]:
+          - generic [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+            - paragraph [ref=e109]: Today
+          - paragraph [ref=e111] [cursor=pointer]: Tomorrow
+          - generic "Open calendar" [ref=e112] [cursor=pointer]:
+            - img [ref=e113]
+            - paragraph [ref=e115]: Other
+            - img [ref=e116]
+        - generic [ref=e119]:
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: Free Transfer
+              - img [ref=e124]
+            - heading "[Promo - Free Transfer] Private Tour Uluwatu Kecak & Fire Dance Performance" [level=6] [ref=e127]
+            - paragraph [ref=e128]: Watch the Kecak & Fire Dance performance at Uluwatu Temple (Seating arrangements are subject to venue policy). Free car transfer is available for bookings with a minimum of 4 adult participants. You will be contacted via WhatsApp or other messaging apps to confirm your pickup time and location. Please ensure the phone number provided during booking is active and reachable.
+            - generic [ref=e130]:
+              - generic [ref=e131]:
+                - generic [ref=e132]:
+                  - generic [ref=e133]: IDR 1,150,000
+                  - generic [ref=e134]: "-82%"
+                - heading "IDR 210,000" [level=6] [ref=e135]
+              - generic [ref=e136]:
+                - button "Details" [ref=e137] [cursor=pointer]
+                - button "Select" [ref=e138] [cursor=pointer]:
+                  - text: Select
+                  - img [ref=e140]
+          - generic [ref=e143]:
+            - heading "Entry Ticket for Kecak & Fire Dance Performance at Uluwatu Temple (Without Transfer)" [level=6] [ref=e144]
+            - paragraph [ref=e145]: Entry ticket for the Kecak & Fire Dance performance at Uluwatu Temple (Seat allocation follows venue policy). Depending on venue availability, you may attend the 06:00 PM or 07:00 PM Bali time performance. You will be contacted via WhatsApp or other messaging apps to confirm your booking code before entry. Please ensure the phone number provided during booking is active and reachable.
+            - generic [ref=e147]:
+              - heading "IDR 135,000" [level=6] [ref=e149]
+              - generic [ref=e150]:
+                - button "Details" [ref=e151] [cursor=pointer]
+                - button "Select" [ref=e152] [cursor=pointer]:
+                  - text: Select
+                  - img [ref=e154]
+      - generic [ref=e157]:
+        - text: Activity Overview
+        - generic [ref=e160]:
+          - paragraph [ref=e161]:
+            - strong [ref=e162]: 🌅 Kecak & Fire Dance at Uluwatu Temple – Sunset Cliffside Experience
+          - paragraph [ref=e163]:
+            - strong [ref=e164]: 🎟️ Satu-satu Curated Experience
+          - paragraph [ref=e165]:
+            - strong [ref=e166]: Exclusive Same-Day Booking (Book by 12 PM)
+          - paragraph [ref=e167]: 🎁 Includes bonus merchandise to take home!
+          - paragraph [ref=e168]
+          - paragraph [ref=e169]:
+            - strong [ref=e170]: 🔥 Experience the Iconic Bali Sunset Performance
+          - paragraph [ref=e171]:
+            - text: Watch the legendary
+            - strong [ref=e172]: Balinese Kecak & Fire Dance at Uluwatu Temple
+            - text: ", staged in a breathtaking cliffside amphitheater overlooking the Indian Ocean. Timed perfectly for"
+            - strong [ref=e173]: golden hour
+            - text: ", the powerful chanting chorus, dramatic ocean backdrop, and fiery finale combine to create the cinematic “Bali moment” every traveler dreams of."
+          - paragraph [ref=e174]: As the sun sets behind the temple cliffs, the rhythmic Kecak chants and mesmerizing fire dance performance transform the evening into an unforgettable cultural spectacle
+          - paragraph [ref=e175]
+          - paragraph [ref=e176]:
+            - strong [ref=e177]: ✨ Why Choose This Experience?
+          - paragraph [ref=e178]:
+            - text: 👥
+            - strong [ref=e179]: Hosted & Guided Experience
+            - text: – Not just a ticket, but a smoothly organized visit
+          - paragraph [ref=e180]:
+            - text: ⏰
+            - strong [ref=e181]: Optimized Timing
+            - text: – Arrive at the best moment for sunset views
+          - paragraph [ref=e182]:
+            - text: 📍
+            - strong [ref=e183]: Iconic Uluwatu Location
+            - text: – One of Bali’s most famous cultural landmarks
+          - paragraph [ref=e184]:
+            - text: 🎁
+            - strong [ref=e185]: Bonus Merchandise
+            - text: – Keepsake from your Bali journey
+          - paragraph [ref=e186]:
+            - text: 🌏
+            - strong [ref=e187]: Perfect for First-Time Visitors
+            - text: – Maximum impact with minimal effort
+          - paragraph [ref=e188]
+          - paragraph [ref=e189]:
+            - strong [ref=e190]: "📌 Perfect For:"
+          - paragraph [ref=e191]: 📸 Travel photography lovers
+          - paragraph [ref=e192]: 🌅 Sunset seekers
+          - paragraph [ref=e193]: 🎭 Cultural explorers
+          - paragraph [ref=e194]
+          - paragraph [ref=e195]:
+            - img "img-alt"
+          - paragraph [ref=e196]: A truly breathtaking shot of the Kecak Fire Dance at Uluwatu Temple at sunset. The dramatic cliff-edge amphitheater, the glowing golden sky, and the powerful circular chanting performance create an unforgettable Balinese experience.
+          - paragraph [ref=e197]
+          - paragraph [ref=e198]:
+            - img "img-alt"
+          - paragraph [ref=e199]: Hanoman’s dramatic action during the Kecak dance becomes even more magical when accompanied by the stunning orange sunset and the breathtaking view of the endless ocean.
+          - paragraph [ref=e200]
+          - paragraph [ref=e201]:
+            - img "img-alt"
+          - paragraph [ref=e202]: The fire part at the end was incredible. The performer kicked burning coconut husks everywhere — dramatic and exciting!A cinematic depiction of the Kecak Fire Dance at Uluwatu Temple under a stunning red and purple twilight sky.
+          - paragraph [ref=e203]
+          - paragraph [ref=e204]:
+            - img "img-alt"
+          - paragraph [ref=e205]: The iconic Uluwatu cliffs overlook the Indian Ocean. Dramatic limestone cliffs, turquoise waves, and lush green landscapes create a stunning tropical panorama that embodies the true beauty of Bali.
+          - paragraph [ref=e206]
+          - paragraph [ref=e207]:
+            - img "img-alt"
+          - paragraph [ref=e208]: The iconic Uluwatu landscape with its lush green hilltops and crashing ocean waves makes it a truly precious moment.
+          - paragraph [ref=e209]
+          - paragraph [ref=e210]
+          - paragraph [ref=e211]:
+            - strong [ref=e212]: Comments on reviews from several Tripadvisor users who have visited this place (
+            - link "Source" [ref=e213] [cursor=pointer]:
+              - /url: https://www.tripadvisor.com/AttractionProductReview-g1380108-d33247088-Uluwatu_Temple_Entry_and_Kecak_Fire_Dance_Ticket-Pecatu_Bukit_Peninsula_Bali.html
+              - strong [ref=e214]: Source
+            - strong [ref=e215]: "):"
+          - paragraph [ref=e216]
+          - paragraph [ref=e217]:
+            - img "img-alt"
+          - paragraph [ref=e218]
+          - paragraph [ref=e219]:
+            - img "img-alt"
+          - paragraph [ref=e220]
+          - paragraph [ref=e221]:
+            - img "img-alt"
+          - paragraph [ref=e222]:
+            - iframe [ref=e223]:
+              - generic [active] [ref=f3e1]:
+                - generic "YouTube Video Player" [ref=f3e3]
+                - generic [ref=f3e5]:
+                  - generic:
+                    - generic:
+                      - button "Play video" [ref=f3e10] [cursor=pointer]
+                      - button "Hide player controls" [ref=f3e12] [cursor=pointer]
+                      - generic [ref=f3e14]:
+                        - generic [ref=f3e19]:
+                          - generic [ref=f3e20]:
+                            - link "Kecak Fire Dance Uluwatu Temple - TRADITIONAL MUSIC - Bali, Indonesia - A SLICE OF THE ORIENT TEASER" [ref=f3e21] [cursor=pointer]:
+                              - /url: https://www.youtube.com/watch?v=CdVNrwO9DSk
+                            - link "Fat Slice Media" [ref=f3e22] [cursor=pointer]:
+                              - /url: /channel/UCAMKyCkynLbM0GwtwbqkdNA
+                              - generic [ref=f3e23]: Fat Slice Media
+                          - generic [ref=f3e24]:
+                            - button [ref=f3e25] [cursor=pointer]
+                            - generic [ref=f3e27]:
+                              - generic: Fat Slice Media
+                              - generic: 293 subscribers
+                        - generic [ref=f3e28]:
+                          - button "Share" [ref=f3e31] [cursor=pointer]:
+                            - generic [ref=f3e35]:
+                              - img
+                          - link "Watch on YouTube" [ref=f3e42] [cursor=pointer]:
+                            - /url: https://www.youtube.com/watch?v=CdVNrwO9DSk
+                            - generic [ref=f3e45]:
+                              - text: Watch on
+                              - img [ref=f3e47]:
+                                - generic [ref=f3e49]:
+                                  - img
+          - paragraph [ref=e224]: "Watch this video for a real perspective of the experience (Video credit: Fat Slice Media)"
+      - generic [ref=e225]:
+        - generic [ref=e227]: Location
+        - generic [ref=e231]:
+          - text: FAQ
+          - generic [ref=e232]:
+            - heading "What is the Age Requirement for Ticket Purchase?" [level=3] [ref=e235]:
+              - button "What is the Age Requirement for Ticket Purchase?" [ref=e236] [cursor=pointer]:
+                - heading "What is the Age Requirement for Ticket Purchase?" [level=6] [ref=e238]
+                - img [ref=e240]
+            - heading "Cancellation policy for Ticket Purchase?" [level=3] [ref=e244]:
+              - button "Cancellation policy for Ticket Purchase?" [ref=e245] [cursor=pointer]:
+                - heading "Cancellation policy for Ticket Purchase?" [level=6] [ref=e247]
+                - img [ref=e249]
+            - heading "How do I redeem my ticket?" [level=3] [ref=e253]:
+              - button "How do I redeem my ticket?" [ref=e254] [cursor=pointer]:
+                - heading "How do I redeem my ticket?" [level=6] [ref=e256]
+                - img [ref=e258]
+            - heading "Can I book on the same day?" [level=3] [ref=e262]:
+              - button "Can I book on the same day?" [ref=e263] [cursor=pointer]:
+                - heading "Can I book on the same day?" [level=6] [ref=e265]
+                - img [ref=e267]
+            - heading "Where can I contact for further questions?" [level=3] [ref=e271]:
+              - button "Where can I contact for further questions?" [ref=e272] [cursor=pointer]:
+                - heading "Where can I contact for further questions?" [level=6] [ref=e274]
+                - img [ref=e276]
+  - button "Scroll to top":
+    - img
+  - alert [ref=e278]
