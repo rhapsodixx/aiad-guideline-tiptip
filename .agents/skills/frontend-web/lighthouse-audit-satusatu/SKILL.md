@@ -1,6 +1,6 @@
 ---
 name: lighthouse-audit-satusatu
-description: Use when auditing SatuSatu web performance — runs Lighthouse on homepage and catalog detail pages across mobile/desktop, reads pre-researched travel/ticketing industry benchmarks, captures page screenshots, and generates a severity-graded markdown report with techstack-specific fixes. Supports refresh-benchmarks command to update industry data.
+description: Use when auditing SatuSatu web performance — runs Lighthouse on homepage and catalog detail pages across 3 test modes (desktop, mobile-unthrottled, mobile-throttled), reads pre-researched travel/ticketing industry benchmarks, captures page screenshots, and generates a severity-graded markdown report with throttle impact analysis and techstack-specific fixes. Supports refresh-benchmarks command to update industry data.
 ---
 
 # Lighthouse Audit — SatuSatu
@@ -15,7 +15,7 @@ This skill supports two commands:
 
 | Command | Purpose |
 |---------|---------|
-| **`audit`** (default) | Run full Lighthouse audit — screenshots, audits, severity grading, markdown report |
+| **`audit`** (default) | Run full Lighthouse audit — screenshots, audits, severity grading, throttle impact analysis, markdown report |
 | **`refresh-benchmarks`** | Research current industry benchmarks via WebSearch and update `industry-benchmarks.md` |
 
 If no command is specified, run `audit`.
@@ -31,12 +31,19 @@ If no command is specified, run `audit`.
 | Homepage | `https://satusatu.com/en-US` |
 | Catalog Detail | `https://satusatu.com/en-US/catalog/uluwatu-temple-kecak-fire-dance-satusatu-curated-experience-sameday-booking-bonus-merchandise` |
 
-### Devices
+### Test Modes
 
-- `mobile` (viewport: 375x812)
-- `desktop` (viewport: 1440x900)
+Audits run in **3 modes** to get a complete performance picture:
 
-Total audit runs: **4** (2 URLs x 2 devices). Do NOT skip any combination.
+| Test Mode | Viewport | Network Throttling | CPU Slowdown | Purpose |
+|-----------|----------|--------------------|--------------|---------|
+| `desktop` | 1440×900 | None | None | Best-case baseline — raw site capability |
+| `mobile-unthrottled` | 375×812 | None | None | Isolates mobile layout/rendering issues from network constraints |
+| `mobile-throttled` | 375×812 | Simulated Slow 4G (1.6 Mbps ↓ / 750 Kbps ↑, 150ms RTT) | 4× | Real-world mobile experience |
+
+Total audit runs: **6** (2 URLs × 3 modes). Do NOT skip any combination.
+
+**Why 3 modes:** Comparing mobile-throttled vs mobile-unthrottled reveals whether performance issues come from the code itself or from network/CPU constraints. If unthrottled mobile is also slow, the problem is in the code — not the network.
 
 ### Lighthouse Settings
 
@@ -46,11 +53,17 @@ All audits use the following Lighthouse configuration. Include this in the repor
 |---------|-------|
 | Lighthouse version | As reported by `mcp__lighthouse__run_audit` response (`version` field) |
 | Categories | `performance`, `accessibility`, `best-practices`, `seo` |
-| Mobile throttling | Moto G Power with simulated Slow 4G (1.6 Mbps down / 750 Kbps up, 150ms RTT) — Lighthouse default |
-| Desktop throttling | No CPU throttle, no network throttle — Lighthouse default desktop |
-| Form factor (mobile) | Mobile (viewport 375x812, 4x CPU slowdown) |
-| Form factor (desktop) | Desktop (viewport 1440x900, no CPU slowdown) |
 | User agent | HeadlessChrome (as reported by Lighthouse) |
+
+**Per-mode configuration:**
+
+| Setting | Desktop | Mobile Unthrottled | Mobile Throttled |
+|---------|---------|-------------------|------------------|
+| Device emulation | `desktop` | `mobile` | `mobile` |
+| `throttling` parameter | _(default)_ | `false` | _(default)_ |
+| Network throttling | None | None | Slow 4G (1.6 Mbps ↓ / 750 Kbps ↑, 150ms RTT) |
+| CPU slowdown | None | None | 4× |
+| Viewport | 1440×900 | 375×812 | 375×812 |
 
 ### Output Directory
 
@@ -59,10 +72,12 @@ All output goes into: `lighthouse-audit-satusatu-report/`
 ```
 lighthouse-audit-satusatu-report/
   screenshots/
-    homepage-mobile.png
     homepage-desktop.png
-    catalog-detail-mobile.png
+    homepage-mobile-unthrottled.png
+    homepage-mobile-throttled.png
     catalog-detail-desktop.png
+    catalog-detail-mobile-unthrottled.png
+    catalog-detail-mobile-throttled.png
   report.md
 ```
 
@@ -86,30 +101,42 @@ Do NOT run WebSearch for benchmarks during `audit`. If `industry-benchmarks.md` 
 
 Use Playwright MCP to capture full-page screenshots of each URL at each viewport. These screenshots provide visual context for the audit report.
 
-For each of the 4 combinations (2 URLs x 2 devices):
+For each of the 6 combinations (2 URLs × 3 modes):
 
 1. Navigate to the URL using `mcp__plugin_playwright_playwright__browser_navigate`
 2. Resize viewport using `mcp__plugin_playwright_playwright__browser_resize`:
-   - Mobile: width 375, height 812
    - Desktop: width 1440, height 900
-3. Wait for network idle using `mcp__plugin_playwright_playwright__browser_wait_for` (wait for load state)
-4. Take a full-page screenshot using `mcp__plugin_playwright_playwright__browser_take_screenshot` and save to the `screenshots/` subdirectory with the naming convention: `{page}-{device}.png`
+   - Mobile (both modes): width 375, height 812
+3. Wait for page load using `mcp__plugin_playwright_playwright__browser_wait_for` (wait 3 seconds)
+4. Take a full-page screenshot using `mcp__plugin_playwright_playwright__browser_take_screenshot`
 
 File names:
-- `screenshots/homepage-mobile.png`
 - `screenshots/homepage-desktop.png`
-- `screenshots/catalog-detail-mobile.png`
+- `screenshots/homepage-mobile-unthrottled.png`
+- `screenshots/homepage-mobile-throttled.png`
 - `screenshots/catalog-detail-desktop.png`
+- `screenshots/catalog-detail-mobile-unthrottled.png`
+- `screenshots/catalog-detail-mobile-throttled.png`
+
+**Note:** Mobile-unthrottled and mobile-throttled use the same viewport (375×812). Capture separate screenshots anyway — page content may render differently under throttled conditions (lazy-loaded images, deferred content may not have loaded).
 
 #### Step 4 — Run Lighthouse Audits
 
-Use `mcp__lighthouse__run_audit` for all 4 combinations (2 URLs x 2 devices) with categories: `performance`, `accessibility`, `best-practices`, `seo`.
+Use `mcp__lighthouse__run_audit` for all 6 combinations with categories: `performance`, `accessibility`, `best-practices`, `seo`.
 
-Record the Lighthouse version and user agent from the response for the report's Lighthouse Settings section.
+**API call parameters per mode:**
+
+| Mode | `device` | `throttling` |
+|------|----------|-------------|
+| Desktop | `"desktop"` | _(omit — default: no throttle)_ |
+| Mobile Unthrottled | `"mobile"` | `false` |
+| Mobile Throttled | `"mobile"` | _(omit — default: true)_ |
+
+Record the Lighthouse version and user agent from the first response for the report's Lighthouse Settings section.
 
 #### Step 5 — Collect & Categorize Scores
 
-Extract from each audit run:
+Extract from each of the 6 audit runs:
 - Performance (overall score)
 - Accessibility
 - Best Practices
@@ -123,7 +150,10 @@ Extract from each audit run:
 
 #### Step 6 — Compare Against Benchmarks
 
-Use the **Audit Target** column from `industry-benchmarks.md` as the quality bar.
+Use the **Audit Target** column from `industry-benchmarks.md` as the quality bar. Apply the appropriate threshold (mobile or desktop) for each test mode:
+- Desktop → use desktop thresholds
+- Mobile Unthrottled → use mobile thresholds (layout/rendering baseline)
+- Mobile Throttled → use mobile thresholds (real-world target)
 
 #### Step 7 — Severity Classification
 
@@ -135,6 +165,8 @@ Use the severity criteria defined in `industry-benchmarks.md` under "Severity Cl
 | **P1 (High)** | Below Google's "good" threshold but near industry median — high user impact, prioritize within sprint |
 | **P2 (Medium)** | Meets Google's minimum but below industry median — competitive disadvantage, plan for improvement |
 | **P3 (Low)** | Meets both thresholds but individual audit items flag opportunities > 0.3s savings — nice-to-have |
+
+**Severity is determined from the mobile-throttled results** (real-world scenario). Mobile-unthrottled results inform the root cause analysis, not the severity grade.
 
 #### Step 8 — Generate Markdown Report
 
@@ -158,23 +190,25 @@ The markdown report MUST follow this structure:
 |---------|-------|
 | Lighthouse version | {from audit response} |
 | Categories | performance, accessibility, best-practices, seo |
-| Mobile throttling | Simulated Slow 4G (1.6 Mbps / 750 Kbps, 150ms RTT), 4x CPU slowdown |
-| Desktop throttling | No throttling applied |
-| Mobile viewport | 375 x 812 |
-| Desktop viewport | 1440 x 900 |
 | User agent | {from audit response} |
+
+| Setting | Desktop | Mobile Unthrottled | Mobile Throttled |
+|---------|---------|-------------------|------------------|
+| Network throttling | None | None | Slow 4G (1.6 Mbps / 750 Kbps, 150ms RTT) |
+| CPU slowdown | None | None | 4× |
+| Viewport | 1440 × 900 | 375 × 812 | 375 × 812 |
 
 ## Screenshots
 
 ### Homepage
-| Mobile | Desktop |
-|--------|---------|
-| ![Homepage Mobile](screenshots/homepage-mobile.png) | ![Homepage Desktop](screenshots/homepage-desktop.png) |
+| Desktop | Mobile Unthrottled | Mobile Throttled |
+|---------|-------------------|------------------|
+| ![](screenshots/homepage-desktop.png) | ![](screenshots/homepage-mobile-unthrottled.png) | ![](screenshots/homepage-mobile-throttled.png) |
 
 ### Catalog Detail
-| Mobile | Desktop |
-|--------|---------|
-| ![Catalog Mobile](screenshots/catalog-detail-mobile.png) | ![Catalog Desktop](screenshots/catalog-detail-desktop.png) |
+| Desktop | Mobile Unthrottled | Mobile Throttled |
+|---------|-------------------|------------------|
+| ![](screenshots/catalog-detail-desktop.png) | ![](screenshots/catalog-detail-mobile-unthrottled.png) | ![](screenshots/catalog-detail-mobile-throttled.png) |
 
 ## Industry Benchmark Context
 
@@ -189,42 +223,85 @@ The markdown report MUST follow this structure:
 
 ## Executive Summary
 
-{Pass/Fail matrix per category per URL per device using emoji indicators}
+{Pass/Fail matrix per category, per URL, across all 3 modes}
 - ✅ Pass (meets audit target)
 - ⚠️ Needs Work (between Google "good" and industry median)
 - ❌ Fail (below both)
 
-| Category | Homepage Mobile | Homepage Desktop | Catalog Mobile | Catalog Desktop |
-|----------|----------------|------------------|----------------|-----------------|
-| Performance | ... | ... | ... | ... |
-| Accessibility | ... | ... | ... | ... |
-| Best Practices | ... | ... | ... | ... |
-| SEO | ... | ... | ... | ... |
-| LCP | ... | ... | ... | ... |
-| Page Weight | ... | ... | ... | ... |
+### Homepage
+
+| Category | Desktop | Mobile Unthrottled | Mobile Throttled |
+|----------|---------|-------------------|------------------|
+| Performance | ... | ... | ... |
+| Accessibility | ... | ... | ... |
+| Best Practices | ... | ... | ... |
+| SEO | ... | ... | ... |
+| LCP | ... | ... | ... |
+
+### Catalog Detail
+
+| Category | Desktop | Mobile Unthrottled | Mobile Throttled |
+|----------|---------|-------------------|------------------|
+| Performance | ... | ... | ... |
+| Accessibility | ... | ... | ... |
+| Best Practices | ... | ... | ... |
+| SEO | ... | ... | ... |
+| LCP | ... | ... | ... |
 
 ## Score Dashboard
 
-{Detailed scores with all threshold columns}
+{Detailed scores with all threshold columns — 6 rows per category}
 
-| Category | URL | Device | Score | Google "Good" | Industry Median | Target | Status |
-|----------|-----|--------|-------|---------------|-----------------|--------|--------|
+| Category | URL | Mode | Score | Google "Good" | Industry Median | Target | Status |
+|----------|-----|------|-------|---------------|-----------------|--------|--------|
 | ... | ... | ... | ... | ... | ... | ... | ... |
 
 ### Additional Metrics
 
-| Metric | Homepage Mobile | Homepage Desktop | Catalog Mobile | Catalog Desktop |
-|--------|----------------|------------------|----------------|-----------------|
-| FCP | ... | ... | ... | ... |
+| Metric | Homepage Desktop | Homepage Mobile Unthrottled | Homepage Mobile Throttled | Catalog Desktop | Catalog Mobile Unthrottled | Catalog Mobile Throttled |
+|--------|-----------------|----------------------------|--------------------------|-----------------|----------------------------|--------------------------|
+| FCP | ... | ... | ... | ... | ... | ... |
+| LCP | ... | ... | ... | ... | ... | ... |
+| TBT | ... | ... | ... | ... | ... | ... |
+| Speed Index | ... | ... | ... | ... | ... | ... |
+| TTI | ... | ... | ... | ... | ... | ... |
+| CLS | ... | ... | ... | ... | ... | ... |
+
+## Throttle Impact Analysis
+
+Compares mobile-unthrottled vs mobile-throttled to isolate network/CPU impact from code issues.
+
+### Homepage
+
+| Metric | Unthrottled | Throttled | Delta | Bottleneck |
+|--------|-------------|-----------|-------|------------|
+| Performance | ... | ... | ... | Code / Network / Both |
+| LCP | ... | ... | ... | ... |
 | TBT | ... | ... | ... | ... |
+| FCP | ... | ... | ... | ... |
 | Speed Index | ... | ... | ... | ... |
 | TTI | ... | ... | ... | ... |
-| CLS | ... | ... | ... | ... |
+
+### Catalog Detail
+
+| Metric | Unthrottled | Throttled | Delta | Bottleneck |
+|--------|-------------|-----------|-------|------------|
+| Performance | ... | ... | ... | Code / Network / Both |
+| LCP | ... | ... | ... | ... |
+| TBT | ... | ... | ... | ... |
+| FCP | ... | ... | ... | ... |
+| Speed Index | ... | ... | ... | ... |
+| TTI | ... | ... | ... | ... |
+
+**Bottleneck Classification:**
+- **Code** — Unthrottled score is also poor (below audit target). The problem is in the code regardless of network conditions. Fix: optimize JS bundles, rendering pipeline, image sizes.
+- **Network** — Unthrottled passes but throttled fails. The code is fine but transfer sizes or server response times degrade under constrained networks. Fix: reduce payload sizes, improve caching, optimize TTFB.
+- **Both** — Unthrottled is borderline (near target) and throttling pushes it to failure. Both code optimization and network optimization needed.
 
 ## Findings by Severity
 
 ### P0 — Critical
-{Each finding with: category, URL, device, current vs target, suggested fix, effort}
+{Each finding with: category, URL, mode, current vs target, bottleneck from throttle analysis, suggested fix, effort}
 
 ### P1 — High
 ...
@@ -241,9 +318,9 @@ The markdown report MUST follow this structure:
 
 ## Priority Action Plan
 
-| Priority | Finding | Effort | Expected Impact |
-|----------|---------|--------|-----------------|
-| ... | ... | ... | ... |
+| Priority | Finding | Bottleneck | Effort | Expected Impact |
+|----------|---------|------------|--------|-----------------|
+| ... | ... | Code/Network/Both | ... | ... |
 
 ## Techstack Context
 
@@ -254,21 +331,24 @@ The markdown report MUST follow this structure:
 ### Example Finding
 
 ```markdown
-### P1 — Mobile Performance: Homepage
+### P0 — Mobile Performance: Homepage
 
 **Industry Context:** Travel site median mobile performance is ~35.
 Google "good" LCP is ≤2.5s. Target: ≤2.5s.
 
-| Metric | Current | Google "Good" | Industry Median | Target | Status |
-|--------|---------|---------------|-----------------|--------|--------|
-| LCP    | 3.8s    | ≤ 2.5s       | ~3.2s           | ≤ 2.5s | ⚠️ P1  |
+**Throttle Impact:** Unthrottled LCP = 5.2s, Throttled LCP = 12.0s → **Both** (code issue amplified by network)
+
+| Metric | Unthrottled | Throttled | Google "Good" | Industry Median | Target | Status |
+|--------|-------------|-----------|---------------|-----------------|--------|--------|
+| LCP    | 5.2s        | 12.0s     | ≤ 2.5s       | ~3.5s           | ≤ 2.5s | ❌ P0  |
 
 **Suggested Fix (Next.js 16 + EdgeOne):**
-- Enable `next/image` with `priority` prop for hero banner (above-the-fold LCP element)
+- Enable EdgeOne image optimization (WebP/AVIF auto-conversion at edge) — https://www.tencentcloud.com/document/product/228/47823
 - Configure EdgeOne edge caching with `s-maxage=31536000` for static image assets
 - Use `<link rel="preload">` via Next.js `metadata` API for critical hero image
+- Code-split heavy JS bundles using Next.js `dynamic()` with `{ ssr: false }`
 
-**Effort:** Quick Win
+**Effort:** Large
 ```
 
 ---
@@ -333,8 +413,8 @@ This command updates the industry benchmark reference data. Run this quarterly o
 
 - Do NOT aim for perfect 100 scores — industry-standard thresholds are the quality bar
 - Do NOT hardcode techstack — always read from `techstack.md`
-- Do NOT suggest generic fixes when framework-specific solutions exist (e.g., prefer `next/image` over generic lazy-loading)
-- Do NOT skip any of the 4 audit runs (audit command)
-- Do NOT skip any of the 4 screenshot captures (audit command)
+- Do NOT suggest generic fixes when framework-specific solutions exist (e.g., prefer EdgeOne image optimization over generic lazy-loading advice)
+- Do NOT skip any of the 6 audit runs (audit command)
+- Do NOT skip any of the 6 screenshot captures (audit command)
 - Write all output to `lighthouse-audit-satusatu-report/` directory — never dump to terminal
 - Screenshots use relative paths in the markdown so the report is portable

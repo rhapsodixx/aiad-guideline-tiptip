@@ -1,0 +1,670 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "SatuSatu Logo" [ref=e6] [cursor=pointer]:
+        - /url: /en-US
+        - img "SatuSatu Logo" [ref=e8]
+      - generic [ref=e11]:
+        - textbox "Rafting? Nusa Penida trip? Type anything" [ref=e12]
+        - img [ref=e14] [cursor=pointer]
+    - generic [ref=e16]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - link "Free Round Trip" [ref=e21] [cursor=pointer]:
+            - /url: https://satusatu.com/en-ID/catalog/dadi-bali-adventure-atv-quad-bike
+            - img "Free Round Trip" [ref=e23]
+          - link "Kecak Uluwatu" [ref=e25] [cursor=pointer]:
+            - /url: https://satusatu.com/en-ID/catalog/uluwatu-temple-kecak-fire-dance-satusatu-curated-experience-sameday-booking-bonus-merchandise
+            - img "Kecak Uluwatu" [ref=e27]
+          - img "Locally Curated" [ref=e30]
+          - link "Nusa Penida" [ref=e32] [cursor=pointer]:
+            - /url: https://satusatu.com/catalog/2-days-bali-intimate-package
+            - img "Nusa Penida" [ref=e34]
+        - generic [ref=e35]:
+          - button "Go to slide 1" [ref=e36] [cursor=pointer]
+          - button "Go to slide 2" [ref=e37] [cursor=pointer]
+          - button "Go to slide 3" [ref=e38] [cursor=pointer]
+          - button "Go to slide 4" [ref=e39] [cursor=pointer]
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - img "Locally Curated" [ref=e44]
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - img [ref=e47]
+              - text: Curated by locals
+            - generic [ref=e50]:
+              - img [ref=e51]
+              - text: Dedicated support
+            - generic [ref=e54]:
+              - img [ref=e55]
+              - text: Welcoming gift*
+        - generic [ref=e58]:
+          - link "Locally Curated Dadi Bali Jungle ATV Adventure Payangan, Gianyar, Bali Dadi Bali Jungle ATV Adventure 4.9 (100+) • 500+ sold From IDR 350,000 IDR 580,000 -40%" [ref=e60] [cursor=pointer]:
+            - /url: /catalog/dadi-bali-adventure-atv-quad-bike
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - generic [ref=e63]:
+                  - img [ref=e64]
+                  - generic [ref=e67]: Locally Curated
+                - img "Dadi Bali Jungle ATV Adventure" [ref=e68]
+                - generic [ref=e69]:
+                  - img [ref=e71]
+                  - paragraph [ref=e74]: Payangan, Gianyar, Bali
+              - generic [ref=e75]:
+                - generic [ref=e76]: Dadi Bali Jungle ATV Adventure
+                - generic [ref=e77]:
+                  - generic [ref=e78]:
+                    - img [ref=e80]
+                    - generic [ref=e83]: 4.9 (100+)
+                  - paragraph [ref=e84]: •
+                  - generic [ref=e85]: 500+ sold
+                - generic [ref=e86]:
+                  - generic [ref=e87]:
+                    - generic [ref=e88]: From
+                    - paragraph [ref=e89]: IDR 350,000
+                  - generic [ref=e90]:
+                    - paragraph [ref=e91]: IDR 580,000
+                    - generic [ref=e92]: "-40%"
+          - link "Same Day Booking Kecak Fire Dance Uluwatu Uluwatu Temple (Pura Luhur Uluwatu) Kecak Fire Dance Uluwatu 4.7 (200+) • 1.0k+ sold From IDR 135,000" [ref=e94] [cursor=pointer]:
+            - /url: /catalog/uluwatu-temple-kecak-fire-dance-satusatu-curated-experience-sameday-booking-bonus-merchandise
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - generic [ref=e97]:
+                  - img [ref=e98]
+                  - generic [ref=e101]: Same Day Booking
+                - img "Kecak Fire Dance Uluwatu" [ref=e102]
+                - generic [ref=e103]:
+                  - img [ref=e105]
+                  - paragraph [ref=e108]: Uluwatu Temple (Pura Luhur Uluwatu)
+              - generic [ref=e109]:
+                - generic [ref=e110]: Kecak Fire Dance Uluwatu
+                - generic [ref=e111]:
+                  - generic [ref=e112]:
+                    - img [ref=e114]
+                    - generic [ref=e117]: 4.7 (200+)
+                  - paragraph [ref=e118]: •
+                  - generic [ref=e119]: 1.0k+ sold
+                - generic [ref=e121]:
+                  - generic [ref=e122]: From
+                  - paragraph [ref=e123]: IDR 135,000
+          - link "Same Day Booking Bali Airport Transfer Bali Bali Airport Transfer 4.9 (200+) • 700+ sold From IDR 250,000" [ref=e125] [cursor=pointer]:
+            - /url: /catalog/satusatu-airport-transfer-from-to-airport-sameday-booking
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - img [ref=e129]
+                  - generic [ref=e132]: Same Day Booking
+                - img "Bali Airport Transfer" [ref=e133]
+                - generic [ref=e134]:
+                  - img [ref=e136]
+                  - paragraph [ref=e139]: Bali
+              - generic [ref=e140]:
+                - generic [ref=e141]: Bali Airport Transfer
+                - generic [ref=e142]:
+                  - generic [ref=e143]:
+                    - img [ref=e145]
+                    - generic [ref=e148]: 4.9 (200+)
+                  - paragraph [ref=e149]: •
+                  - generic [ref=e150]: 700+ sold
+                - generic [ref=e152]:
+                  - generic [ref=e153]: From
+                  - paragraph [ref=e154]: IDR 250,000
+          - link "Same Day Booking Surya Bintang Adventures - ATV Wild Ride Payangan, Gianyar, Bali Surya Bintang Adventures - ATV Wild Ride 4.9 (30+) • 100+ sold From IDR 350,000 IDR 980,000 -64%" [ref=e156] [cursor=pointer]:
+            - /url: /catalog/thrilling-atv-rides-by-surya-bintang-adventures
+            - generic [ref=e157]:
+              - generic [ref=e158]:
+                - generic [ref=e159]:
+                  - img [ref=e160]
+                  - generic [ref=e163]: Same Day Booking
+                - img "Surya Bintang Adventures - ATV Wild Ride" [ref=e164]
+                - generic [ref=e165]:
+                  - img [ref=e167]
+                  - paragraph [ref=e170]: Payangan, Gianyar, Bali
+              - generic [ref=e171]:
+                - generic [ref=e172]: Surya Bintang Adventures - ATV Wild Ride
+                - generic [ref=e173]:
+                  - generic [ref=e174]:
+                    - img [ref=e176]
+                    - generic [ref=e179]: 4.9 (30+)
+                  - paragraph [ref=e180]: •
+                  - generic [ref=e181]: 100+ sold
+                - generic [ref=e182]:
+                  - generic [ref=e183]:
+                    - generic [ref=e184]: From
+                    - paragraph [ref=e185]: IDR 350,000
+                  - generic [ref=e186]:
+                    - paragraph [ref=e187]: IDR 980,000
+                    - generic [ref=e188]: "-64%"
+          - link "Locally Curated Swarna Spa & Wellness (Canggu) Kuta, Badung, Bali Swarna Spa & Wellness (Canggu) 5.0 (40+) • 100+ sold From IDR 455,000 IDR 540,000 -16%" [ref=e190] [cursor=pointer]:
+            - /url: /catalog/swarna-spa-wellness-luxury-calm-rituals-pererenancanggu
+            - generic [ref=e191]:
+              - generic [ref=e192]:
+                - generic [ref=e193]:
+                  - img [ref=e194]
+                  - generic [ref=e197]: Locally Curated
+                - img "Swarna Spa & Wellness (Canggu)" [ref=e198]
+                - generic [ref=e199]:
+                  - img [ref=e201]
+                  - paragraph [ref=e204]: Kuta, Badung, Bali
+              - generic [ref=e205]:
+                - generic [ref=e206]: Swarna Spa & Wellness (Canggu)
+                - generic [ref=e207]:
+                  - generic [ref=e208]:
+                    - img [ref=e210]
+                    - generic [ref=e213]: 5.0 (40+)
+                  - paragraph [ref=e214]: •
+                  - generic [ref=e215]: 100+ sold
+                - generic [ref=e216]:
+                  - generic [ref=e217]:
+                    - generic [ref=e218]: From
+                    - paragraph [ref=e219]: IDR 455,000
+                  - generic [ref=e220]:
+                    - paragraph [ref=e221]: IDR 540,000
+                    - generic [ref=e222]: "-16%"
+          - link "Locally Curated Bayu Suta Watersport Adventure Nusa Dua, Badung, Bali Bayu Suta Watersport Adventure 4.1 (50+) • 200+ sold From IDR 250,000 IDR 800,000 -69%" [ref=e224] [cursor=pointer]:
+            - /url: /catalog/bayu-suta-water-sport-by-angkasa-travel
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - generic [ref=e227]:
+                  - img [ref=e228]
+                  - generic [ref=e231]: Locally Curated
+                - img "Bayu Suta Watersport Adventure" [ref=e232]
+                - generic [ref=e233]:
+                  - img [ref=e235]
+                  - paragraph [ref=e238]: Nusa Dua, Badung, Bali
+              - generic [ref=e239]:
+                - generic [ref=e240]: Bayu Suta Watersport Adventure
+                - generic [ref=e241]:
+                  - generic [ref=e242]:
+                    - img [ref=e244]
+                    - generic [ref=e247]: 4.1 (50+)
+                  - paragraph [ref=e248]: •
+                  - generic [ref=e249]: 200+ sold
+                - generic [ref=e250]:
+                  - generic [ref=e251]:
+                    - generic [ref=e252]: From
+                    - paragraph [ref=e253]: IDR 250,000
+                  - generic [ref=e254]:
+                    - paragraph [ref=e255]: IDR 800,000
+                    - generic [ref=e256]: "-69%"
+          - link "Locally Curated Nusa Penida Day Tour Sanur Harbour, Denpasar, Bali Nusa Penida Day Tour 4.7 (100+) • 500+ sold From IDR 1,100,000 IDR 1,700,000 -35%" [ref=e258] [cursor=pointer]:
+            - /url: /catalog/nusa-penida-day-tour-satusatu-curated-experience-bonus-merchandise
+            - generic [ref=e259]:
+              - generic [ref=e260]:
+                - generic [ref=e261]:
+                  - img [ref=e262]
+                  - generic [ref=e265]: Locally Curated
+                - img "Nusa Penida Day Tour" [ref=e266]
+                - generic [ref=e267]:
+                  - img [ref=e269]
+                  - paragraph [ref=e272]: Sanur Harbour, Denpasar, Bali
+              - generic [ref=e273]:
+                - generic [ref=e274]: Nusa Penida Day Tour
+                - generic [ref=e275]:
+                  - generic [ref=e276]:
+                    - img [ref=e278]
+                    - generic [ref=e281]: 4.7 (100+)
+                  - paragraph [ref=e282]: •
+                  - generic [ref=e283]: 500+ sold
+                - generic [ref=e284]:
+                  - generic [ref=e285]:
+                    - generic [ref=e286]: From
+                    - paragraph [ref=e287]: IDR 1,100,000
+                  - generic [ref=e288]:
+                    - paragraph [ref=e289]: IDR 1,700,000
+                    - generic [ref=e290]: "-35%"
+          - link "Same Day Booking Bali Car Rental Bali Bali Car Rental 4.8 (100+) • 500+ sold From IDR 450,000" [ref=e292] [cursor=pointer]:
+            - /url: /catalog/satusatu-exclusive-car-charter-sameday-booking
+            - generic [ref=e293]:
+              - generic [ref=e294]:
+                - generic [ref=e295]:
+                  - img [ref=e296]
+                  - generic [ref=e299]: Same Day Booking
+                - img "Bali Car Rental" [ref=e300]
+                - generic [ref=e301]:
+                  - img [ref=e303]
+                  - paragraph [ref=e306]: Bali
+              - generic [ref=e307]:
+                - generic [ref=e308]: Bali Car Rental
+                - generic [ref=e309]:
+                  - generic [ref=e310]:
+                    - img [ref=e312]
+                    - generic [ref=e315]: 4.8 (100+)
+                  - paragraph [ref=e316]: •
+                  - generic [ref=e317]: 500+ sold
+                - generic [ref=e319]:
+                  - generic [ref=e320]: From
+                  - paragraph [ref=e321]: IDR 450,000
+          - link "Same Day Booking ATV Green Bali Adventure Ubud, Gianyar, Bali ATV Green Bali Adventure 4.3 (50+) • 200+ sold From IDR 275,000 IDR 750,000 -63%" [ref=e323] [cursor=pointer]:
+            - /url: /catalog/green-bali-adventure-atv-quad-bike-experience-bonus-exclusive-merchandise
+            - generic [ref=e324]:
+              - generic [ref=e325]:
+                - generic [ref=e326]:
+                  - img [ref=e327]
+                  - generic [ref=e330]: Same Day Booking
+                - img "ATV Green Bali Adventure" [ref=e331]
+                - generic [ref=e332]:
+                  - img [ref=e334]
+                  - paragraph [ref=e337]: Ubud, Gianyar, Bali
+              - generic [ref=e338]:
+                - generic [ref=e339]: ATV Green Bali Adventure
+                - generic [ref=e340]:
+                  - generic [ref=e341]:
+                    - img [ref=e343]
+                    - generic [ref=e346]: 4.3 (50+)
+                  - paragraph [ref=e347]: •
+                  - generic [ref=e348]: 200+ sold
+                - generic [ref=e349]:
+                  - generic [ref=e350]:
+                    - generic [ref=e351]: From
+                    - paragraph [ref=e352]: IDR 275,000
+                  - generic [ref=e353]:
+                    - paragraph [ref=e354]: IDR 750,000
+                    - generic [ref=e355]: "-63%"
+        - button "View all curated experiences" [ref=e356] [cursor=pointer]
+      - generic [ref=e382]:
+        - heading "Explore More" [level=3] [ref=e384]
+        - generic [ref=e385]:
+          - link "Ayung River Rafting Ubud, Gianyar, Bali Ayung River Rafting 4.4 (20+) • 20+ sold From IDR 256,300 IDR 900,000 -72%" [ref=e387] [cursor=pointer]:
+            - /url: /catalog/ayung-river-rafting
+            - generic [ref=e388]:
+              - generic [ref=e389]:
+                - img "Ayung River Rafting" [ref=e390]
+                - generic [ref=e391]:
+                  - img [ref=e393]
+                  - paragraph [ref=e396]: Ubud, Gianyar, Bali
+              - generic [ref=e397]:
+                - generic [ref=e398]: Ayung River Rafting
+                - generic [ref=e399]:
+                  - generic [ref=e400]:
+                    - img [ref=e402]
+                    - generic [ref=e405]: 4.4 (20+)
+                  - paragraph [ref=e406]: •
+                  - generic [ref=e407]: 20+ sold
+                - generic [ref=e408]:
+                  - generic [ref=e409]:
+                    - generic [ref=e410]: From
+                    - paragraph [ref=e411]: IDR 256,300
+                  - generic [ref=e412]:
+                    - paragraph [ref=e413]: IDR 900,000
+                    - generic [ref=e414]: "-72%"
+          - link "3 Point Snorkeling Nusa Penida Sanur, Denpasar Selatan, Bali 3 Point Snorkeling Nusa Penida 3.4 (10+) • 10+ sold From IDR 107,500 IDR 326,000 -67%" [ref=e416] [cursor=pointer]:
+            - /url: /catalog/3-point-snorkeling-nusa-penida
+            - generic [ref=e417]:
+              - generic [ref=e418]:
+                - img "3 Point Snorkeling Nusa Penida" [ref=e419]
+                - generic [ref=e420]:
+                  - img [ref=e422]
+                  - paragraph [ref=e425]: Sanur, Denpasar Selatan, Bali
+              - generic [ref=e426]:
+                - generic [ref=e427]: 3 Point Snorkeling Nusa Penida
+                - generic [ref=e428]:
+                  - generic [ref=e429]:
+                    - img [ref=e431]
+                    - generic [ref=e434]: 3.4 (10+)
+                  - paragraph [ref=e435]: •
+                  - generic [ref=e436]: 10+ sold
+                - generic [ref=e437]:
+                  - generic [ref=e438]:
+                    - generic [ref=e439]: From
+                    - paragraph [ref=e440]: IDR 107,500
+                  - generic [ref=e441]:
+                    - paragraph [ref=e442]: IDR 326,000
+                    - generic [ref=e443]: "-67%"
+          - link "4 Point Snorkeling Safari Sanur, Denpasar Selatan, Bali 4 Point Snorkeling Safari 3.4 (9) • 10+ sold From IDR 362,500 IDR 530,000 -32%" [ref=e445] [cursor=pointer]:
+            - /url: /catalog/4-point-snorkeling-safari
+            - generic [ref=e446]:
+              - generic [ref=e447]:
+                - img "4 Point Snorkeling Safari" [ref=e448]
+                - generic [ref=e449]:
+                  - img [ref=e451]
+                  - paragraph [ref=e454]: Sanur, Denpasar Selatan, Bali
+              - generic [ref=e455]:
+                - generic [ref=e456]: 4 Point Snorkeling Safari
+                - generic [ref=e457]:
+                  - generic [ref=e458]:
+                    - img [ref=e460]
+                    - generic [ref=e463]: 3.4 (9)
+                  - paragraph [ref=e464]: •
+                  - generic [ref=e465]: 10+ sold
+                - generic [ref=e466]:
+                  - generic [ref=e467]:
+                    - generic [ref=e468]: From
+                    - paragraph [ref=e469]: IDR 362,500
+                  - generic [ref=e470]:
+                    - paragraph [ref=e471]: IDR 530,000
+                    - generic [ref=e472]: "-32%"
+          - link "4 Point Snorkeling Safari & West Penida Tour Sanur, Denpasar Selatan, Bali 4 Point Snorkeling Safari & West Penida Tour 3.4 (10+) • 10+ sold From IDR 525,000 IDR 670,000 -22%" [ref=e474] [cursor=pointer]:
+            - /url: /catalog/4-point-snorkeling-safari-west-penida-tour
+            - generic [ref=e475]:
+              - generic [ref=e476]:
+                - img "4 Point Snorkeling Safari & West Penida Tour" [ref=e477]
+                - generic [ref=e478]:
+                  - img [ref=e480]
+                  - paragraph [ref=e483]: Sanur, Denpasar Selatan, Bali
+              - generic [ref=e484]:
+                - generic [ref=e485]: 4 Point Snorkeling Safari & West Penida Tour
+                - generic [ref=e486]:
+                  - generic [ref=e487]:
+                    - img [ref=e489]
+                    - generic [ref=e492]: 3.4 (10+)
+                  - paragraph [ref=e493]: •
+                  - generic [ref=e494]: 10+ sold
+                - generic [ref=e495]:
+                  - generic [ref=e496]:
+                    - generic [ref=e497]: From
+                    - paragraph [ref=e498]: IDR 525,000
+                  - generic [ref=e499]:
+                    - paragraph [ref=e500]: IDR 670,000
+                    - generic [ref=e501]: "-22%"
+          - link "4WD Jeep Caldera Sunrise Experience by Bali Volcano Jeep Kintamani, Bangli, Bali 4WD Jeep Caldera Sunrise Experience by Bali Volcano Jeep 4.3 (30+) • 30+ sold From IDR 756,300 IDR 1,350,000 -44%" [ref=e503] [cursor=pointer]:
+            - /url: /catalog/4wd-jeep-caldera-sunrise-experience-by-bali-volcano-jeep
+            - generic [ref=e504]:
+              - generic [ref=e505]:
+                - img "4WD Jeep Caldera Sunrise Experience by Bali Volcano Jeep" [ref=e506]
+                - generic [ref=e507]:
+                  - img [ref=e509]
+                  - paragraph [ref=e512]: Kintamani, Bangli, Bali
+              - generic [ref=e513]:
+                - generic [ref=e514]: 4WD Jeep Caldera Sunrise Experience by Bali Volcano Jeep
+                - generic [ref=e515]:
+                  - generic [ref=e516]:
+                    - img [ref=e518]
+                    - generic [ref=e521]: 4.3 (30+)
+                  - paragraph [ref=e522]: •
+                  - generic [ref=e523]: 30+ sold
+                - generic [ref=e524]:
+                  - generic [ref=e525]:
+                    - generic [ref=e526]: From
+                    - paragraph [ref=e527]: IDR 756,300
+                  - generic [ref=e528]:
+                    - paragraph [ref=e529]: IDR 1,350,000
+                    - generic [ref=e530]: "-44%"
+          - link "4WD Jeep Mount Batur Sunrise Experience by Bali Volcano Jeep Kintamani, Bangli, Bali 4WD Jeep Mount Batur Sunrise Experience by Bali Volcano Jeep 4.3 (20+) • 30+ sold From IDR 705,000 IDR 1,450,000 -51%" [ref=e532] [cursor=pointer]:
+            - /url: /catalog/4wd-jeep-mount-batur-sunrise-experience-by-bali-volcano-jeep
+            - generic [ref=e533]:
+              - generic [ref=e534]:
+                - img "4WD Jeep Mount Batur Sunrise Experience by Bali Volcano Jeep" [ref=e535]
+                - generic [ref=e536]:
+                  - img [ref=e538]
+                  - paragraph [ref=e541]: Kintamani, Bangli, Bali
+              - generic [ref=e542]:
+                - generic [ref=e543]: 4WD Jeep Mount Batur Sunrise Experience by Bali Volcano Jeep
+                - generic [ref=e544]:
+                  - generic [ref=e545]:
+                    - img [ref=e547]
+                    - generic [ref=e550]: 4.3 (20+)
+                  - paragraph [ref=e551]: •
+                  - generic [ref=e552]: 30+ sold
+                - generic [ref=e553]:
+                  - generic [ref=e554]:
+                    - generic [ref=e555]: From
+                    - paragraph [ref=e556]: IDR 705,000
+                  - generic [ref=e557]:
+                    - paragraph [ref=e558]: IDR 1,450,000
+                    - generic [ref=e559]: "-51%"
+          - link "4WD Land Rover Safari at Munduk Wilderness Banjar, Buleleng, Bali 4WD Land Rover Safari at Munduk Wilderness 4.9 (30+) • 30+ sold From IDR 1,150,000" [ref=e561] [cursor=pointer]:
+            - /url: /catalog/4wd-land-rover-safari-at-munduk-wilderness
+            - generic [ref=e562]:
+              - generic [ref=e563]:
+                - img "4WD Land Rover Safari at Munduk Wilderness" [ref=e564]
+                - generic [ref=e565]:
+                  - img [ref=e567]
+                  - paragraph [ref=e570]: Banjar, Buleleng, Bali
+              - generic [ref=e571]:
+                - generic [ref=e572]: 4WD Land Rover Safari at Munduk Wilderness
+                - generic [ref=e573]:
+                  - generic [ref=e574]:
+                    - img [ref=e576]
+                    - generic [ref=e579]: 4.9 (30+)
+                  - paragraph [ref=e580]: •
+                  - generic [ref=e581]: 30+ sold
+                - generic [ref=e583]:
+                  - generic [ref=e584]: From
+                  - paragraph [ref=e585]: IDR 1,150,000
+          - link "Admission Ticket for Keramas Park Blahbatuh, Gianyar, Bali Admission Ticket for Keramas Park 3.3 (6) From IDR 15,000" [ref=e587] [cursor=pointer]:
+            - /url: /catalog/admission-ticket-for-keramas-park
+            - generic [ref=e588]:
+              - generic [ref=e589]:
+                - img "Admission Ticket for Keramas Park" [ref=e590]
+                - generic [ref=e591]:
+                  - img [ref=e593]
+                  - paragraph [ref=e596]: Blahbatuh, Gianyar, Bali
+              - generic [ref=e597]:
+                - generic [ref=e598]: Admission Ticket for Keramas Park
+                - generic [ref=e600]:
+                  - img [ref=e602]
+                  - generic [ref=e605]: 3.3 (6)
+                - generic [ref=e607]:
+                  - generic [ref=e608]: From
+                  - paragraph [ref=e609]: IDR 15,000
+          - link "Alas Harum Entrance Ticket Tegallalang, Gianyar, Bali Alas Harum Entrance Ticket 3.9 (20+) • 20+ sold From IDR 70,000" [ref=e611] [cursor=pointer]:
+            - /url: /catalog/alas-harum-entrance-ticket
+            - generic [ref=e612]:
+              - generic [ref=e613]:
+                - img "Alas Harum Entrance Ticket" [ref=e614]
+                - generic [ref=e615]:
+                  - img [ref=e617]
+                  - paragraph [ref=e620]: Tegallalang, Gianyar, Bali
+              - generic [ref=e621]:
+                - generic [ref=e622]: Alas Harum Entrance Ticket
+                - generic [ref=e623]:
+                  - generic [ref=e624]:
+                    - img [ref=e626]
+                    - generic [ref=e629]: 3.9 (20+)
+                  - paragraph [ref=e630]: •
+                  - generic [ref=e631]: 20+ sold
+                - generic [ref=e633]:
+                  - generic [ref=e634]: From
+                  - paragraph [ref=e635]: IDR 70,000
+          - link "Alas Harum Rides & Attraction Packages Tegallalang, Gianyar, Bali Alas Harum Rides & Attraction Packages 3.9 (10+) • 20+ sold From IDR 331,300 IDR 485,375 -32%" [ref=e637] [cursor=pointer]:
+            - /url: /catalog/alas-harum-rides-attraction-packages
+            - generic [ref=e638]:
+              - generic [ref=e639]:
+                - img "Alas Harum Rides & Attraction Packages" [ref=e640]
+                - generic [ref=e641]:
+                  - img [ref=e643]
+                  - paragraph [ref=e646]: Tegallalang, Gianyar, Bali
+              - generic [ref=e647]:
+                - generic [ref=e648]: Alas Harum Rides & Attraction Packages
+                - generic [ref=e649]:
+                  - generic [ref=e650]:
+                    - img [ref=e652]
+                    - generic [ref=e655]: 3.9 (10+)
+                  - paragraph [ref=e656]: •
+                  - generic [ref=e657]: 20+ sold
+                - generic [ref=e658]:
+                  - generic [ref=e659]:
+                    - generic [ref=e660]: From
+                    - paragraph [ref=e661]: IDR 331,300
+                  - generic [ref=e662]:
+                    - paragraph [ref=e663]: IDR 485,375
+                    - generic [ref=e664]: "-32%"
+          - link "Alasan Adventure Cycling Tegallalang, Gianyar, Bali Alasan Adventure Cycling 3.8 (8) • 10+ sold From IDR 387,500 IDR 600,000 -35%" [ref=e666] [cursor=pointer]:
+            - /url: /catalog/alasan-adventure-cycling
+            - generic [ref=e667]:
+              - generic [ref=e668]:
+                - img "Alasan Adventure Cycling" [ref=e669]
+                - generic [ref=e670]:
+                  - img [ref=e672]
+                  - paragraph [ref=e675]: Tegallalang, Gianyar, Bali
+              - generic [ref=e676]:
+                - generic [ref=e677]: Alasan Adventure Cycling
+                - generic [ref=e678]:
+                  - generic [ref=e679]:
+                    - img [ref=e681]
+                    - generic [ref=e684]: 3.8 (8)
+                  - paragraph [ref=e685]: •
+                  - generic [ref=e686]: 10+ sold
+                - generic [ref=e687]:
+                  - generic [ref=e688]:
+                    - generic [ref=e689]: From
+                    - paragraph [ref=e690]: IDR 387,500
+                  - generic [ref=e691]:
+                    - paragraph [ref=e692]: IDR 600,000
+                    - generic [ref=e693]: "-35%"
+          - link "Alasan Adventure Paintball Tegallalang, Gianyar, Bali Alasan Adventure Paintball 3.8 (10+) • 10+ sold From IDR 387,500 IDR 600,000 -35%" [ref=e695] [cursor=pointer]:
+            - /url: /catalog/alasan-adventure-paintball
+            - generic [ref=e696]:
+              - generic [ref=e697]:
+                - img "Alasan Adventure Paintball" [ref=e698]
+                - generic [ref=e699]:
+                  - img [ref=e701]
+                  - paragraph [ref=e704]: Tegallalang, Gianyar, Bali
+              - generic [ref=e705]:
+                - generic [ref=e706]: Alasan Adventure Paintball
+                - generic [ref=e707]:
+                  - generic [ref=e708]:
+                    - img [ref=e710]
+                    - generic [ref=e713]: 3.8 (10+)
+                  - paragraph [ref=e714]: •
+                  - generic [ref=e715]: 10+ sold
+                - generic [ref=e716]:
+                  - generic [ref=e717]:
+                    - generic [ref=e718]: From
+                    - paragraph [ref=e719]: IDR 387,500
+                  - generic [ref=e720]:
+                    - paragraph [ref=e721]: IDR 600,000
+                    - generic [ref=e722]: "-35%"
+        - link "See More" [ref=e723] [cursor=pointer]:
+          - /url: /en-US/discovery
+      - generic [ref=e726]:
+        - generic [ref=e727]:
+          - heading "Why SatuSatu?" [level=3] [ref=e728]
+          - paragraph [ref=e729]: We make travel simple. Discover top spots, book fast, and plan trips with zero hassle.
+        - generic [ref=e730]:
+          - generic [ref=e731]:
+            - generic [ref=e732]:
+              - img "homepage_usp_global_title" [ref=e734]
+              - generic [ref=e735]:
+                - paragraph [ref=e736]: Easy & secure payments
+                - paragraph [ref=e737]: Choose from a wide selection of local payment methods
+            - generic [ref=e738]:
+              - img "homepage_usp_booking_title" [ref=e740]
+              - generic [ref=e741]:
+                - paragraph [ref=e742]: Instant booking & confirmation
+                - paragraph [ref=e743]: Book activities in a few taps and you're ready to go
+            - generic [ref=e744]:
+              - img "homepage_usp_discovery_title" [ref=e746]
+              - generic [ref=e747]:
+                - paragraph [ref=e748]: Locally curated experiences
+                - paragraph [ref=e749]: Choose from our wide selection of activities, tours and add-ons for your perfect experience
+            - generic [ref=e750]:
+              - img "homepage_usp_global_title" [ref=e752]
+              - generic [ref=e753]:
+                - paragraph [ref=e754]: Easy & secure payments
+                - paragraph [ref=e755]: Choose from a wide selection of local payment methods
+            - generic [ref=e756]:
+              - img "homepage_usp_booking_title" [ref=e758]
+              - generic [ref=e759]:
+                - paragraph [ref=e760]: Instant booking & confirmation
+                - paragraph [ref=e761]: Book activities in a few taps and you're ready to go
+          - generic [ref=e762]:
+            - button "Go to slide 1" [ref=e763] [cursor=pointer]
+            - button "Go to slide 2" [ref=e764] [cursor=pointer]
+            - button "Go to slide 3" [ref=e765] [cursor=pointer]
+      - generic [ref=e767]:
+        - heading "Frequently Asked Questions" [level=3] [ref=e768]
+        - generic [ref=e769]:
+          - heading "What is SatuSatu?" [level=3] [ref=e772]:
+            - button "What is SatuSatu?" [ref=e773] [cursor=pointer]:
+              - heading "What is SatuSatu?" [level=6] [ref=e775]
+              - img [ref=e777]
+          - heading "How do I book an experience?" [level=3] [ref=e781]:
+            - button "How do I book an experience?" [ref=e782] [cursor=pointer]:
+              - heading "How do I book an experience?" [level=6] [ref=e784]
+              - img [ref=e786]
+          - heading "Is my payment secure?" [level=3] [ref=e790]:
+            - button "Is my payment secure?" [ref=e791] [cursor=pointer]:
+              - heading "Is my payment secure?" [level=6] [ref=e793]
+              - img [ref=e795]
+          - heading "Can I change my booking date?" [level=3] [ref=e799]:
+            - button "Can I change my booking date?" [ref=e800] [cursor=pointer]:
+              - heading "Can I change my booking date?" [level=6] [ref=e802]
+              - img [ref=e804]
+          - heading "How do I contact support?" [level=3] [ref=e808]:
+            - button "How do I contact support?" [ref=e809] [cursor=pointer]:
+              - heading "How do I contact support?" [level=6] [ref=e811]
+              - img [ref=e813]
+  - contentinfo [ref=e815]:
+    - generic [ref=e816]:
+      - generic [ref=e817]:
+        - heading "Contact Us" [level=6] [ref=e818]
+        - generic [ref=e819]:
+          - paragraph [ref=e820]: Go Work Central Park, Central Park Mall, Level LG, Unit L109-114, Jl. Letjen S. Parman, Daerah Khusus Ibukota Jakarta 11470
+          - generic [ref=e821]:
+            - img [ref=e823]
+            - link "+628-7878-111-111" [ref=e826] [cursor=pointer]:
+              - /url: https://wa.me/6287878111111
+          - generic [ref=e827]:
+            - img [ref=e829]
+            - link "support@satusatu.com" [ref=e832] [cursor=pointer]:
+              - /url: mailto:support@satusatu.com
+      - generic [ref=e833]:
+        - heading "About" [level=6] [ref=e834]
+        - generic [ref=e835]:
+          - link "Terms & Condition" [ref=e836] [cursor=pointer]:
+            - /url: /terms-and-conditions
+          - link "Privacy Policy" [ref=e837] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Help Center" [ref=e838] [cursor=pointer]:
+            - /url: https://support.satusatu.com
+          - link "Travel Blog" [ref=e839] [cursor=pointer]:
+            - /url: https://satusatu.com/inspiration
+      - generic [ref=e840]:
+        - generic [ref=e841]:
+          - heading "Download App" [level=6] [ref=e842]
+          - generic [ref=e843]:
+            - link "Get it on Google Play" [ref=e844] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=com.satusatu.mobile.app
+              - img "Get it on Google Play" [ref=e845]
+            - link "Download on App Store" [ref=e846] [cursor=pointer]:
+              - /url: https://apps.apple.com/us/app/satusatu/id6759083004
+              - img "Download on App Store" [ref=e847]
+        - generic [ref=e848]:
+          - heading "Follow Us" [level=6] [ref=e849]
+          - generic [ref=e850]:
+            - link [ref=e851] [cursor=pointer]:
+              - /url: https://www.instagram.com/satusatucom
+              - img [ref=e852]
+            - link [ref=e855] [cursor=pointer]:
+              - /url: https://www.tiktok.com/@satusatucom
+              - img [ref=e856]
+            - link [ref=e859] [cursor=pointer]:
+              - /url: https://youtube.com/@satusatucom
+              - img [ref=e860]
+            - link [ref=e863] [cursor=pointer]:
+              - /url: https://www.facebook.com/profile.php?id=61586303276729
+              - img [ref=e864]
+      - generic [ref=e867]:
+        - generic [ref=e868]:
+          - heading "Payment Options" [level=6] [ref=e869]
+          - generic [ref=e870]:
+            - img "Mastercard" [ref=e872]
+            - img "Visa" [ref=e874]
+            - img "JCB" [ref=e876]
+            - img "BCA" [ref=e878]
+            - img "Mandiri" [ref=e880]
+            - img "BRI" [ref=e882]
+            - img "OVO" [ref=e884]
+            - img "Dana" [ref=e886]
+            - generic [ref=e887]: + Many More
+        - generic [ref=e888]:
+          - heading "Paylater Options" [level=6] [ref=e889]
+          - img "Atome" [ref=e892]
+    - generic [ref=e893]:
+      - separator [ref=e894]
+      - generic [ref=e895]: Copyright © 2026 SatuSatu. All rights reserved.
+  - navigation [ref=e896]:
+    - button "Home" [ref=e897] [cursor=pointer]:
+      - img [ref=e899]
+      - paragraph [ref=e902]: Home
+    - button "Inspiration" [ref=e903] [cursor=pointer]:
+      - img [ref=e905]
+      - paragraph [ref=e908]: Inspiration
+    - button "Sign In" [ref=e909] [cursor=pointer]:
+      - img [ref=e911]
+      - paragraph [ref=e914]: Sign In
+  - button "Scroll to top":
+    - img
+  - alert [ref=e915]
