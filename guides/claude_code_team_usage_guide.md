@@ -202,7 +202,7 @@ No new guides — just habit building. Engineer uses Claude for at least 3 diffe
 
 #### Phase 3 — Weeks 3–4: MCPs (Guide 4)
 
-**Complete:** Install global MCPs (Context7, Sequential Thinking, Jira, Confluence, GitLab) + project MCPs (Serena, PostgreSQL for BE / Figma for FE). Run at least one session with Jira MCP on a real ticket. One session with Context7 on a library lookup.
+**Complete:** Install global MCPs (Context7, Sequential Thinking, Jira, Confluence, GitLab) + project MCPs (Serena for Engineering-Wide / PostgreSQL for BE / Figma for FE). Run at least one session with Jira MCP on a real ticket. One session with Context7 on a library lookup.
 
 **By end of week 4:** No more manually copying Jira ticket descriptions into sessions. Engineer notices deprecated APIs via Context7.
 
