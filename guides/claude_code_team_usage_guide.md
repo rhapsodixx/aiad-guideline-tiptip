@@ -18,114 +18,62 @@ Individual engineers benefit from understanding what is being measured and why �
 
 ## 2. Adoption Metrics
 
-Two categories: **Activity** (are engineers using it?) and **Quality** (are they using it well?).
+Our adoption metrics are simplified to focus on a core set of reliable data points regarding AI tool usage and its impact on engineering outcomes. These are separated into Leading Indicators (early signals of change) and Lagging Indicators (long-term outcomes).
 
-### Activity Metrics
+### Lagging Indicators
 
-#### Weekly PR Volume with Claude Code Attribution
+#### Engineering North Star Metrics
 
-Most direct signal of whether Claude Code is part of daily workflow or just an experiment.
-
-**Targets:**
-- Weeks 1–2: any usage = success
-- Weeks 4–6: 50% of feature PRs involve Claude
-- Week 8+: 70%+
-
-**How to track:**
-- **Lightweight:** Add a `[claude-assisted]` label to GitLab MRs. Track label frequency in GitLab's MR analytics.
-- **Automated:** The Stop hook from Guide 5 appends session logs to `.claude-session-log.md`. Engineers commit this to a private tracking branch or push summaries to a shared sheet.
-- **Manual:** Ask in `#aiad-discussion` what people used Claude for that week — also drives knowledge sharing (Section 5).
+The ultimate measure of AI adoption success is whether it improves our system outcomes without degrading quality. We track:
+- **Predictability**: Are we shipping on time and maintaining consistent sprint velocities as AI adoption increases?
+- **Quality / Bug Leak**: The defect density in production. If coding speed increases but bug leaks also increase, AI might be introducing technical debt or reviewers are facing cognitive overload.
+- **How to track:** Lead assessment during sprint retrospectives and existing DORA metrics dashboards.
 
 ---
 
-#### Skill Invocation Frequency
+### Leading Indicators
 
-Which skills are used daily, rarely, or never. If `pr-description`, `code-review-golang`/`code-review-nextjs`/`code-review-flutter` (as applicable per stack), and `tdd` aren't invoked regularly, either engineers aren't using Claude for those tasks or the skills aren't trusted.
+#### Number of PRs per Person per Month
 
-**Targets (week 8):** `pr-description` on 60%+ of MRs, `code-review-golang` or `code-review-nextjs` (as applicable) once per engineer per sprint, `tdd` once per engineer per week on active feature work.
+The primary signal that Claude Code is becoming a core part of the daily workflow instead of an isolated experiment. 
 
-**How to track:**
-- Add a logging line to each skill's markdown that appends to `.claude-skill-log.jsonl`. Example: `{"skill": "pr-description", "timestamp": "...", "repo": "...", "user": "..."}`
-- Aggregate `.claude-skill-log.jsonl` files weekly (engineers paste into a shared Google Sheet or lead runs a collection script).
-- Alternative: the Stop hook can capture which skills were invoked during the session.
-
----
-
-#### MCP Usage Patterns
-
-Are sessions running with or without MCP context? Sessions without Jira/Context7/Serena produce lower-quality output for tasks that need live data.
-
-**Targets (week 8):** Jira MCP in 80% of feature sessions, Context7 at least once per session using library APIs, Serena in refactoring tasks.
-
-**How to track:**
-- The Stop hook can log MCP tool call names from the session summary.
-- **Dashboard proxy:** Check Context7 request volume (API key dashboard) and Jira audit logs.
-- **Manual:** Lead spot-checks a sample of session logs monthly for MCP tool calls.
+- **Implementation details:** Evaluated at the whole PR level. Engineers should add an `AI-Assisted` (or `[claude-assisted]`) label to their GitLab MRs/PRs whenever AI was materially used to write or review the code.
+- **Targets:**
+  - Weeks 1–2: any usage = success
+  - Weeks 4–6: 50% of PRs involve Claude
+  - Week 8+: 70%+ of PRs involve Claude
+- **How to track:** Compare the percentage of PRs carrying the AI label against total PR volume in GitLab analytics.
 
 ---
 
-#### Session Length and Token Consumption
+#### Session Length
 
-Primary cost driver. Long sessions with high token counts = either complex high-value work or unfocused sessions without task files (context bloat, wasted spend).
+Helps identify if engineers are getting into a flow state or if they are facing high cognitive load adjusting the AI's context.
 
-**Targets:** Average session under 30 minutes. Flag sessions 3× the baseline. Flag engineers consistently 2× team average cost.
-
-**How to track:**
-- **Z.ai Dashboard:** Primary tracking if per-user/per-session token breakdown is available in billing.
-- **Stop hook:** Extend to log session duration (start time from first tool call, end time from stop event). Use `/cost` command at session end.
-- **Weekly aggregate:** Collect Stop hook logs from all engineers, sum tokens per engineer per week. Share aggregate (not individual) view so everyone understands consumption level.
+- **Targets:** Average session under 30 minutes. Flag sessions 3× the baseline.
+- **How to track:** Extending the Stop hook to log session duration, or via the Z.ai dashboard.
 
 ---
 
-### Quality Metrics
+#### Token Usage
 
-#### Hook Intervention Rate
+The primary cost driver and a proxy for the depth of AI engagement. Unusually high token counts often point to unfocused sessions with context bloat.
 
-How often hooks block or correct Claude's output. High intervention = `CLAUDE.md` needs more explicit conventions. Zero intervention = hooks probably aren't running.
-
-**Targets:** Secret/SQL guard: rare (~1 fire per engineer per week max). Lint hooks: firing on ~20% of writes (healthy enforcement), Claude resolving on first try 90%+ of the time.
-
-**How to track:**
-- Extend hook scripts from Guide 5 to append to `.claude-hook-log.jsonl` on every intervention. Log: hook name, triggering tool, intervention type, timestamp.
-- Aggregate weekly — same pattern as skill logging.
-
----
-
-#### CLAUDE.md Update Frequency
-
-A file never updated after creation is either perfect (unlikely) or stale (much more likely). Regular updates = the refinement loop from Guide 2 is working.
-
-**Targets:** 1+ update per active repo per month (first 3 months), settling to 1+ per quarter. Global files: lead-driven review once per quarter.
-
-**How to track:** GitLab MR history filtering on `CLAUDE.md` files. Track via GitLab contribution graphs on the `aiad-claude` repository for global files. No additional tooling needed.
-
----
-
-#### Rework Rate on Claude-Assisted Code
-
-The ultimate quality signal. If Claude-assisted code requires more rework than non-Claude code, engineers aren't reviewing output carefully enough.
-
-**Targets (week 8):** Equal or fewer significant review comments vs non-Claude code. Zero security/data handling review comments at any time.
-
-**How to track:**
-- **Qualitative:** Lead assessment during monthly code review retros. A lead who reviews PRs regularly will develop intuition for quality trends.
-- **Quantitative:** Count GitLab review comment threads on Claude-labeled MRs vs non-labeled. Compare monthly.
+- **Targets:** Aggregate costs remain within the baseline budget. Flag engineers consistently 2× team average cost.
+- **How to track:** Z.ai dashboard. Collect aggregate (not individual) weekly summaries so everyone understands consumption levels.
 
 ---
 
 ### Metrics Summary
 
-| Metric                  | Category | Target (Week 8)                             | Tracking                   |
-| ----------------------- | -------- | ------------------------------------------- | -------------------------- |
-| PR volume with Claude   | Activity | 70%+ feature PRs                            | GitLab MR labels           |
-| Skill invocation        | Activity | 3 must-have skills weekly                   | Skill log file             |
-| MCP usage               | Activity | Jira + Context7 in 80% of feature sessions  | Stop hook + dashboard      |
-| Session length & tokens | Activity | Avg <30 min, cost within baseline           | Z.ai dashboard + Stop hook |
-| Hook intervention rate  | Quality  | Lint on 20%+ writes, 90%+ first-try resolve | Hook log file              |
-| `CLAUDE.md` update freq | Quality  | 1+ per active repo per month                | GitLab MR history          |
-| Rework rate             | Quality  | ≤ non-Claude code                           | Lead assessment            |
+| Metric                               | Category           | Tracking                   |
+| ------------------------------------ | ------------------ | -------------------------- |
+| Engineering North Star (Quality)     | Lagging Indicator  | Sprint Retros / DORA       |
+| AI-Assisted PR Volume                | Leading Indicator  | GitLab MR labels           |
+| Session Length                       | Leading Indicator  | Stop hook + Z.ai dashboard |
+| Token Usage                          | Leading Indicator  | Z.ai dashboard             |
 
-*These don't need perfect precision. Directional signal — are engineers using it, is the output improving? A lead who checks MR labels, glances at Z.ai, and asks the team weekly gets 80% of the signal with 20% of the effort.*
+*These metrics do not need perfect precision—they provide a directional signal. A lead who checks MR labels, glances at Z.ai, and asks the team weekly gets 80% of the signal with 20% of the effort.*
 
 ---
 

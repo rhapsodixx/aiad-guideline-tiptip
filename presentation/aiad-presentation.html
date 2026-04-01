@@ -1098,45 +1098,30 @@
       <!-- ============================================================ -->
       <!-- SLIDE 15: Measuring Success — Metrics Dashboard -->
       <!-- ============================================================ -->
-      <!-- Speaker notes: How do we know this is working? Seven metrics across two categories — activity and quality. Activity tells us if engineers are using it. Quality tells us if they're using it well. The targets are directional, not precision. A lead who checks MR labels, glances at Z.ai, and asks the team weekly gets 80% of the signal with 20% of the effort. -->
+      <!-- Speaker notes: How do we know this is working? Our metrics focus on leading and lagging indicators. The targets are directional, not precision. -->
       <section>
         <div class="pill">Measuring Success</div>
-        <h2>7 Adoption Metrics</h2>
-        <div class="metrics-grid">
+        <h2>4 Core Adoption Metrics</h2>
+        <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr);">
           <div class="metric-card">
-            <div class="metric-label">Activity</div>
+            <div class="metric-label">Leading Indicator</div>
             <div class="metric-value">70%+</div>
-            <div class="metric-how">Feature PRs with Claude attribution (Week 8)</div>
+            <div class="metric-how">MRs/PRs tagged with 'AI-Assisted' (Week 8)</div>
           </div>
-          <div class="metric-card">
-            <div class="metric-label">Activity</div>
-            <div class="metric-value">3 skills</div>
-            <div class="metric-how">Must-have skills invoked weekly per engineer</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Activity</div>
-            <div class="metric-value">80%</div>
-            <div class="metric-how">Feature sessions with Jira + Context7 MCP</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Activity</div>
+          <div class="metric-card" style="border-bottom-color: var(--tt-border);">
+            <div class="metric-label">Leading Indicator</div>
             <div class="metric-value">&lt;30 min</div>
             <div class="metric-how">Average session length target</div>
           </div>
           <div class="metric-card">
-            <div class="metric-label">Quality</div>
-            <div class="metric-value">90%</div>
-            <div class="metric-how">Hook issues resolved on first try by Claude</div>
+            <div class="metric-label">Leading Indicator</div>
+            <div class="metric-value">Stable</div>
+            <div class="metric-how">Cost/Token Consumption vs baseline</div>
           </div>
-          <div class="metric-card">
-            <div class="metric-label">Quality</div>
-            <div class="metric-value">1+/mo</div>
-            <div class="metric-how">CLAUDE.md updates per active repo per month</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Quality</div>
-            <div class="metric-value">≤ baseline</div>
-            <div class="metric-how">Rework rate vs non-Claude code</div>
+          <div class="metric-card" style="border-left: 4px solid var(--tt-teal);">
+            <div class="metric-label">Lagging Indicator</div>
+            <div class="metric-value">North Star</div>
+            <div class="metric-how">Predictability & Quality / Bug Leak</div>
           </div>
         </div>
       </section>
