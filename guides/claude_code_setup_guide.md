@@ -107,6 +107,51 @@ Once your configuration is set (via either method), simply run Claude Code in yo
 claude
 ```
 
+### Alternative: Using direnv when you have multiple projects and Claude accounts
+
+Claude Code doesn't support project-level API keys natively, but you can use direnv with .envrc to auto-load env vars when you enter this project directory. 
+
+1. Install direnv (if not already installed):
+    ```
+    brew install direnv
+    ```
+
+2. Hook it into your shell (add to ~/.zshrc):
+    ```
+    eval "$(direnv hook zsh)"
+    ```
+    Then reload: 
+    ```
+    source ~/.zshrc
+    ```
+
+3. Create a .envrc in the project root:
+    ```
+    # /Users/stephanie.virdayanti/tiptiptv/.envrc
+    
+    # This file is gitignored — do not commit your API key
+    # Z.AI API configuration for this project
+    export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+    export ANTHROPIC_AUTH_TOKEN="your-z-ai-key-here"
+    ```
+
+4. Allowlist the file:
+    ```
+    direnv allow /Users/stephanie.virdayanti/tiptiptv/
+    ```
+
+5. Make sure .envrc is ignored by git in the repositories (it contains your API key):
+    ```
+    echo ".envrc" >> /Users/stephanie.virdayanti/tiptiptv/backend/content/.gitignore
+    ```
+
+6. Enter `claude` session and expect no login required. To check which account logged into Claude Code, enter `/status` and expect the Auth token to be the same with `ANTHROPIC_AUTH_TOKEN`.
+
+How it works:
+- When you cd into this project, direnv auto-loads those env vars → Claude Code uses z.ai
+- When you cd out or comment out the keys, they're unloaded → Claude Code falls back to your default Anthropic account
+- No other projects are affected
+
 ---
 
 ## 5. Verify the Setup
