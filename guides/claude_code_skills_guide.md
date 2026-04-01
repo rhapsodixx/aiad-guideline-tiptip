@@ -60,11 +60,16 @@ Skills in `aiad-claude` are organized by team/stack:
 ├── frontend-web/            ← Next.js / React engineers
 │   └── code-review-nextjs/
 │
-└── frontend-mobile/         ← Flutter engineers
-    └── code-review-flutter/
+├── frontend-mobile/         ← Flutter engineers
+│   └── code-review-flutter/
+│
+└── qa-automation/           ← QA Automation engineers (Playwright/Cucumber)
+    ├── shift-left-manual-test/
+    ├── automation-script-generation/
+    └── automation-script-validation/
 ```
 
-**Why organize by team?** Engineers think "I'm a backend dev" not "I need an aiad-claude skill." Grouping by team makes discoverability instant and ownership clear (backend lead owns `backend/`, frontend lead owns `frontend-web/` and `frontend-mobile/`).
+**Why organize by team?** Engineers think "I'm a backend dev" not "I need an aiad-claude skill." Grouping by team makes discoverability instant and ownership clear (backend lead owns `backend/`, frontend lead owns `frontend-web/` and `frontend-mobile/`, QA lead owns `qa-automation/`).
 
 ### Installation
 
@@ -309,7 +314,27 @@ No additional Flutter-specific skills from third-party plugins are mature enough
 
 ---
 
-## 12. Skills and LLM Cost
+## 12. QA Automation Skills (Playwright / Cucumber Stack)
+
+These skills are for QA Engineers working on TipTip's Playwright/Cucumber test automation across all platforms (TWA, Content Hub, SatuSatu). They support a **shift-left** testing philosophy: generating manual test cases early from PRDs, then converting them into automated scripts, and continuously validating existing automation against TipTip standards.
+
+> 💡 **QA Engineer Persona:** The QA Automation Engineer ensures quality through early test design (shift-left), Playwright/Cucumber automation, and continuous compliance auditing. This persona collaborates with Product (for PRDs), Frontend (for element IDs and locators), and Backend (for API test data setup). The QA lead owns `qa-automation/` skills.
+
+### Must-Have Skills (QA Automation)
+
+| Skill | Source | Description | Recommended Claude Code Effort | When to use | Sample Invocation | VS Code Install & Repo |
+|---|---|---|---|---|---|---|
+| `shift-left-manual-test` | `aiad-claude` | Generates structured manual test cases in Gherkin format (Given/When/Then) from PRDs, Jira tickets, or feature descriptions. Covers positive, negative, edge, and boundary scenarios with TipTip's tagging conventions. | `high` — multi-step requirement analysis, scenario classification | When a new PRD or Jira ticket is created and test coverage needs to be defined before development starts. | `/shift-left-manual-test generate` | Copy from `aiad-claude` repo (`qa-automation/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+| `automation-script-generation` | `aiad-claude` | Generates production-ready Playwright Page Object Model classes, Cucumber step definitions, and `.feature` files following TipTip's exact repository structure (`tests/pages/`, `tests/stepDefinitions/web/`, `tests/features/`). | `high` — multi-file scaffold with POM patterns, index.js updates | When manual test cases are finalized and need to be converted into automated Playwright/Cucumber scripts. | `/automation-script-generation generate` | Copy from `aiad-claude` repo (`qa-automation/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+| `automation-script-validation` | `aiad-claude` | Audits existing Playwright/Cucumber scripts against TipTip's coding standards. Validates POM structure, step definition patterns, feature file conventions, locator robustness, and index.js exports. Produces a severity-graded report. | `max` — deep static analysis across multiple file types with cross-referencing | When reviewing QA automation code before merging, or during quarterly automation quality audits. | `/automation-script-validation validate tests/pages/twa/` | Copy from `aiad-claude` repo (`qa-automation/`). [Link](https://gitlab.com/tiptiptv/common/aiad-claude) |
+
+> 💡 **Shift-left workflow:** The three QA skills form a pipeline: `shift-left-manual-test` → `automation-script-generation` → `automation-script-validation`. Start by generating test cases from a PRD, then generate automation scripts from those test cases, then validate the generated (or existing) scripts for compliance. Each skill can also be used independently.
+
+> ⚠️ **QA Repository:** All automation scripts target the [web-automation-playwright](https://gitlab.com/tiptiptv/qa/web-automation-playwright) repository. Skills reference its exact directory structure, patterns, and conventions as documented in the [QE Confluence space](https://tiptiptv.atlassian.net/wiki/spaces/QE/pages/251461963).
+
+---
+
+## 13. Skills and LLM Cost
 
 This section outlines how skills affect token consumption and API cost, and gives practical guidance on efficient use.
 
@@ -338,7 +363,7 @@ This section outlines how skills affect token consumption and API cost, and give
 
 ---
 
-## 13. What to Expect from Engineers
+## 14. What to Expect from Engineers
 
 ### Engineering Lead Responsibilities
 
@@ -384,7 +409,7 @@ The expected behavior for skill improvement follows this loop:
 
 ---
 
-## 14. Quick Reference
+## 15. Quick Reference
 
 | Task | Skill | Scope | Source | Path in aiad-claude | Recommended Claude Code Effort |
 |---|---|---|---|---|---|
@@ -411,6 +436,9 @@ The expected behavior for skill improvement follows this loop:
 | Next.js architecture best practices | `next-best-practices` | Frontend Web | `Vercel` | *(external skill)* | `high` |
 | React composition performance rules | `vercel-react-best-practices` | Frontend Web | `Vercel` | *(external skill)* | `medium` |
 | Flutter code review (multi-persona) | `code-review-flutter` | Frontend Mobile | `aiad-claude` | `frontend-mobile/code-review-flutter/` | `max` |
+| Generate manual test cases from PRDs | `shift-left-manual-test` | QA Automation | `aiad-claude` | `qa-automation/shift-left-manual-test/` | `high` |
+| Generate Playwright/Cucumber scripts | `automation-script-generation` | QA Automation | `aiad-claude` | `qa-automation/automation-script-generation/` | `high` |
+| Validate automation scripts | `automation-script-validation` | QA Automation | `aiad-claude` | `qa-automation/automation-script-validation/` | `max` |
 
 **Reference Sources:**
 - TipTip AIAD Skills & Plugin Manifest: [`PLUGINS.md`](../PLUGINS.md)

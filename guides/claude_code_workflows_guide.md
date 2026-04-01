@@ -150,7 +150,7 @@ Claude can spawn parallel subagent instances to tackle independent workstreams s
 
 ## 6. TipTip Workflow Cookbook
 
-Below are 7 realistic TipTip scenarios structured as recipes.
+Below are 8 realistic TipTip scenarios structured as recipes.
 
 ### Workflow 1: Add a New API Endpoint to a Go Service
 
@@ -411,6 +411,59 @@ Do not apply any fix yet — present the diagnosis and proposed fix for my revie
 
 ---
 
+### Workflow 8: QA Shift-Left Testing Pipeline
+
+**When to use:** A new PRD or Jira ticket has been created and the QA team needs to define test coverage before development starts, then convert manual test cases into automated Playwright/Cucumber scripts.
+**Recommended mode:** Autonomous (phased — manual test generation first, then script generation)
+**MCPs:** Jira <!-- Reason: Pulls the PRD/ticket details and acceptance criteria -->, Confluence <!-- Reason: Retrieves related feature documentation and QA standards -->
+**Skills:** `shift-left-manual-test`, `automation-script-generation`, `automation-script-validation`
+
+**Step-by-step instructions:**
+1. Use the `shift-left-manual-test` skill to generate comprehensive Gherkin test cases from the PRD or Jira ticket.
+2. Review the generated test cases for correctness, coverage, and TipTip tagging compliance.
+3. Feed the approved test cases into `automation-script-generation` to scaffold Page Objects, step definitions, and feature files.
+4. Run `automation-script-validation` to audit the generated scripts against TipTip standards.
+5. Fix any violations flagged by the validation report.
+6. Run the generated tests locally: `npm run test:local -- --tags '@<your_tag>'`.
+
+**The prompt (Phase 1 — Manual Test Cases):**
+```text
+/shift-left-manual-test generate
+Generate manual test cases from Jira ticket [TICKET-ID].
+Target platform: [twa/ch/swa]
+Focus areas: [positive, negative, edge cases]
+```
+
+**The prompt (Phase 2 — Automation Scripts):**
+```text
+/automation-script-generation generate
+Generate Playwright/Cucumber automation from the test cases above.
+Target platform: [twa/ch/swa]
+Target repository: web-automation-playwright
+```
+
+**The prompt (Phase 3 — Validation):**
+```text
+/automation-script-validation validate tests/pages/[platform]/
+```
+
+#### How to Execute (VS Code)
+
+1. Open VS Code in the `web-automation-playwright` repo: `code ~/repos/web-automation-playwright`
+2. Open the integrated terminal and launch Claude Code: `claude`
+3. Verify MCPs: type `/mcp` and confirm Jira and Confluence are active.
+4. **Phase 1:** Paste the manual test generation prompt above, replacing `[TICKET-ID]` with the actual Jira key.
+5. Review the generated Gherkin scenarios. Validate coverage: positive, negative, edge cases.
+6. **Phase 2:** Paste the automation script generation prompt. Claude will scaffold POM classes, step definitions, and feature files.
+7. Review generated locators — verify element IDs/XPaths against the running application.
+8. **Phase 3:** Run the validation prompt to audit generated code against TipTip standards.
+9. Fix any P0/P1 violations from the validation report.
+10. Run locally: `npm run test:local -- --tags '@<your_tag>'`
+
+**Common failure modes:** Generated locators may reference element IDs that don't exist yet (FE hasn't added them). Mark these as `// TODO: Verify locator` and request FE to add the IDs. Step definitions may conflict with existing step patterns — check for duplicate step text.
+
+---
+
 ## 7. The Autonomous Loop and When to Interrupt
 
 During an autonomous session, Claude executes a continuous sequence of file reads, bash commands, and edits toward the task goal. It self-corrects when test hooks return errors and re-evaluates when it hits a task constraint. 
@@ -477,6 +530,7 @@ This list bounds improvements planned for TipTip's Claude Code workflow. Enginee
 | Review a SQL query          | Workflow 5 | Interactive | PostgreSQL                 |
 | Plan a feature from Jira    | Workflow 6 | Interactive | Jira, Confluence, Serena   |
 | Debug a Sentry error        | Workflow 7 | Interactive | Serena, Context7           |
+| QA shift-left test pipeline | Workflow 8 | Autonomous  | Jira, Confluence           |
 
 ### Task File Checklist
 

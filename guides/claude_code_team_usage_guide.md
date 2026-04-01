@@ -292,6 +292,14 @@ Not prohibited, but high-stakes. Must follow creator-service `CLAUDE.md` constra
 
 ---
 
+### ⚠️ Caution: QA Test Automation
+
+Not prohibited, but requires careful review of generated locators and test data. AI-generated Playwright scripts may reference stale element IDs or incorrect XPaths. Always verify generated locators against the running application before merging.
+
+**Guidance:** Use `automation-script-generation` to scaffold scripts, then run `automation-script-validation` to audit compliance. QA tests targeting production (`@prod` tag) must be strictly read-only — no state mutations, no data creation, no purchases.
+
+---
+
 ### Usage Summary
 
 | Task              | Usage         | Requirement                 |
@@ -300,10 +308,13 @@ Not prohibited, but high-stakes. Must follow creator-service `CLAUDE.md` constra
 | Tests             | Autonomous ✅  | Verify edge case coverage   |
 | PR description    | Autonomous ✅  | Read before submitting      |
 | Code review       | Autonomous ✅  | Validate assessment         |
+| QA test generation| Autonomous ✅  | Review generated scripts    |
+| QA test validation| Autonomous ✅  | Review report findings      |
 | SQL review        | Interactive ✅ | Never execute on production |
 | Auth/authz        | Interactive ⚠️ | Mandatory second reviewer   |
 | Payment logic     | Interactive ⚠️ | Domain expert review        |
 | Infra changes     | Interactive ⚠️ | Senior review before apply  |
+| QA prod tests     | Interactive ⚠️ | Read-only assertions only   |
 | Production DB     | Prohibited ❌  | Deployment pipeline only    |
 | Security config   | Prohibited ❌  | Human authorship required   |
 | PII outside rules | Prohibited ❌  | Follow data access process  |
