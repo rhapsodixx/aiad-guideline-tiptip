@@ -18,7 +18,25 @@ Two levels:
 
 ---
 
-## 2. Why Skills Before MCP?
+## 2. Skills vs Commands
+
+While both Skills and Commands are invoked via the `/slash` syntax, they serve fundamentally different purposes in the AI-Assisted Development workflow:
+
+| Feature | Skills | Commands |
+| :--- | :--- | :--- |
+| **Definition** | Version-controlled workflow definitions (markdown files). | Quick, single-action CLI execution shortcuts. |
+| **Location** | `.agents/skills/` (Project) or `~/.claude/skills/` (Global) | Hardcoded or defined via `~/.claude/commands/`. |
+| **Complexity** | High. Defines deep agent context, rules, and multi-step logic. | Low. Usually maps to a single executing shell command. |
+| **Persistence** | Persistent, tailored, and robust to TipTip conventions. | Ad-hoc or brief directives. |
+| **Best Used For** | Code reviews, PR descriptions, test generation, complex architectural changes. | One-off bash commands, clearing terminal, simple status checks. |
+
+**Heuristic for Teams:** Use **Skills** for recurring development tasks where the AI needs to follow specific rules (e.g., "Code Review"). Use **Commands** when you need a quick shell shortcut to compile, run tests, or manage files directly without agentic thinking.
+
+**Pro Tip:** Skills and commands can be **chained together** in a single prompt for multi-step workflows (e.g., `/refactor-clean` followed by `/tdd`).
+
+---
+
+## 3. Why Skills Before MCP?
 
 Skills come first because:
 - **Zero infrastructure** — markdown files, no API keys, no OAuth, no network deps
@@ -29,7 +47,7 @@ Skills come first because:
 
 ---
 
-## 3. TipTip's Skills Repository
+## 4. TipTip's Skills Repository
 
 All TipTip-authored skills are available at our central repository:
 [https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude)
@@ -95,7 +113,7 @@ cp -R /tmp/aiad-claude/.agents/skills/frontend-mobile .agents/skills/ # for Flut
 
 ---
 
-## 4. How Skills Are Invoked
+## 5. How Skills Are Invoked
 
 Invoking a skill in a Claude Code session is straightforward:
 
@@ -108,7 +126,7 @@ Invoking a skill in a Claude Code session is straightforward:
 
 ---
 
-## 5. How to Choose the Right Skill
+## 6. How to Choose the Right Skill
 
 Choose the right skill with this decision framework:
 
@@ -120,7 +138,7 @@ Choose the right skill with this decision framework:
 
 ---
 
-## 6. Disabling Skills at Workspace Level
+## 7. Disabling Skills at Workspace Level
 
 There are scenarios where a skill installed globally or at the project level should not be active in a specific workspace. Claude Code provides two mechanisms to suppress skill discovery.
 
@@ -158,7 +176,7 @@ The most reliable approach for team-shared skills is to only install what the re
 
 ---
 
-## 7. Best Practice: User-Level vs. Workspace-Level Skill Setup
+## 8. Best Practice: User-Level vs. Workspace-Level Skill Setup
 
 Understanding where to install a skill is as important as knowing which skill to use.
 
@@ -205,7 +223,7 @@ Is this skill useful to my teammates?
 
 ---
 
-## 8. Engineering-Wide Skills (All Engineers)
+## 9. Engineering-Wide Skills (All Engineers)
 
 These skills apply regardless of our stack. Every TipTip engineer should have these installed and use them as their default workflows.
 
@@ -247,7 +265,7 @@ These skills apply regardless of our stack. Every TipTip engineer should have th
 
 ---
 
-## 9. Backend Skills (Go Stack)
+## 10. Backend Skills (Go Stack)
 
 These skills are specifically for engineers working on TipTip's Go backend services.
 
@@ -272,7 +290,7 @@ These skills are specifically for engineers working on TipTip's Go backend servi
 
 ---
 
-## 10. Frontend Skills (React / Next.js Stack)
+## 11. Frontend Skills (React / Next.js Stack)
 
 These skills are relevant for engineers working on TipTip's React, Next.js, and SatuSatu codebases.
 
@@ -294,7 +312,7 @@ These skills are relevant for engineers working on TipTip's React, Next.js, and 
 
 ---
 
-## 11. Mobile Skills (Flutter Stack)
+## 12. Mobile Skills (Flutter Stack)
 
 These skills are relevant for engineers working on TipTip's Flutter mobile applications.
 
@@ -314,7 +332,7 @@ No additional Flutter-specific skills from third-party plugins are mature enough
 
 ---
 
-## 12. QA Automation Skills (Playwright / Cucumber Stack)
+## 13. QA Automation Skills (Playwright / Cucumber Stack)
 
 These skills are for QA Engineers working on TipTip's Playwright/Cucumber test automation across all platforms (TWA, Content Hub, SatuSatu). They support a **shift-left** testing philosophy: generating manual test cases early from PRDs, then converting them into automated scripts, and continuously validating existing automation against TipTip standards.
 
@@ -334,7 +352,7 @@ These skills are for QA Engineers working on TipTip's Playwright/Cucumber test a
 
 ---
 
-## 13. Skills and LLM Cost
+## 14. Skills and LLM Cost
 
 This section outlines how skills affect token consumption and API cost, and gives practical guidance on efficient use.
 
@@ -343,7 +361,7 @@ This section outlines how skills affect token consumption and API cost, and give
 - **Context Window Padding:** Every skill invocation adds the skill's content to the context window on top of the existing conversation and `CLAUDE.md` content.
 - **Cost Compounding:** A large skill (500+ lines) invoked at the start of a long session will compound cost because that skill content is re-sent with every subsequent message in the conversation.
 - **Tool Triggers Multiplier:** Skills that trigger multiple tool calls (file reads, shell executions) multiply the token cost further — each tool result is added to context.
-- **Model Distribution:** Background model calls (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) are used for lightweight skill steps; main model calls are used for reasoning-heavy steps. Well-structured skills can direct lighter work to the small model.
+- **Model Distribution:** Background model calls (Haiku) are used for lightweight skill steps; main model calls (Sonnet/Opus) are used for reasoning-heavy steps. Well-structured skills can direct lighter work to Haiku. See Guide 1, Section 6 for model optimization guidance.
 
 ### Best Practices (Do This)
 
@@ -351,19 +369,19 @@ This section outlines how skills affect token consumption and API cost, and give
 - **Use project-level skills for repo-specific tasks.** They tend to be more concise because they can assume repo context from `CLAUDE.md` rather than re-explaining it in the skill body.
 - **Invoke skills at the start of a session, not mid-session.** Starting fresh with a skill gives Claude a clean context. Mid-session skill invocation stacks on top of an already-large context, increasing cost and potentially degrading output quality.
 - **Use CLI-backed skills where possible.** CLI output is structured and concise. Asking Claude to reason through unstructured data is more expensive.
-- **Prefer GLM-4.5 Air for skill-driven background tasks.** At $0.13/1M input, it is cost-effective for skills that do mass file reading, linting passes, or repetitive generation tasks.
+- **Use Haiku for skill-driven background tasks.** For skills that do mass file reading, linting passes, or repetitive generation tasks, switch to Haiku (`/model` → haiku) to conserve your Team Plan quota. When using the GLM fallback, GLM-4.5 Air serves the same purpose at $0.13/1M input.
 
 ### What to Avoid (Do Not Do This)
 
 - **Do not invoke a heavy skill just to ask a simple question.** If you only need to understand one function, ask directly — do not trigger a full review skill.
 - **Do not chain multiple heavy skills in one session.** Running `pr-description`, then `tdd` in a single session will balloon the context window. Use separate sessions for separate tasks.
 - **Do not write skills with redundant context.** If your `CLAUDE.md` already defines TipTip's error handling pattern, do not repeat it verbatim inside the skill. Reference it instead (e.g., "following error handling patterns in CLAUDE.md").
-- **Do not use flagship models (GLM-4.7) for skills that only need lightweight output.** For skills that generate boilerplate, summaries, or simple diffs, configure them to use the Haiku-tier model (GLM-4.5 Air).
+- **Do not use Opus for skills that only need lightweight output.** For skills that generate boilerplate, summaries, or simple diffs, switch to Haiku (`/model` → haiku). Reserve Sonnet and Opus for reasoning-heavy skills like `systematic-debugging`, `rfc-review`, and `code-review-*`.
 - **Do not let skills go stale.** An outdated skill that reflects old conventions will produce wrong output confidently. Stale skills waste tokens and engineer time.
 
 ---
 
-## 14. What to Expect from Engineers
+## 15. What to Expect from Engineers
 
 ### Engineering Lead Responsibilities
 
@@ -394,8 +412,7 @@ The expected behavior for skill improvement follows this loop:
 
 *This is how the skill set matures. Expected and normal.*
 
-### Skills vs Commands
-**Skills vs Commands** — Skills (`~/.claude/skills/`) are broader workflow definitions, while Commands (`~/.claude/commands/`) are quick executable prompts invoked via `/slash`. Skills and commands can be **chained together** in a single prompt for multi-step workflows (e.g., `/refactor-clean` followed by `/tdd`).
+
 
 ### Plugins
 **Plugins** extend Claude Code with bundled tools, skills, and MCPs. **LSP Plugins** are particularly useful if you run Claude Code outside editors — they give Claude real-time type checking, go-to-definition, and intelligent completions without an IDE. Strongly suggested plugins to install/enable depending on your team:
@@ -409,7 +426,7 @@ The expected behavior for skill improvement follows this loop:
 
 ---
 
-## 15. Quick Reference
+## 16. Quick Reference
 
 | Task | Skill | Scope | Source | Path in aiad-claude | Recommended Claude Code Effort |
 |---|---|---|---|---|---|

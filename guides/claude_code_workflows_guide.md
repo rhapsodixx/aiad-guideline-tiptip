@@ -1,7 +1,7 @@
 # Guide 6 of 7: Workflows & Autonomous Tasks
 
 > ⚠️ **Prerequisites:** Complete all prior guides (1–5) before this guide.
-> This guide assumes CLAUDE.md is configured (Guide 2), skills are installed (Guide 3), MCPs are active (Guide 4), and hooks are enforcing quality gates (Guide 5). Without these foundations, autonomous workflows will produce lower-quality, unconstrained output.
+> This guide assumes CLAUDE.md is configured (Guide 2), you understand the difference between explicit skills and simple commands (see [Skills vs Commands](claude_code_skills_guide.md#2-skills-vs-commands)), skills are installed (Guide 3), MCPs are active (Guide 4), and hooks are enforcing quality gates (Guide 5). Without these foundations, autonomous workflows will produce lower-quality, unconstrained output.
 
 ---
 
@@ -491,9 +491,8 @@ Engineers do not need to watch every keystroke — but they should not fully dis
 This list bounds improvements planned for TipTip's Claude Code workflow. Engineers who implement these should submit an MR to `aiad-claude` describing their updates.
 
 - **CI/CD Integration (Headless Mode):** Claude Code supports headless execution suitable for GitLab CI pipelines (e.g., auto-reviewing open MRs, or blocking commits on failure). Future considerations: managing CI credentials, controlling per-pipeline cost, and handling outputs robustly.
-- **Per-Session Cost Management:** Currently, our GLM/Z.ai setup lacks hard per-session token budgets. Unmonitored complex autonomous sessions can rack up costs. We plan to evaluate ways to impose session-level token caps or a statusline spend UI.
-- **Migration to Claude Code Subscription:** TipTip plans to migrate from GLM/Z.ai to an Anthropic Pro/Team subscription once ROI is fully proven. Native models provide higher reasoning quality without custom bridges.
-- **Shared Team Context via Projects:** With an official Team subscription, "Projects" allow shared conversation history and memory mapped across the org, transcending localized per-machine CLAUDE.md files.
+- **Per-Session Cost Management:** The Team Plan's rolling 5-hour quota provides some natural cost containment, but individual session-level token budgets are not yet enforced. We plan to evaluate ways to impose session-level token caps or a statusline spend UI.
+- **Shared Team Context via Projects:** The Team Standard Plan unlocks "Projects" — shared conversation history and memory mapped across the org, transcending localized per-machine CLAUDE.md files. Evaluating adoption and integration with existing `CLAUDE.md` workflows.
 - **Workflow Metrics and Adoption Tracking:** Telemetry on which workflows yield the highest ROI via stop-hook logging aggregated into internal dashboards.
 
 ---
@@ -504,7 +503,7 @@ This list bounds improvements planned for TipTip's Claude Code workflow. Enginee
 - **Set the standard:** Deliver guided walk-throughs of Workflow 1 and Workflow 3 to your team. Running an autonomous process incorrectly and cementing bad habits is worse than not running it at all.
 - **Define mandatory operations:** Map which workflows are non-negotiable (e.g., Backend leads mandating Workflow 3 before any Go-service MR). Record these rules directly into the per-repo `CLAUDE.md`.
 - **Review complex `task.md` payloads:** For massive multi-file overhauls or schema changes, Leads should peer-review the task file before the engineer hits enter.
-- **Monitor scale and cost:** Keep an eye on Z.ai expenditure dashboards. Massive aberrations usually indicate an engineer whose sessions are deadlocking or over-scoping without interruption.
+- **Monitor scale and cost:** Check `/usage` in Claude Code sessions to track Team Plan quota consumption. Massive aberrations usually indicate an engineer whose sessions are deadlocking or over-scoping without interruption.
 - **Standardize novel discoveries:** When an engineer crafts a highly effectively workflow sequence, merge it back to the cookbook in `aiad-claude`.
 
 ### Individual Engineer Responsibilities

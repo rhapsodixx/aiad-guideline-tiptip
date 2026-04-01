@@ -467,7 +467,7 @@ The skill orchestrates; MCPs supply data. Watch for **context window compounding
 - **Provide a global config template** — standard `~/.claude.json` covering Jira, Confluence, GitLab, Context7, Sequential Thinking
 - **Coordinate credentials** — API tokens via secrets manager, **never hardcoded in `.mcp.json`**
 - **Review `.mcp.json` changes via MR** — adding MCPs is a team decision
-- **Monitor token cost** — check Z.ai dashboard after MCP rollout. If costs spike, identify high-frequency MCPs
+- **Monitor token cost** — check `/usage` in Claude Code sessions and review quota consumption after MCP rollout. If costs spike, identify high-frequency MCPs
 
 ### Individual Engineers
 - Install global MCPs before first production session (use the team template)

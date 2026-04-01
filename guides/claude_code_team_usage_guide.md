@@ -39,9 +39,9 @@ The primary signal that Claude Code is becoming a core part of the daily workflo
 
 - **Implementation details:** Evaluated at the whole PR level. Engineers should add an `AI-Assisted` (or `[claude-assisted]`) label to their GitLab MRs/PRs whenever AI was materially used to write or review the code.
 - **Targets:**
-  - Weeks 1–2: any usage = success
-  - Weeks 4–6: 50% of PRs involve Claude
-  - Week 8+: 70%+ of PRs involve Claude
+  - Week 1: any usage = success
+  - Week 2: 50% of PRs involve Claude
+  - Week 3+: 70%+ of PRs involve Claude
 - **How to track:** Compare the percentage of PRs carrying the AI label against total PR volume in GitLab analytics.
 
 ---
@@ -51,7 +51,7 @@ The primary signal that Claude Code is becoming a core part of the daily workflo
 Helps identify if engineers are getting into a flow state or if they are facing high cognitive load adjusting the AI's context.
 
 - **Targets:** Average session under 30 minutes. Flag sessions 3× the baseline.
-- **How to track:** Extending the Stop hook to log session duration, or via the Z.ai dashboard.
+- **How to track:** Extending the Stop hook to log session duration, or via `/usage` in Claude Code.
 
 ---
 
@@ -60,7 +60,7 @@ Helps identify if engineers are getting into a flow state or if they are facing 
 The primary cost driver and a proxy for the depth of AI engagement. Unusually high token counts often point to unfocused sessions with context bloat.
 
 - **Targets:** Aggregate costs remain within the baseline budget. Flag engineers consistently 2× team average cost.
-- **How to track:** Z.ai dashboard. Collect aggregate (not individual) weekly summaries so everyone understands consumption levels.
+- **How to track:** `/usage` command in Claude Code sessions. Collect aggregate (not individual) weekly summaries so everyone understands consumption levels. During GLM fallback periods, check the Z.ai dashboard.
 
 ---
 
@@ -70,53 +70,29 @@ The primary cost driver and a proxy for the depth of AI engagement. Unusually hi
 | ------------------------------------ | ------------------ | -------------------------- |
 | Engineering North Star (Quality)     | Lagging Indicator  | Sprint Retros / DORA       |
 | AI-Assisted PR Volume                | Leading Indicator  | GitLab MR labels           |
-| Session Length                       | Leading Indicator  | Stop hook + Z.ai dashboard |
-| Token Usage                          | Leading Indicator  | Z.ai dashboard             |
+| Session Length                       | Leading Indicator  | Stop hook + `/usage`       |
+| Token Usage                          | Leading Indicator  | `/usage` + Z.ai (fallback) |
 
-*These metrics do not need perfect precision—they provide a directional signal. A lead who checks MR labels, glances at Z.ai, and asks the team weekly gets 80% of the signal with 20% of the effort.*
+*These metrics do not need perfect precision—they provide a directional signal. A lead who checks MR labels, runs `/usage`, and asks the team weekly gets 80% of the signal with 20% of the effort.*
 
 ---
 
-## 3. The Migration to Claude Code Subscription
+## 3. Subscription & Model Strategy
 
-### Why Claude Max, Not Claude Pro
+### Current Plan: Claude Code Team Standard ($25/month per user)
 
-- **Claude Pro** caps messages — autonomous engineering tools hit these limits easily
-- **Claude Max** removes those limits: 5× or 20× more usage, higher output limits, priority access
-- **But**: Claude Max is per-user/per-month fixed cost. For our current team size, the pay-per-token GLM setup may still be cheaper — especially if most tasks run fine on GLM-4.7 at $0.38/$1.98 per million tokens
-- The decision is not "GLM worse, Claude better" — it's "has our volume reached the point where per-seat is more cost-effective than per-token, AND do we need native Claude capabilities GLM can't provide?"
+TipTip has adopted the **Claude Code Team Standard Plan** as our primary AI-assisted development engine. This gives every engineer direct access to native Anthropic models (Haiku, Sonnet, Opus) — ensuring code generation accuracy is not compromised by third-party model approximations.
 
-### Migration Decision Criteria
+**Why the Team Standard Plan?**
+- **Model accuracy matters:** Our AI adoption metrics must reflect genuine Anthropic model quality. Third-party proxies (GLM, DeepSeek) introduce variable accuracy that makes it impossible to objectively measure AI-assisted development ROI.
+- **Cost-effective:** At $25/month per user, the Team Standard Plan is more predictable and sustainable than pay-per-token billing at scale.
+- **Native features:** Direct access to Anthropic's latest model releases, Projects for shared memory, and priority access without proxy middlemen.
 
-Migrate when the majority of these are true:
+### GLM Fallback
 
-**Cost:**
-- [ ] Monthly Z.ai token cost > `[Claude Max price] × [active engineers]`
+When the Team Plan's rolling 5-hour quota is temporarily exhausted, engineers switch to the **Z.ai GLM proxy** to continue working. See Guide 1, [Section 9 — GLM Fallback](claude_code_setup_guide.md#9-glm-fallback--when-team-plan-quota-is-exhausted) for exact setup instructions.
 
-**Capability gaps:**
-- [ ] GLM-4.7 regularly produces materially worse output than Claude models (track via rework rate)
-- [ ] Team needs Claude Code Projects for shared memory across machines
-- [ ] Extended thinking/reasoning needed for complex architecture or debugging beyond GLM
-
-**Team maturity:**
-- [ ] 70%+ engineers completed all 7 guides, actively using skills + MCPs daily
-- [ ] Stable `CLAUDE.md` files for all active repos
-- [ ] Mature skill set in `aiad-claude`
-
-**Operational:**
-- [ ] Dedicated AI tooling budget line established
-
-### What Changes on Migration
-
-- Guide 1 env vars change: `ANTHROPIC_BASE_URL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL` all update. Migration checklist published as a Guide 1 amendment
-- Everything else is compatible: `CLAUDE.md`, skills, MCPs, hooks — no changes needed
-- Model guidance changes: `ANTHROPIC_DEFAULT_OPUS_MODEL` → native Claude Opus, `ANTHROPIC_DEFAULT_SONNET_MODEL` → native Claude Sonnet, `ANTHROPIC_DEFAULT_HAIKU_MODEL` → native Claude Haiku
-
-### Current Position
-
-- GLM-4.7 via Z.ai is strong for onboarding: pay-per-token, no seat commitment, full access to Claude Code tooling
-- Migration to Claude Max is a future decision, not immediate
-- **Don't self-upgrade** to individual Claude subscriptions without team coordination — fragments the team and makes quality comparison impossible
+> ⚠️ **Do not self-upgrade** to individual Claude Pro/Max subscriptions without team coordination — this fragments the team's tooling and makes quality comparison impossible. All subscription changes go through **Dominikus**.
 
 ---
 
@@ -124,58 +100,37 @@ Migrate when the majority of these are true:
 
 Key principle: **don't give engineers all seven guides at once.** Overloading leads to incomplete setup and surface-level usage. Build proficiency through use at each stage before the next.
 
-### Full Proficiency: ~6 Weeks
+### Full Proficiency: 3 Weeks
 
-#### Phase 1 — Week 1: Core Setup (Guides 1, 2, 3)
+#### Phase 1 — Week 1: Setup & Core Habit Building (Guides 1-3)
 
-**Complete:** Install Claude Code, configure Z.ai/GLM, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set from `aiad-claude` (engineering-wide + your stack's directory) and required plugins from `PLUGINS.md`, practice 5 must-have skills on real tasks.
+**Complete:** Install Claude Code, authenticate via `claude login` with Team Plan invite, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set from `aiad-claude` (engineering-wide + your stack's directory) and required plugins from `PLUGINS.md`, practice 5 must-have skills on real tasks. Engineer uses Claude for at least 3 different task types: writing code, generating tests, and reviewing their own code before MR submission.
 
-**By end of week:** Engineer runs Claude daily. `pr-description` and `git-commit` used for every applicable MR. At least one `CLAUDE.md` fix MR opened.
+**By end of week 1:** Engineer runs Claude daily. `pr-description` and `git-commit` used for every applicable MR. 4+ distinct skills invoked. Shared at least one tip in `#aiad-discussion`.
 
 **Lead action:**
 - Pair with the engineer on their first real task (not a tutorial). Confirm per-repo `CLAUDE.md` is accurate.
-- Point to `#aiad-discussion` on Google Chat.
+- Investigate whether there is a setup issue or habit gap if usage is low.
 
 ---
 
-#### Phase 2 — Weeks 2–3: Habits (Practice Guides 1–3)
+#### Phase 2 — Week 2: MCP Integrations & Hooks (Guides 4-5)
 
-No new guides — just habit building. Engineer uses Claude for at least 3 different task types: writing code, generating tests, and reviewing their own code before MR submission. Use `systematic-debugging` on at least one real bug.
+**Complete:** Install global MCPs (Context7, Sequential Thinking, Jira, Confluence, GitLab) + project MCPs. Install hook scripts from `aiad-claude`.
 
-**By end of week 3:** Engineer reaches for Claude automatically for covered tasks. 4+ distinct skills invoked. Shared at least one tip in `#aiad-discussion`.
-
-**Lead action:** Light check-in at 1:1 — "what did you use Claude for this week?" If the answer is nothing, investigate whether there is a setup issue or habit gap.
-
----
-
-#### Phase 3 — Weeks 3–4: MCPs (Guide 4)
-
-**Complete:** Install global MCPs (Context7, Sequential Thinking, Jira, Confluence, GitLab) + project MCPs (Serena for Engineering-Wide / PostgreSQL for BE / Figma for FE). Run at least one session with Jira MCP on a real ticket. One session with Context7 on a library lookup.
-
-**By end of week 4:** No more manually copying Jira ticket descriptions into sessions. Engineer notices deprecated APIs via Context7.
+**By end of week 2:** No more manually copying Jira ticket descriptions into sessions. Engineer notices deprecated APIs via Context7. Lint runs automatically after Claude edits. Engineer has seen the secret guard fire at least once and understands what it does.
 
 **Lead action:**
 - Verify `.mcp.json` is committed. Confirm PostgreSQL MCP points to local/staging — **not production**.
+- Confirm hooks are committed to repo (not just local install) and validate secret guard functions.
 
 ---
 
-#### Phase 4 — Weeks 4–5: Hooks (Guide 5)
+#### Phase 3 — Week 3: Advanced Workflows & Proficiency (Guide 6 and 70% Target)
 
-**Complete:** Install hook scripts from `aiad-claude`. Commit `.claude/settings.json` (or verify global `~/.claude/settings.json`). Verify at least one hook fires correctly in a real session.
+**Complete:** Read Guide 6. Run at least 2 cookbook workflows on real tasks.
 
-**By end of week 5:** Lint runs automatically after Claude edits. Engineer has seen the secret guard fire at least once (in a test scenario if not organically) and understands what it does.
-
-**Lead action:**
-- Confirm hooks are committed to repo (not just local install).
-- Validate secret guard and SQL guard hooks are functioning (test invocation from terminal as shown in Guide 5).
-
----
-
-#### Phase 5 — Weeks 5–6: Workflows (Guide 6)
-
-**Complete:** Read Guide 6. Run at least 2 cookbook workflows on real tasks (Workflow 3 + one from 1/2/4/6).
-
-**By end of week 6:** Writing `task.md` for sessions touching 2+ files. Has run at least one autonomous session end-to-end without unnecessary interruption. Comfortable with interactive vs autonomous mode selection.
+**By end of week 3:** Writing `task.md` for sessions touching 2+ files. Has run at least one autonomous session end-to-end without unnecessary interruption. Using Claude on 70%+ of PRs.
 
 **Lead action:** Review the engineer's first autonomous session output together — `task.md`, diff, what worked, what to improve. This is formal onboarding completion.
 
@@ -185,12 +140,10 @@ No new guides — just habit building. Engineer uses Claude for at least 3 diffe
 
 | Phase            | Weeks | Guides           | Key Milestone                                     |
 | ---------------- | ----- | ---------------- | ------------------------------------------------- |
-| Core Setup       | 1     | 1, 2, 3          | Skills daily; `CLAUDE.md` refined once            |
-| Habits           | 2–3   | *(practice)*     | 4 skills used; sharing in `#aiad-discussion`      |
-| MCPs             | 3–4   | 4                | Jira MCP for tickets; Context7 active             |
-| Hooks            | 4–5   | 5                | Lint hook firing; hooks committed                 |
-| Workflows        | 5–6   | 6                | Two cookbook workflows completed                   |
-| Full proficiency | 6+    | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
+| Setup & Habits   | 1     | 1, 2, 3          | Skills daily; 4 skills used; `CLAUDE.md` refined  |
+| MCPs & Hooks     | 2     | 4, 5             | Jira MCP active; Lint hook firing                 |
+| Workflows        | 3     | 6                | Two cookbook workflows completed; 70%+ adoption   |
+| Full proficiency | 3+    | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
 
 *Guide 7 is not part of the onboarding sequence. Engineers read it as a reference once proficient. Required reading for leads from day one.*
 
@@ -326,7 +279,7 @@ Not prohibited, but requires careful review of generated locators and test data.
 Leads are accountable for making these guidelines real:
 
 1. **Metrics:** Run the 4 metrics monthly. Share directional findings — not precision reports.
-2. **Migration decision:** Own the framework for when to migrate to Claude Max. Present analysis when criteria approach.
+2. **Subscription optimization:** Monitor Team Plan quota efficiency and fallback usage. If GLM fallback is used frequently, investigate whether quota-saving practices (model switching, session hygiene) are being followed.
 3. **Onboarding:** Personally pair with each new engineer during Week 1. The sequence doesn't work on paper alone.
 4. **`#aiad-discussion`:** Participate actively. If the channel goes quiet for a week, prompt the team with a question or observation.
 5. **Monthly demo:** Schedule and facilitate. If no volunteer, present yourself.
@@ -346,19 +299,18 @@ Leads are accountable for making these guidelines real:
 | -------------------------------- | ------------------------------ | ------ |
 | Engineering North Star (Quality) | Sprint Retros / DORA           | 10 min |
 | AI-Assisted PR Volume            | GitLab MR label filter         | 5 min  |
-| Session Length                   | Stop hook + Z.ai dashboard     | 10 min |
-| Token Usage                      | Z.ai dashboard                  | 5 min  |
+| Session Length                   | Stop hook + `/usage`           | 10 min |
+| Token Usage                      | `/usage` + Z.ai (fallback)     | 5 min  |
 
-### Migration Checklist
+### Team Plan Health Check
 
-| Criteria                                           | Check |
-| -------------------------------------------------- | ----- |
-| Monthly Z.ai cost > (Claude Max price × team size) | [ ]   |
-| GLM rework rate materially worse than Claude       | [ ]   |
-| Team needs Projects for shared memory              | [ ]   |
-| 70%+ engineers fully proficient                    | [ ]   |
-| Stable `CLAUDE.md` for all active repos            | [ ]   |
-| Dedicated AI tooling budget line                   | [ ]   |
+| Criteria                                            | Check |
+| --------------------------------------------------- | ----- |
+| Team Plan quota sufficient for daily usage           | [ ]   |
+| GLM fallback used < 20% of total sessions            | [ ]   |
+| 70%+ engineers fully proficient (completed 7 guides) | [ ]   |
+| Stable `CLAUDE.md` for all active repos              | [ ]   |
+| Model optimization practiced (Haiku for light tasks) | [ ]   |
 
 ### Knowledge Sharing
 
@@ -375,8 +327,8 @@ Leads are accountable for making these guidelines real:
 | ------------------------------- | ------------------------------------------------ |
 | TipTip `aiad-claude` repository | `https://gitlab.com/tiptiptv/common/aiad-claude` |
 | Claude Code docs                | `https://docs.anthropic.com/en/docs/claude-code` |
-| Z.ai pricing / dashboard        | `https://z.ai`                                   |
-| Claude Max pricing              | `https://www.anthropic.com/pricing`              |
+| Claude Team Plan info           | `https://www.anthropic.com/pricing`              |
+| Z.ai (GLM fallback)             | `https://z.ai`                                   |
 | `#aiad-discussion`              | Google Chat                                      |
 
 ---
