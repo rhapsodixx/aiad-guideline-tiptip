@@ -115,7 +115,92 @@ Choose the right skill with this decision framework:
 
 ---
 
-## 6. Engineering-Wide Skills (All Engineers)
+## 6. Disabling Skills at Workspace Level
+
+There are scenarios where a skill installed globally or at the project level should not be active in a specific workspace. Claude Code provides two mechanisms to suppress skill discovery.
+
+### Mechanism 1: `.claudeignore`
+
+Add the skill's path to a `.claudeignore` file in the repository root. Claude Code respects `.claudeignore` the same way Git respects `.gitignore` — files matching these patterns are excluded from Claude's context and discovery.
+
+**Example `.claudeignore` entries:**
+```
+# Suppress a specific skill in this repo
+.agents/skills/engineering-wide/rfc-review/
+
+# Suppress an entire team's skills in a repo where they don't apply
+.agents/skills/backend/
+
+# Suppress a global personal skill from activating here
+# (global skills are not in .agents/, but you can exclude files Claude reads)
+```
+
+### Mechanism 2: Selective Installation
+
+The most reliable approach for team-shared skills is to only install what the repo needs. Rather than copying the full `aiad-claude` skill set, copy only the relevant subdirectories during setup (see Section 3 — Installation). A skill that was never installed cannot be accidentally invoked.
+
+### When to Use These Tips
+
+| Scenario | Recommended Action |
+|---|---|
+| A global personal skill (`~/.claude/skills/`) conflicts with a workspace skill of the same name | Use `.claudeignore` to suppress the personal skill's effect, or rename to avoid the collision |
+| A repo has both backend and frontend code, but a specific branch workspace is frontend-only | Add backend skill paths to `.claudeignore` in that branch's worktree |
+| A heavy skill (e.g., `rfc-review`) should not auto-suggest in a fast-turnaround hotfix repo | Add it to `.claudeignore` for that repo |
+| Running Claude Code in CI/CD automation where interactive skills are not appropriate | Add `.agents/skills/` wholesale to `.claudeignore` in the CI config |
+| An outdated skill is in the repo but a fix is pending MR approval | Temporarily suppress it via `.claudeignore` rather than deleting the file |
+
+> 💡 **Note:** Disabling via `.claudeignore` is non-destructive — the skill file remains in the repository for other engineers or branches. Deleting the file removes it for everyone immediately.
+
+---
+
+## 7. Best Practice: User-Level vs. Workspace-Level Skill Setup
+
+Understanding where to install a skill is as important as knowing which skill to use.
+
+### The Two Levels
+
+| Level | Location | Visibility | Version Control |
+|---|---|---|---|
+| **User-level** | `~/.claude/skills/` | Your machine only, all projects | No — lives outside any repo |
+| **Workspace-level** | `.agents/skills/` in repo root | Everyone who clones the repo | Yes — committed to Git |
+
+### Decision Rule
+
+> **If a team member would benefit from this skill, it belongs at workspace level. If it only serves you personally, it belongs at user level.**
+
+**Use user-level (`~/.claude/skills/`) when:**
+- The skill encodes a personal workflow preference not applicable to teammates (e.g., your own note-taking or scaffolding style)
+- The skill contains personal credentials or machine-specific paths
+- You are prototyping a skill before proposing it to the team via `aiad-claude`
+- The skill is a personal override of a team skill during a transition period (keep this temporary)
+
+**Use workspace-level (`.agents/skills/`) when:**
+- The skill codifies a team convention, code review standard, or TipTip workflow
+- The skill must be consistent across all engineers to avoid output divergence (e.g., `pr-description`, `git-commit`)
+- The skill references repo-specific tooling, file paths, or test patterns
+- The skill should be reviewed and improved as a team (via MR to `aiad-claude`)
+
+### The Drift Risk
+
+Installing a team skill at user-level creates a **private fork** — your version drifts as the canonical skill in `aiad-claude` is updated by the team. You silently use a stale version. **Do not duplicate workspace skills into `~/.claude/skills/`.**
+
+### Decision Flowchart
+
+```
+Is this skill useful to my teammates?
+├── Yes → Does it belong to an existing team category (engineering-wide / backend / frontend-mobile)?
+│         ├── Yes → Install at workspace level via aiad-claude. Open MR if it's new.
+│         └── No  → Propose new category or extend existing one via MR to aiad-claude.
+└── No  → Is it a temporary prototype?
+          ├── Yes → Install at user-level. Set a reminder to propose or discard after the sprint.
+          └── No  → Install at user-level permanently. Document it in your personal README.
+```
+
+> ⚠️ **Reminder:** Skills installed at workspace level are committed to the repository and affect every engineer who pulls the branch. Review them with the same care as code changes.
+
+---
+
+## 8. Engineering-Wide Skills (All Engineers)
 
 These skills apply regardless of our stack. Every TipTip engineer should have these installed and use them as their default workflows.
 
@@ -157,7 +242,7 @@ These skills apply regardless of our stack. Every TipTip engineer should have th
 
 ---
 
-## 7. Backend Skills (Go Stack)
+## 9. Backend Skills (Go Stack)
 
 These skills are specifically for engineers working on TipTip's Go backend services.
 
@@ -182,7 +267,7 @@ These skills are specifically for engineers working on TipTip's Go backend servi
 
 ---
 
-## 8. Frontend Skills (React / Next.js Stack)
+## 10. Frontend Skills (React / Next.js Stack)
 
 These skills are relevant for engineers working on TipTip's React, Next.js, and SatuSatu codebases.
 
@@ -204,7 +289,7 @@ These skills are relevant for engineers working on TipTip's React, Next.js, and 
 
 ---
 
-## 9. Mobile Skills (Flutter Stack)
+## 11. Mobile Skills (Flutter Stack)
 
 These skills are relevant for engineers working on TipTip's Flutter mobile applications.
 
@@ -224,7 +309,7 @@ No additional Flutter-specific skills from third-party plugins are mature enough
 
 ---
 
-## 10. Skills and LLM Cost
+## 12. Skills and LLM Cost
 
 This section outlines how skills affect token consumption and API cost, and gives practical guidance on efficient use.
 
@@ -253,7 +338,7 @@ This section outlines how skills affect token consumption and API cost, and give
 
 ---
 
-## 11. What to Expect from Engineers
+## 13. What to Expect from Engineers
 
 ### Engineering Lead Responsibilities
 
@@ -299,7 +384,7 @@ The expected behavior for skill improvement follows this loop:
 
 ---
 
-## 12. Quick Reference
+## 14. Quick Reference
 
 | Task | Skill | Scope | Source | Path in aiad-claude | Recommended Claude Code Effort |
 |---|---|---|---|---|---|

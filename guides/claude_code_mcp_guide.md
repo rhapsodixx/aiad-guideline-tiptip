@@ -75,7 +75,56 @@ If you use an MCP-enabled VS Code extension (like Claude desktop/extension or Co
 
 ---
 
-## 4. Engineering-Wide MCPs
+## 4. Disabling MCP Servers at Workspace Level
+
+Not every MCP server should be active in every project. Claude Code allows you to suppress specific servers at the workspace level without removing them from your global configuration.
+
+### The `disabledMcpServers` Key
+
+In a project's `.mcp.json`, add a `disabledMcpServers` array listing the server names you want to suppress for that workspace. These names must match the keys used in your global `~/.claude.json` or the project's own `mcpServers` block.
+
+**Example `.mcp.json` for a frontend-only repository:**
+```json
+{
+  "mcpServers": {
+    "figma": {
+      "type": "sse",
+      "url": "https://mcp.figma.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${FIGMA_TOKEN}"
+      }
+    }
+  },
+  "disabledMcpServers": [
+    "postgres",
+    "sequential-thinking"
+  ]
+}
+```
+
+In this example, the globally configured `postgres` and `sequential-thinking` servers will not load when Claude Code is opened in this repository, even though they are active in other projects.
+
+### How It Works
+
+`disabledMcpServers` suppresses servers at session initialization — disabled servers are never started, so they consume no tools budget and contribute no noise to the tool list. This is strictly less expensive than letting servers start and then ignoring them.
+
+### When to Use This
+
+| Scenario | Servers to Disable |
+|---|---|
+| Frontend-only repo (SatuSatu, Next.js) | `postgres` — no database work happens here; disabling keeps tool count lean |
+| Backend Go repo | `figma`, `puppeteer` — design and browser tools are irrelevant; disabling keeps tool budget for `serena` and `postgres` |
+| Tool count exceeds the 80-tool limit (see Section 10 tip) | Audit active servers; disable any that are Nice-to-Have for this specific repo |
+| CI/CD automation workspace | Disable all interactive MCPs (`jira`, `confluence`, `figma`) — automated sessions should use only filesystem and shell tools |
+| Onboarding a new repo where an MCP credential isn't set up yet | Disable the server temporarily to avoid session-start authentication errors while the token is being provisioned |
+
+> 💡 **Commit `.mcp.json` to the repository.** When `disabledMcpServers` is version-controlled, every engineer who clones the repo gets the same curated MCP setup automatically — no per-machine configuration required.
+
+> ⚠️ **Disabling is not uninstalling.** `disabledMcpServers` suppresses a server for this workspace only. The global server configuration in `~/.claude.json` is untouched and remains active in other projects.
+
+---
+
+## 5. Engineering-Wide MCPs
 
 These MCPs are relevant for all TipTip engineers regardless of stack. Configure these globally (`~/.claude.json`) unless noted otherwise.
 
@@ -254,7 +303,7 @@ claude mcp add --transport stdio brave-search -- npx -y @modelcontextprotocol/se
 
 ---
 
-## 5. Backend MCPs (Go Stack)
+## 6. Backend MCPs (Go Stack)
 
 These MCPs are relevant for engineers working on TipTip's Go backend services. Configure at project-level (`.mcp.json` in the root) in backend repositories.
 
@@ -314,7 +363,7 @@ claude mcp add --transport stdio gitlab -- npx -y @modelcontextprotocol/server-g
 
 ---
 
-## 6. Frontend MCPs (React / Next.js Stack)
+## 7. Frontend MCPs (React / Next.js Stack)
 
 These MCPs are relevant for engineers working on TipTip's React/Next.js codebases. Configure at project-level (`.mcp.json`) in frontend repositories.
 
@@ -376,7 +425,7 @@ claude mcp add --transport stdio puppeteer -- npx -y @modelcontextprotocol/serve
 
 ---
 
-## 7. Recommended MCP Stack by Role
+## 8. Recommended MCP Stack by Role
 
 | MCP                 | Engineering-Wide | Backend (Go) | Frontend (Next.js) | Classification | Config Level |
 | ------------------- | ---------------- | ------------ | ------------------ | -------------- | ------------ |
@@ -397,7 +446,7 @@ claude mcp add --transport stdio puppeteer -- npx -y @modelcontextprotocol/serve
 
 ---
 
-## 8. MCP and Skills: How They Work Together
+## 9. MCP and Skills: How They Work Together
 
 Skills define the workflow. MCPs supply the live data.
 
@@ -411,7 +460,7 @@ The skill orchestrates; MCPs supply data. Watch for **context window compounding
 
 ---
 
-## 9. What to Expect from Engineers
+## 10. What to Expect from Engineers
 
 ### Engineering Leads
 - **Own the project-level `.mcp.json`** for active repos — committed to the repository so every engineer gets the same config
@@ -431,7 +480,7 @@ The skill orchestrates; MCPs supply data. Watch for **context window compounding
 
 ---
 
-## 10. Quick Reference
+## 11. Quick Reference
 
 | MCP                 | Source                                  | Install Command (CLI)                     | Config Level | Key Credential       |
 | ------------------- | --------------------------------------- | ----------------------------------------- | ------------ | -------------------- |

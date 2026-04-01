@@ -314,7 +314,7 @@ Not prohibited, but high-stakes. Must follow creator-service `CLAUDE.md` constra
 
 Leads are accountable for making these guidelines real:
 
-1. **Metrics:** Run the 7 metrics monthly. Share directional findings — not precision reports.
+1. **Metrics:** Run the 4 metrics monthly. Share directional findings — not precision reports.
 2. **Migration decision:** Own the framework for when to migrate to Claude Max. Present analysis when criteria approach.
 3. **Onboarding:** Personally pair with each new engineer during Week 1. The sequence doesn't work on paper alone.
 4. **`#aiad-discussion`:** Participate actively. If the channel goes quiet for a week, prompt the team with a question or observation.
@@ -331,15 +331,12 @@ Leads are accountable for making these guidelines real:
 
 ### Monthly Metrics Checklist
 
-| Metric                      | How                            | Time   |
-| --------------------------- | ------------------------------ | ------ |
-| PR volume with Claude label | GitLab MR filter               | 5 min  |
-| Skill invocation            | Collect skill logs             | 10 min |
-| MCP usage                   | Stop hook + Context7 dashboard | 10 min |
-| Session tokens              | Z.ai dashboard                 | 5 min  |
-| Hook interventions          | Hook log files                 | 5 min  |
-| `CLAUDE.md` updates         | GitLab MR history              | 5 min  |
-| Rework rate                 | Qualitative in retro           | 10 min |
+| Metric                           | How                            | Time   |
+| -------------------------------- | ------------------------------ | ------ |
+| Engineering North Star (Quality) | Sprint Retros / DORA           | 10 min |
+| AI-Assisted PR Volume            | GitLab MR label filter         | 5 min  |
+| Session Length                   | Stop hook + Z.ai dashboard     | 10 min |
+| Token Usage                      | Z.ai dashboard                  | 5 min  |
 
 ### Migration Checklist
 
