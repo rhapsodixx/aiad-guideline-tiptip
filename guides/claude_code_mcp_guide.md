@@ -30,7 +30,7 @@ MCP servers can be configured globally for your machine or locally for a specifi
 - **Project-level MCP config** (`.mcp.json` in the repo root): Available only
   in that project, and should be version-controlled with the repository.
 
-*Recommendation for TipTip:* Project-specific tools (like PostgreSQL or Figma) belong in the project-level `.mcp.json`. Universal tools (like Context7, Jira, or Confluence) belong in the global `~/.claude.json`.
+*Recommendation for TipTip:* Project-specific tools (like PostgreSQL or Figma) belong in the project-level `.mcp.json`. Universal tools (like Context7, Atlassian, or GitLab) belong in the global `~/.claude.json`.
 
 ### Installation Methods
 
@@ -115,7 +115,7 @@ In this example, the globally configured `postgres` and `sequential-thinking` se
 | Frontend-only repo (SatuSatu, Next.js) | `postgres` — no database work happens here; disabling keeps tool count lean |
 | Backend Go repo | `figma`, `puppeteer` — design and browser tools are irrelevant; disabling keeps tool budget for `serena` and `postgres` |
 | Tool count exceeds the 80-tool limit (see Section 10 tip) | Audit active servers; disable any that are Nice-to-Have for this specific repo |
-| CI/CD automation workspace | Disable all interactive MCPs (`jira`, `confluence`, `figma`) — automated sessions should use only filesystem and shell tools |
+| CI/CD automation workspace | Disable all interactive MCPs (`atlassian`, `figma`) — automated sessions should use only filesystem and shell tools |
 | Onboarding a new repo where an MCP credential isn't set up yet | Disable the server temporarily to avoid session-start authentication errors while the token is being provisioned |
 
 > 💡 **Commit `.mcp.json` to the repository.** When `disabledMcpServers` is version-controlled, every engineer who clones the repo gets the same curated MCP setup automatically — no per-machine configuration required.
@@ -247,7 +247,7 @@ claude mcp add --transport stdio atlassian -- uvx mcp-atlassian
 
 ---
 
-### 4.6 Brave Search / Web Search MCP — Research While Coding
+### 4.5 Brave Search / Web Search MCP — Research While Coding
 **Classification:** Nice-to-Have
 
 General web search without leaving the session. Complements Context7 for non-library queries. Can bloat context — use sparingly.
@@ -436,7 +436,7 @@ The skill orchestrates; MCPs supply data. Watch for **context window compounding
 
 ### Engineering Leads
 - **Own the project-level `.mcp.json`** for active repos — committed to the repository so every engineer gets the same config
-- **Provide a global config template** — standard `~/.claude.json` covering Jira, Confluence, GitLab, Context7, Sequential Thinking
+- **Provide a global config template** — standard `~/.claude.json` covering Atlassian (Jira/Confluence), GitLab, Context7, Sequential Thinking
 - **Coordinate credentials** — API tokens via secrets manager, **never hardcoded in `.mcp.json`**
 - **Review `.mcp.json` changes via MR** — adding MCPs is a team decision
 - **Monitor token cost** — check `/usage` in Claude Code sessions and review quota consumption after MCP rollout. If costs spike, identify high-frequency MCPs
