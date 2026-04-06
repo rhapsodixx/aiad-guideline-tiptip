@@ -428,39 +428,6 @@ The expected behavior for skill improvement follows this loop:
 
 ## 16. Quick Reference
 
-| Task | Skill | Scope | Source | Path in aiad-claude | Recommended Claude Code Effort |
-|---|---|---|---|---|---|
-| Write PR description | `pr-description` | Engineering-wide | `aiad-claude` | `engineering-wide/pr-description/` | `low` |
-| Review Engineering Spec / RFC | `rfc-review` | Engineering-wide | `aiad-claude` | `engineering-wide/rfc-review/` | `max` |
-| Review PRD | `prd-review` | Engineering-wide | `aiad-claude` | `engineering-wide/prd-review/` | `max` |
-| Refine a prompt (Claude) | `refine-prompt` | Engineering-wide | `aiad-claude` | `engineering-wide/refine-prompt/` | `low` |
-| Refine a prompt (Gemini) | `refine-prompt-gravity` | Engineering-wide | `aiad-claude` | `engineering-wide/refine-prompt-gravity/` | `low` |
-| System design & architecture | `system-design` | Engineering-wide | `aiad-claude` | `engineering-wide/system-design/` | `high` |
-| Generate commit message | `git-commit` | Engineering-wide | `aiad-claude` | `engineering-wide/git-commit/` | `low` |
-| Generate tests (TDD workflow) | `tdd` | Engineering-wide | `everything-claude-code` | *(plugin)* | `high` |
-| Test coverage analysis & gap-filling | `test-coverage` | Engineering-wide | `everything-claude-code` | *(plugin)* | `high` |
-| Build error diagnosis & fixing | `build-fix` | Engineering-wide | `everything-claude-code` | *(plugin)* | `medium` |
-| Systematic trace & root cause analysis | `systematic-debugging` | Engineering-wide | `superpowers` | *(plugin)* | `max` |
-| Basic feature planning | `plan` | Engineering-wide | `everything-claude-code` | *(plugin)* | `medium` |
-| Update documentation | `update-docs` | Engineering-wide | `everything-claude-code` | *(plugin)* | `low` |
-| Go code review (multi-persona) | `code-review-golang` | Backend | `aiad-claude` | `backend/code-review-golang/` | `max` |
-| Go idiomatic patterns | `golang-pattern` | Backend | `everything-claude-code` | *(plugin)* | `high` |
-| Go build error fixing | `go-build` | Backend | `everything-claude-code` | *(plugin)* | `medium` |
-| Go TDD & testing patterns | `go-test` | Backend | `everything-claude-code` | *(plugin)* | `high` |
-| Postgres optimizations & schema design | `postgres` | Backend | `planetscale` | *(external skill)* | `medium` |
-| Go automated code review | `go-review` | Backend | `everything-claude-code` | *(plugin)* | `medium` |
-| Next.js code review (multi-persona) | `code-review-nextjs` | Frontend Web | `aiad-claude` | `frontend-web/code-review-nextjs/` | `max` |
-| Next.js architecture best practices | `next-best-practices` | Frontend Web | `Vercel` | *(external skill)* | `high` |
-| React composition performance rules | `vercel-react-best-practices` | Frontend Web | `Vercel` | *(external skill)* | `medium` |
-| Flutter code review (multi-persona) | `code-review-flutter` | Frontend Mobile | `aiad-claude` | `frontend-mobile/code-review-flutter/` | `max` |
-| Generate manual test cases from PRDs | `shift-left-manual-test` | QA Automation | `aiad-claude` | `qa-automation/shift-left-manual-test/` | `high` |
-| Generate Playwright/Cucumber scripts | `automation-script-generation` | QA Automation | `aiad-claude` | `qa-automation/automation-script-generation/` | `high` |
-| Validate automation scripts | `automation-script-validation` | QA Automation | `aiad-claude` | `qa-automation/automation-script-validation/` | `max` |
+For the full, up-to-date skills reference — including recommended model tiers (Haiku / Sonnet / Opus) for each skill — see:
 
-**Reference Sources:**
-- TipTip AIAD Skills & Plugin Manifest: [`PLUGINS.md`](../PLUGINS.md)
-- TipTip AIAD - CLAUDE.md/Skills Repository: [https://gitlab.com/tiptiptv/common/aiad-claude](https://gitlab.com/tiptiptv/common/aiad-claude)
-- Superpowers source: [https://github.com/obra/superpowers](https://github.com/obra/superpowers)
-- everything-claude-code source: [https://github.com/affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code)
-- PlanetScale Database Skills: [https://database-skills.preview.planetscale.com/](https://database-skills.preview.planetscale.com/)
-- Vercel skills source: [https://vercel.com/docs/agent-resources/skills](https://vercel.com/docs/agent-resources/skills)
+→ [**Skills List Reference**](./claude_code_skills_list.md)
