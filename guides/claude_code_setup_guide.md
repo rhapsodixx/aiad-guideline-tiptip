@@ -91,7 +91,7 @@ Claude Code doesn't support project-level API keys natively, but you can use dir
 
 3. Create a .envrc in the project root:
     ```
-    # /Users/stephanie.virdayanti/tiptiptv/.envrc
+    # ~/tiptiptv/.envrc
     
     # This file is gitignored — do not commit your API key
     # Z.AI API configuration for this project
@@ -101,12 +101,12 @@ Claude Code doesn't support project-level API keys natively, but you can use dir
 
 4. Allowlist the file:
     ```
-    direnv allow /Users/stephanie.virdayanti/tiptiptv/
+    direnv allow ~/tiptiptv/
     ```
 
 5. Make sure .envrc is ignored by git in the repositories (it contains your API key):
     ```
-    echo ".envrc" >> /Users/stephanie.virdayanti/tiptiptv/backend/content/.gitignore
+    echo ".envrc" >> ~/tiptiptv/backend/content/.gitignore
     ```
 
 6. Enter `claude` session and expect no login required. To check which account logged into Claude Code, enter `/status` and expect the Auth token to be the same with `ANTHROPIC_AUTH_TOKEN`.
