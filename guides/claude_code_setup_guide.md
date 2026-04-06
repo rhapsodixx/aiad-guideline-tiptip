@@ -71,16 +71,50 @@ Follow the interactive prompts to authenticate with your Anthropic account. Clau
 claude
 ```
 
-Then, inside the Claude Code prompt, type:
-```
-/status
-```
+### Alternative: Using direnv when you have multiple projects and Claude accounts
 
-**Expected output:** You should see your account linked to the TipTip team workspace, with the default model set to **Sonnet**.
+Claude Code doesn't support project-level API keys natively, but you can use direnv with .envrc to auto-load env vars when you enter this project directory. 
 
-> 💡 **No environment variables needed.** Unlike the GLM fallback setup, the Team Plan uses OAuth-based authentication via `claude login`. You do not need to set `ANTHROPIC_BASE_URL` or `ANTHROPIC_API_KEY` for normal operation.
+1. Install direnv (if not already installed):
+    ```
+    brew install direnv
+    ```
 
-> ⚠️ **If you previously had Z.ai environment variables set** (e.g., `ANTHROPIC_BASE_URL` pointing to `https://api.z.ai/api/anthropic`), you must **remove or comment them out** from your shell profile (`~/.zshrc`, `~/.bashrc`) and from `~/.claude/settings.json` before using the Team Plan. These overrides will redirect traffic away from Anthropic's servers.
+2. Hook it into your shell (add to ~/.zshrc):
+    ```
+    eval "$(direnv hook zsh)"
+    ```
+    Then reload: 
+    ```
+    source ~/.zshrc
+    ```
+
+3. Create a .envrc in the project root:
+    ```
+    # ~/tiptiptv/.envrc
+    
+    # This file is gitignored — do not commit your API key
+    # Z.AI API configuration for this project
+    export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+    export ANTHROPIC_AUTH_TOKEN="your-z-ai-key-here"
+    ```
+
+4. Allowlist the file:
+    ```
+    direnv allow ~/tiptiptv/
+    ```
+
+5. Make sure .envrc is ignored by git in the repositories (it contains your API key):
+    ```
+    echo ".envrc" >> ~/tiptiptv/backend/content/.gitignore
+    ```
+
+6. Enter `claude` session and expect no login required. To check which account logged into Claude Code, enter `/status` and expect the Auth token to be the same with `ANTHROPIC_AUTH_TOKEN`.
+
+How it works:
+- When you cd into this project, direnv auto-loads those env vars → Claude Code uses z.ai
+- When you cd out or comment out the keys, they're unloaded → Claude Code falls back to your default Anthropic account
+- No other projects are affected
 
 ---
 

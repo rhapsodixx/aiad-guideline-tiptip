@@ -601,11 +601,16 @@
             <!-- ============================================================ -->
             <!-- SLIDE 1: Title -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section class="title-slide">
                 <aside class="notes">Welcome. Today I'm presenting our engineering-wide strategy for AI-assisted
                     development. This is not a demo or a tutorial — it's a strategic alignment session. By the end,
                     you'll understand our approach, what's expected of you, and why we chose centralization over
                     individual experimentation.</aside>
+=======
+            <!-- Speaker notes: Welcome. Today I'm presenting our engineering-wide strategy for AI-assisted development. This is not a demo or a tutorial — it's a strategic alignment session. By the end, you'll understand our approach, what's expected of you, and why we chose centralization over individual experimentation. -->
+            <section class="title-slide">
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill">Engineering Strategy</div>
                 <h1>AI-Assisted Development<br>at TipTip</h1>
                 <p class="subtitle">A Centralized Approach to Engineering with AI</p>
@@ -615,11 +620,16 @@
             <!-- ============================================================ -->
             <!-- SLIDE 2: The Thesis -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Let me start with the core thesis. AI-assisted development is no longer
                     experimental — it's a standard engineering competency. But the way we adopt it matters more than
                     whether we adopt it. We're going centralized. One toolchain. One repository. Everyone contributes,
                     everyone benefits.</aside>
+=======
+            <!-- Speaker notes: Let me start with the core thesis. AI-assisted development is no longer experimental — it's a standard engineering competency. But the way we adopt it matters more than whether we adopt it. We're going centralized. One toolchain. One repository. Everyone contributes, everyone benefits. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill">The Thesis</div>
                 <h2>AI-Assisted Development Is Now a<br>Standard Engineering Competency</h2>
                 <blockquote>
@@ -637,12 +647,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 3: The Problem — Fragmented Adoption -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Before I show you what we're building, let me paint the picture of what happens
                     when teams adopt AI tools without coordination. I've seen this firsthand. Each engineer picks their
                     own tool, writes their own prompts, makes their own mistakes — and learns in isolation. Knowledge
                     dies with the session. Prompt quality varies wildly. There's no shared standard. This is the
                     fragmented approach, and it fails at scale.</aside>
+=======
+            <!-- Speaker notes: Before I show you what we're building, let me paint the picture of what happens when teams adopt AI tools without coordination. I've seen this firsthand. Each engineer picks their own tool, writes their own prompts, makes their own mistakes — and learns in isolation. Knowledge dies with the session. Prompt quality varies wildly. There's no shared standard. This is the fragmented approach, and it fails at scale. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-red">The Problem</div>
                 <h2>What Happens Without Centralization</h2>
                 <ul>
@@ -657,12 +672,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 4: Comparison Chart -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Here's the comparison on concrete dimensions. Fragmented adoption gives you fast
                     individual starts but zero compounding. Centralized adoption requires upfront investment — our 7
                     guides, the aiad-claude repository — but every improvement compounds across the entire team. This is
                     the same principle behind shared libraries and style guides. We're extending it to how we use AI.
                 </aside>
+=======
+            <!-- Speaker notes: Here's the comparison on concrete dimensions. Fragmented adoption gives you fast individual starts but zero compounding. Centralized adoption requires upfront investment — our 7 guides, the aiad-claude repository — but every improvement compounds across the entire team. This is the same principle behind shared libraries and style guides. We're extending it to how we use AI. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-red">The Problem</div>
                 <h2>Fragmented vs. Centralized</h2>
                 <table class="compare-table">
@@ -711,12 +731,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 5: Why Claude Code -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">We evaluated Cursor, Copilot, Cline, Windsurf, KiloCode. We chose Claude Code
                     because it's agent-first — not autocomplete embedded in an editor. It has native support for
                     persistent project memory via CLAUDE.md, reusable skills, MCP integrations for live data, hooks for
                     enforcement, and subagents for parallel execution. These five capabilities are what make
                     centralization possible. No other tool gives us all five.</aside>
+=======
+            <!-- Speaker notes: We evaluated Cursor, Copilot, Cline, Windsurf, KiloCode. We chose Claude Code because it's agent-first — not autocomplete embedded in an editor. It has native support for persistent project memory via CLAUDE.md, reusable skills, MCP integrations for live data, hooks for enforcement, and subagents for parallel execution. These five capabilities are what make centralization possible. No other tool gives us all five. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-blue">The Tool</div>
                 <h2>Why Claude Code</h2>
                 <p style="margin-bottom: 16px;">Not autocomplete. An <strong>autonomous engineering agent</strong> with
@@ -743,7 +768,11 @@
                         </tr>
                         <tr>
                             <td><strong>MCP</strong></td>
+<<<<<<< HEAD
                             <td>Live data from Atlassian, DB, Figma</td>
+=======
+                            <td>Live data from Jira, DB, Confluence, Figma</td>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                             <td>Shared config committed to repos — consistent data access</td>
                         </tr>
                         <tr>
@@ -766,12 +795,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 6: The 5-Layer Architecture -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Here's the system we've built. Five layers, each building on the one below.
                     CLAUDE.md tells Claude who we are. Skills tell it how to work. MCP gives it live data. Hooks enforce
                     what it cannot do. Workflows combine everything into repeatable patterns. Every layer is
                     version-controlled in a single GitLab repository. Not on your laptop. Not in your head. In the repo.
                 </aside>
+=======
+            <!-- Speaker notes: Here's the system we've built. Five layers, each building on the one below. CLAUDE.md tells Claude who we are. Skills tell it how to work. MCP gives it live data. Hooks enforce what it cannot do. Workflows combine everything into repeatable patterns. Every layer is version-controlled in a single GitLab repository. Not on your laptop. Not in your head. In the repo. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-teal">Our System</div>
                 <h2>The 5-Layer Centralized Architecture</h2>
                 <div class="arch-stack">
@@ -790,8 +824,13 @@
                     <div class="arch-layer l3">
                         <span class="layer-num">3</span>
                         <div><span class="layer-title">MCP Integrations</span><br><span class="layer-desc">Live data —
+<<<<<<< HEAD
                                 Atlassian tickets,
                                 PostgreSQL schemas, Figma designs</span></div>
+=======
+                                Jira tickets,
+                                Confluence docs, PostgreSQL schemas, Figma designs</span></div>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                     </div>
                     <div class="arch-layer l2">
                         <span class="layer-num">2</span>
@@ -857,9 +896,15 @@
                 <h2>Live Data + Quality Enforcement</h2>
                 <div class="two-col">
                     <div class="col-card">
+<<<<<<< HEAD
                         <h3>🔌 9 MCPs — Live Context</h3>
                         <ul>
                             <li><strong>Engineering-Wide:</strong> Atlassian, GitLab, Sequential Thinking, Brave
+=======
+                        <h3>🔌 10 MCPs — Live Context</h3>
+                        <ul>
+                            <li><strong>Engineering-Wide:</strong> Jira, Confluence, GitLab, Sequential Thinking, Brave
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                                 Search, Serena</li>
                             <li><strong>Backend:</strong> PostgreSQL, Context7</li>
                             <li><strong>Frontend:</strong> Figma, Browser/Playwright</li>
@@ -944,12 +989,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 10: The Improvement Loop -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">This is the mechanism that makes centralization compound. It's the same loop we
                     already use for code contributions, extended to our AI tooling. An engineer encounters an issue — a
                     skill produces wrong output, a hook misses a case. They identify the fix, open an MR on aiad-claude,
                     the lead reviews and merges, everyone pulls the update. This is expected and normal. The skill set
                     matures through use, not through planning meetings.</aside>
+=======
+            <!-- Speaker notes: This is the mechanism that makes centralization compound. It's the same loop we already use for code contributions, extended to our AI tooling. An engineer encounters an issue — a skill produces wrong output, a hook misses a case. They identify the fix, open an MR on aiad-claude, the lead reviews and merges, everyone pulls the update. This is expected and normal. The skill set matures through use, not through planning meetings. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-green">The Flywheel</div>
                 <h2>The Improvement Loop</h2>
                 <p style="font-size: 0.68em; margin-bottom: 20px;">The same contribution model we use for code —
@@ -997,12 +1047,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 11: What This Means — Engineers -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Now — what this means for you concretely. For individual engineers: you are
                     expected to use the shared skills as your default workflow. If /pr-description exists, you don't
                     write your own prompt. If a skill produces wrong output, you report it upstream via MR — you don't
                     fix it locally and move on. No private forks. The improvement loop only works if everyone
                     contributes back.</aside>
+=======
+            <!-- Speaker notes: Now — what this means for you concretely. For individual engineers: you are expected to use the shared skills as your default workflow. If /pr-description exists, you don't write your own prompt. If a skill produces wrong output, you report it upstream via MR — you don't fix it locally and move on. No private forks. The improvement loop only works if everyone contributes back. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-amber">Expectations</div>
                 <h2>What This Means for Individual Engineers</h2>
                 <div class="two-col">
@@ -1034,12 +1089,17 @@
             <!-- ============================================================ -->
             <!-- SLIDE 12: What This Means — Leads -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">For engineering leads — you have a heavier responsibility. You own the CLAUDE.md
                     and skills for your domain. Backend lead owns Go files, frontend lead owns Next.js files. You're
                     responsible for hooks being committed to active repos before the team uses Claude Code on them. You
                     run the adoption metrics monthly. You pair with new engineers during their first week. You're
                     accountable for making these guidelines real, not just documented.</aside>
+=======
+            <!-- Speaker notes: For engineering leads — you have a heavier responsibility. You own the CLAUDE.md and skills for your domain. Backend lead owns Go files, frontend lead owns Next.js files. You're responsible for hooks being committed to active repos before the team uses Claude Code on them. You run the adoption metrics monthly. You pair with new engineers during their first week. You're accountable for making these guidelines real, not just documented. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-amber">Expectations</div>
                 <h2>What This Means for Engineering Leads</h2>
                 <ul>
@@ -1063,6 +1123,7 @@
             </section>
 
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <!-- SLIDE 13: 1-Week Onboarding Timeline -->
             <!-- ============================================================ -->
             <section>
@@ -1073,11 +1134,20 @@
                     to 70%+ adoption. Full proficiency by the end of week 1.</aside>
                 <div class="pill pill-blue">Onboarding</div>
                 <h2>1-Week Staged Onboarding</h2>
+=======
+            <!-- SLIDE 13: 3-Week Onboarding Timeline -->
+            <!-- ============================================================ -->
+            <!-- Speaker notes: We are NOT giving all 7 guides at once. Overloading leads to incomplete setup and surface-level usage. Instead, we use a phased 3-week onboarding. Week 1 is core setup — install, configure, run 5 must-have skills. Week 2 adds MCPs and Hooks. Week 3 adds workflows and brings us to 70%+ adoption. Full proficiency by week 3. -->
+            <section>
+                <div class="pill pill-blue">Onboarding</div>
+                <h2>3-Week Phased Onboarding</h2>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <p style="font-size: 0.65em; margin-bottom: 12px;">Key principle: <strong>don't give engineers all 7
                         guides at
                         once.</strong> Build proficiency through use at each stage.</p>
                 <div class="timeline">
                     <div class="timeline-phase tp1">
+<<<<<<< HEAD
                         <div class="phase-week">Stage 1</div>
                         <div class="phase-title">Setup & MCP</div>
                         <div class="phase-desc">Guides 1-5<br>Install, CLAUDE.md,<br>skills, MCPs & Hooks</div>
@@ -1085,6 +1155,20 @@
                     <div class="timeline-phase tp2">
                         <div class="phase-week">Stage 2</div>
                         <div class="phase-title">Polish & Proficiency</div>
+=======
+                        <div class="phase-week">Week 1</div>
+                        <div class="phase-title">Core Setup</div>
+                        <div class="phase-desc">Guides 1-3<br>Install, CLAUDE.md,<br>5 must-have skills</div>
+                    </div>
+                    <div class="timeline-phase tp2">
+                        <div class="phase-week">Week 2</div>
+                        <div class="phase-title">MCPs & Hooks</div>
+                        <div class="phase-desc">Guides 4-5<br>Global MCPs, Context7,<br>Live postgres, pre/post-tool hooks</div>
+                    </div>
+                    <div class="timeline-phase tp3">
+                        <div class="phase-week">Week 3</div>
+                        <div class="phase-title">Workflows & Proficiency</div>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                         <div class="phase-desc">Guide 6<br>Task files,<br>autonomous mode, 70%+ adoption</div>
                     </div>
                 </div>
@@ -1096,6 +1180,7 @@
             <!-- ============================================================ -->
             <!-- SLIDE 14: Hard Boundaries -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">This slide is non-negotiable. These are boundaries, not suggestions. Production
                     database mutations via Claude — prohibited. Infrastructure changes without human review —
@@ -1103,6 +1188,10 @@
                     prohibited. Auth logic and payment code — allowed but with mandatory extra review. The hooks catch
                     some of this, but the real boundary is engineering discipline. Read this table. Internalize it.
                 </aside>
+=======
+            <!-- Speaker notes: This slide is non-negotiable. These are boundaries, not suggestions. Production database mutations via Claude — prohibited. Infrastructure changes without human review — prohibited. Security config generation — prohibited. PII operations outside CLAUDE.md rules — prohibited. Auth logic and payment code — allowed but with mandatory extra review. The hooks catch some of this, but the real boundary is engineering discipline. Read this table. Internalize it. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-red">Non-Negotiable</div>
                 <h2>What NOT to Use Claude Code For</h2>
                 <table class="boundary-table">
@@ -1179,6 +1268,7 @@
             <!-- ============================================================ -->
             <!-- SLIDE 15: Measuring Success — Metrics Dashboard -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">How do we know this is working? Our metrics focus on leading and lagging
                     indicators. The targets are directional, not precision.</aside>
@@ -1189,6 +1279,22 @@
                         <div class="metric-label">Leading Indicator</div>
                         <div class="metric-value">70%+</div>
                         <div class="metric-how">MRs/PRs tagged with 'AI-Assisted' (Week 1)</div>
+=======
+            <!-- Speaker notes: How do we know this is working? Our metrics focus on leading and lagging indicators. The targets are directional, not precision. -->
+            <section>
+                <div class="pill">Measuring Success</div>
+                <h2>4 Core Adoption Metrics</h2>
+                <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="metric-card">
+                        <div class="metric-label">Leading Indicator</div>
+                        <div class="metric-value">70%+</div>
+                        <div class="metric-how">MRs/PRs tagged with 'AI-Assisted' (Week 3)</div>
+                    </div>
+                    <div class="metric-card" style="border-bottom-color: var(--tt-border);">
+                        <div class="metric-label">Leading Indicator</div>
+                        <div class="metric-value">&lt;30 min</div>
+                        <div class="metric-how">Average session length target</div>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                     </div>
                     <div class="metric-card">
                         <div class="metric-label">Leading Indicator</div>
@@ -1203,16 +1309,40 @@
                 </div>
             </section>
 
+<<<<<<< HEAD
+=======
+            <!-- ============================================================ -->
+            <!-- SLIDE 16: Adoption Curve Chart -->
+            <!-- ============================================================ -->
+            <!-- Speaker notes: Here's the target adoption curve over 4 weeks. We expect rapid ramp in week 2 as MCPs and hooks come online. Attaining 70%+ by week 3. The key insight: centralized approach means the curve compounds — each engineer's improvements accelerate the next engineer's adoption. -->
+            <section>
+                <div class="pill">Measuring Success</div>
+                <h2>Target Adoption Curve</h2>
+                <div class="chart-container">
+                    <canvas id="adoptionChart"></canvas>
+                </div>
+                <p style="text-align: center; font-size: 0.58em; color: var(--tt-gray);">Centralized approach means the
+                    curve
+                    <strong style="color: var(--tt-teal);">compounds</strong> — each engineer's improvements accelerate
+                    the next.
+                </p>
+            </section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 
             <!-- ============================================================ -->
             <!-- SLIDE 17: Knowledge Sharing Cadence -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Knowledge sharing is not optional — it's how the centralized approach compounds.
                     Four channels at four cadences. Daily: #aiad-discussion on Google Chat for discoveries, issues,
                     tips. Monthly: one engineer demo — 15 minutes walkthrough, 15 minutes discussion. As-needed: MRs to
                     aiad-claude for systematic improvements. Quarterly: leads publish a review to Confluence covering
                     metrics, CLAUDE.md health, skill utilization.</aside>
+=======
+            <!-- Speaker notes: Knowledge sharing is not optional — it's how the centralized approach compounds. Four channels at four cadences. Daily: #aiad-discussion on Google Chat for discoveries, issues, tips. Monthly: one engineer demo — 15 minutes walkthrough, 15 minutes discussion. As-needed: MRs to aiad-claude for systematic improvements. Quarterly: leads publish a review to Confluence covering metrics, CLAUDE.md health, skill utilization. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-green">Knowledge Sharing</div>
                 <h2>The Sharing Rhythm</h2>
                 <div class="cadence-grid">
@@ -1250,20 +1380,33 @@
             <!-- ============================================================ -->
             <!-- SLIDE 18: Current Setup & Cost -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">A quick note on our current setup. We're on the Claude Code Team Standard Plan.
                     $25/mo per seat gives us direct access to Anthropic's best models and shared Projects. For fallback,
                     when our 5-hour quota is exhausted, we use GLM models via Z.ai. Do NOT self-upgrade to individual
                     subscriptions — that fragments the team.</aside>
+=======
+            <!-- Speaker notes: A quick note on our current setup. We're on the Claude Code Team Standard Plan. $25/mo per seat gives us direct access to Anthropic's best models and shared Projects. For fallback, when our 5-hour quota is exhausted, we use GLM models via Z.ai. Do NOT self-upgrade to individual subscriptions — that fragments the team. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="pill pill-blue">Infrastructure</div>
                 <h2>Current Setup &amp; Cost Model</h2>
                 <div class="two-col">
                     <div class="col-card">
+<<<<<<< HEAD
                         <h3>Claude Code Team Standard</h3>
                         <ul>
                             <li><strong>Native models</strong> — direct access to Anthropic</li>
                             <li><strong>Higher reasoning</strong> — Haiku/Sonnet/Opus tier</li>
                             <li>Predictable cost vs complex per-seat billing</li>
+=======
+                        <h3>Claude Code Team Standard ($25/mo)</h3>
+                        <ul>
+                            <li><strong>Native models</strong> — direct access to Anthropic</li>
+                            <li><strong>Higher reasoning</strong> — Haiku/Sonnet/Opus tier</li>
+                            <li>Predictable cost vs pay-per-token</li>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                             <li>Shared Projects for cross-machine memory</li>
                             <li><strong>Do NOT self-upgrade</strong> — team coordination required</li>
                         </ul>
@@ -1272,9 +1415,15 @@
                         <h3>GLM via Z.ai Fallback</h3>
                         <ul>
                             <li>Used when 5-hour quota is exhausted</li>
+<<<<<<< HEAD
                             <li><strong>Quarterly Subscription with API</strong> — no seat commitment</li>
                             <li><strong>GLM-4.7</strong> — main model</li>
                             <li><strong>GLM-4.5 Air</strong> — lightweight tasks</li>
+=======
+                            <li><strong>Pay-per-token</strong> — no seat commitment</li>
+                            <li><strong>GLM-4.7</strong> — main model ($0.38/1M input)</li>
+                            <li><strong>GLM-4.5 Air</strong> — lightweight tasks ($0.13/1M input)</li>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                             <li>Full access to Claude Code tooling ecosystem</li>
                         </ul>
                     </div>
@@ -1284,6 +1433,7 @@
             <!-- ============================================================ -->
             <!-- SLIDE 19: Closing — The Centralized Thesis -->
             <!-- ============================================================ -->
+<<<<<<< HEAD
             <section>
                 <aside class="notes">Let me close with why this matters and what comes next. These internal guides you
                     are starting today are just the foundational basics. We are building a shared engineering capability
@@ -1291,12 +1441,17 @@
                     onboarding, we expect you to push further. Go to claude.com/resources/courses. Experiment with
                     subagents, parallel agents, and skill chaining. Then bring those discoveries back to the team.
                     Welcome to AI-assisted development at TipTip.</aside>
+=======
+            <!-- Speaker notes: Let me close with why this matters. We are not just adopting a tool. We are building a shared engineering capability. One repository — aiad-claude. One toolchain — Claude Code. One improvement loop — MR, review, merge, everyone benefits. When one engineer discovers a better way to review Go code, every engineer gets it on their next pull. When one engineer finds a hook that catches a security pattern, every repo is protected. That is the power of centralization. Your action item: start Guide 1 this week. Your lead will pair with you. Welcome to AI-assisted development at TipTip. -->
+            <section>
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                 <div class="cta-box">
                     <h2>One Repository. One Toolchain.<br>Everyone Contributes. Everyone Benefits.</h2>
                     <p style="font-size: 0.75em; color: var(--tt-white); margin: 16px 0;">
                         AI-assisted development is no longer optional.<br>
                         It is a <strong>standard engineering competency</strong> at TipTip.
                     </p>
+<<<<<<< HEAD
                     <p style="font-size: 0.65em; color: var(--tt-teal); margin-top: 20px; line-height: 1.4;">
                         <strong>1. Start the Foundation:</strong> Complete <strong>Guide 1 — Setup</strong> this
                         week.<br>
@@ -1305,6 +1460,11 @@
                             Anthropic Courses</a>.<br>
                         <strong>3. Experiment:</strong> Push boundaries with subagents, parallel agents, and skills
                         chaining!<br>
+=======
+                    <p style="font-size: 0.65em; color: var(--tt-teal); margin-top: 20px;">
+                        <strong>Your next step:</strong> Start <strong>Guide 1 — Setup</strong> this week.<br>
+                        Your lead will pair with you on your first real task.
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
                     </p>
                     <p style="font-size: 0.55em; color: var(--tt-gray); margin-top: 24px;">
                         📂 gitlab.com/tiptiptv/common/aiad-claude &nbsp;&nbsp;·&nbsp;&nbsp; 💬 #aiad-discussion
@@ -1315,7 +1475,10 @@
         </div><!-- /slides -->
     </div><!-- /reveal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<<<<<<< HEAD
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+=======
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
     <script>
         Reveal.initialize({
             hash: true,
@@ -1328,10 +1491,84 @@
             controls: true,
             progress: true,
             center: false,
+<<<<<<< HEAD
             plugins: [RevealNotes]
         });
 
 
+=======
+        });
+
+        // Adoption curve chart
+        Reveal.on('slidechanged', function (event) {
+            if (event.currentSlide.querySelector('#adoptionChart') && !window._chartDrawn) {
+                window._chartDrawn = true;
+                const ctx = document.getElementById('adoptionChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                        datasets: [
+                            {
+                                label: 'PR Volume with Claude (%)',
+                                data: [15, 50, 70, 75],
+                                borderColor: '#14b8a6',
+                                backgroundColor: 'rgba(20,184,166,0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#14b8a6',
+                                pointRadius: 5,
+                            },
+                            {
+                                label: 'Skill Adoption (%)',
+                                data: [20, 45, 65, 70],
+                                borderColor: '#3b82f6',
+                                backgroundColor: 'rgba(59,130,246,0.08)',
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#3b82f6',
+                                pointRadius: 5,
+                            },
+                            {
+                                label: 'MCP Usage (%)',
+                                data: [5, 40, 60, 70],
+                                borderColor: '#8b5cf6',
+                                backgroundColor: 'rgba(139,92,246,0.08)',
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#8b5cf6',
+                                pointRadius: 5,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#9ca3af', font: { size: 12 } }
+                            },
+                            y: {
+                                min: 0, max: 100,
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    font: { size: 12 },
+                                    callback: function (v) { return v + '%'; }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: { color: '#9ca3af', font: { size: 12 }, usePointStyle: true, pointStyle: 'circle' }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
     </script>
 </body>
 

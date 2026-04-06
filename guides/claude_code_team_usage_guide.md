@@ -39,8 +39,14 @@ The primary signal that Claude Code is becoming a core part of the daily workflo
 
 - **Implementation details:** Evaluated at the whole PR level. Engineers should add an `AI-Assisted` (or `[claude-assisted]`) label to their GitLab MRs/PRs whenever AI was materially used to write or review the code.
 - **Targets:**
+<<<<<<< HEAD
   - Stage 1: Setup & familiarization usage
   - End of Week 1: 70%+ of PRs involve Claude
+=======
+  - Week 1: any usage = success
+  - Week 2: 50% of PRs involve Claude
+  - Week 3+: 70%+ of PRs involve Claude
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 - **How to track:** Compare the percentage of PRs carrying the AI label against total PR volume in GitLab analytics.
 
 ---
@@ -49,8 +55,13 @@ The primary signal that Claude Code is becoming a core part of the daily workflo
 
 The primary cost driver and a proxy for the depth of AI engagement. We encourage engineers to fully utilize and leverage the AI to its maximum potential to extract the highest possible engineering value.
 
+<<<<<<< HEAD
 - **Targets:** Aggregate costs scale with team value/ROI. Monitor for **High-Value Engagement** — high token usage is expected and encouraged when it leads to significant progress on complex tasks.
 - **How to track:** `/usage` command in Claude Code sessions. Collect aggregate weekly summaries so the team understands overall consumption and shared value creation. During GLM fallback periods, check the Z.ai dashboard.
+=======
+- **Targets:** Average session under 30 minutes. Flag sessions 3× the baseline.
+- **How to track:** Extending the Stop hook to log session duration, or via `/usage` in Claude Code.
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 
 ---
 
@@ -62,10 +73,43 @@ The primary cost driver and a proxy for the depth of AI engagement. We encourage
 | AI-Assisted PR Volume            | Leading Indicator | GitLab MR labels           |
 | Token Usage                      | Leading Indicator | `/usage` + Z.ai (fallback) |
 
+<<<<<<< HEAD
 *These metrics do not need perfect precision—they provide a directional signal. A lead who checks MR labels, runs `/usage`, and asks the team weekly gets 80% of the signal with 20% of the effort.*
+=======
+- **Targets:** Aggregate costs remain within the baseline budget. Flag engineers consistently 2× team average cost.
+- **How to track:** `/usage` command in Claude Code sessions. Collect aggregate (not individual) weekly summaries so everyone understands consumption levels. During GLM fallback periods, check the Z.ai dashboard.
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 
 ---
 
+## 3. Subscription & Model Strategy
+
+<<<<<<< HEAD
+### Current Plan: Claude Code Team Standard ($25/month per user)
+
+TipTip has adopted the **Claude Code Team Standard Plan** as our primary AI-assisted development engine. This gives every engineer direct access to native Anthropic models (Haiku, Sonnet, Opus) — ensuring code generation accuracy is not compromised by third-party model approximations.
+=======
+| Metric                               | Category           | Tracking                   |
+| ------------------------------------ | ------------------ | -------------------------- |
+| Engineering North Star (Quality)     | Lagging Indicator  | Sprint Retros / DORA       |
+| AI-Assisted PR Volume                | Leading Indicator  | GitLab MR labels           |
+| Session Length                       | Leading Indicator  | Stop hook + `/usage`       |
+| Token Usage                          | Leading Indicator  | `/usage` + Z.ai (fallback) |
+
+*These metrics do not need perfect precision—they provide a directional signal. A lead who checks MR labels, runs `/usage`, and asks the team weekly gets 80% of the signal with 20% of the effort.*
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
+
+**Why the Team Standard Plan?**
+- **Model accuracy matters:** Our AI adoption metrics must reflect genuine Anthropic model quality. Third-party proxies (GLM, DeepSeek) introduce variable accuracy that makes it impossible to objectively measure AI-assisted development ROI.
+- **Cost-effective:** At $25/month per user, the Team Standard Plan offers better native model capabilities at scale compared to relying purely on individual billing.
+- **Native features:** Direct access to Anthropic's latest model releases, Projects for shared memory, and priority access without proxy middlemen.
+
+<<<<<<< HEAD
+### GLM Fallback (Z.ai Subscription)
+
+When the Team Plan's rolling 5-hour quota is temporarily exhausted, engineers switch to the **Z.ai GLM proxy** to continue working. TipTip uses the [GLM Subscription via Z.ai](https://z.ai/subscribe) which guarantees fallback availability with **no seat commitment** and a predictable quarterly rate. See Guide 1, [Section 9 — GLM Fallback](claude_code_setup_guide.md#9-glm-fallback--when-team-plan-quota-is-exhausted) for exact setup instructions.
+
+=======
 ## 3. Subscription & Model Strategy
 
 ### Current Plan: Claude Code Team Standard ($25/month per user)
@@ -74,13 +118,14 @@ TipTip has adopted the **Claude Code Team Standard Plan** as our primary AI-assi
 
 **Why the Team Standard Plan?**
 - **Model accuracy matters:** Our AI adoption metrics must reflect genuine Anthropic model quality. Third-party proxies (GLM, DeepSeek) introduce variable accuracy that makes it impossible to objectively measure AI-assisted development ROI.
-- **Cost-effective:** At $25/month per user, the Team Standard Plan offers better native model capabilities at scale compared to relying purely on individual billing.
+- **Cost-effective:** At $25/month per user, the Team Standard Plan is more predictable and sustainable than pay-per-token billing at scale.
 - **Native features:** Direct access to Anthropic's latest model releases, Projects for shared memory, and priority access without proxy middlemen.
 
-### GLM Fallback (Z.ai Subscription)
+### GLM Fallback
 
-When the Team Plan's rolling 5-hour quota is temporarily exhausted, engineers switch to the **Z.ai GLM proxy** to continue working. TipTip uses the [GLM Subscription via Z.ai](https://z.ai/subscribe) which guarantees fallback availability with **no seat commitment** and a predictable quarterly rate. See Guide 1, [Section 9 — GLM Fallback](claude_code_setup_guide.md#9-glm-fallback--when-team-plan-quota-is-exhausted) for exact setup instructions.
+When the Team Plan's rolling 5-hour quota is temporarily exhausted, engineers switch to the **Z.ai GLM proxy** to continue working. See Guide 1, [Section 9 — GLM Fallback](claude_code_setup_guide.md#9-glm-fallback--when-team-plan-quota-is-exhausted) for exact setup instructions.
 
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 > ⚠️ **Do not self-upgrade** to individual Claude Pro/Max subscriptions without team coordination — this fragments the team's tooling and makes quality comparison impossible. All subscription changes go through **Dominikus**.
 
 ---
@@ -89,6 +134,7 @@ When the Team Plan's rolling 5-hour quota is temporarily exhausted, engineers sw
 
 Key principle: **don't give engineers all seven guides at once.** Overloading leads to incomplete setup and surface-level usage. Build proficiency through use at each stage before the next.
 
+<<<<<<< HEAD
 ### Full Proficiency: 1 Week
 
 #### Stage 1: Setup & MCP (Guides 1-5)
@@ -111,16 +157,60 @@ Key principle: **don't give engineers all seven guides at once.** Overloading le
 **By end of week 1 (completing Stage 2):** Writing `task.md` for sessions touching 2+ files. Has run at least one autonomous session end-to-end without unnecessary interruption. Using Claude on 70%+ of PRs. Engineer has noticed deprecated APIs via Context7 and understands secret guards.
 
 **Lead action:** Review the engineer's autonomous session output together — `task.md`, diff, what worked, what to improve. This is formal onboarding completion.
+=======
+### Full Proficiency: 3 Weeks
+
+#### Phase 1 — Week 1: Setup & Core Habit Building (Guides 1-3)
+
+**Complete:** Install Claude Code, authenticate via `claude login` with Team Plan invite, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set from `aiad-claude` (engineering-wide + your stack's directory) and required plugins from `PLUGINS.md`, practice 5 must-have skills on real tasks. Engineer uses Claude for at least 3 different task types: writing code, generating tests, and reviewing their own code before MR submission.
+
+**By end of week 1:** Engineer runs Claude daily. `pr-description` and `git-commit` used for every applicable MR. 4+ distinct skills invoked. Shared at least one tip in `#aiad-discussion`.
+
+**Lead action:**
+- Pair with the engineer on their first real task (not a tutorial). Confirm per-repo `CLAUDE.md` is accurate.
+- Investigate whether there is a setup issue or habit gap if usage is low.
+
+---
+
+#### Phase 2 — Week 2: MCP Integrations & Hooks (Guides 4-5)
+
+**Complete:** Install global MCPs (Context7, Sequential Thinking, Jira, Confluence, GitLab) + project MCPs. Install hook scripts from `aiad-claude`.
+
+**By end of week 2:** No more manually copying Jira ticket descriptions into sessions. Engineer notices deprecated APIs via Context7. Lint runs automatically after Claude edits. Engineer has seen the secret guard fire at least once and understands what it does.
+
+**Lead action:**
+- Verify `.mcp.json` is committed. Confirm PostgreSQL MCP points to local/staging — **not production**.
+- Confirm hooks are committed to repo (not just local install) and validate secret guard functions.
+
+---
+
+#### Phase 3 — Week 3: Advanced Workflows & Proficiency (Guide 6 and 70% Target)
+
+**Complete:** Read Guide 6. Run at least 2 cookbook workflows on real tasks.
+
+**By end of week 3:** Writing `task.md` for sessions touching 2+ files. Has run at least one autonomous session end-to-end without unnecessary interruption. Using Claude on 70%+ of PRs.
+
+**Lead action:** Review the engineer's first autonomous session output together — `task.md`, diff, what worked, what to improve. This is formal onboarding completion.
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 
 ---
 
 #### Summary
 
+<<<<<<< HEAD
 | Stage              | Timeline | Guides           | Key Milestone                                     |
 | ------------------ | -------- | ---------------- | ------------------------------------------------- |
 | Setup & MCP        | Stage 1  | 1, 2, 3, 4, 5    | Skills daily; 4 skills used; MCPs & hooks firing  |
 | Polish & Workflows | Stage 2  | 6                | Two cookbook workflows completed; 70%+ adoption   |
 | Full proficiency   | Week 1+  | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
+=======
+| Phase            | Weeks | Guides           | Key Milestone                                     |
+| ---------------- | ----- | ---------------- | ------------------------------------------------- |
+| Setup & Habits   | 1     | 1, 2, 3          | Skills daily; 4 skills used; `CLAUDE.md` refined  |
+| MCPs & Hooks     | 2     | 4, 5             | Jira MCP active; Lint hook firing                 |
+| Workflows        | 3     | 6                | Two cookbook workflows completed; 70%+ adoption   |
+| Full proficiency | 3+    | 7 *(this guide)* | Lead assessment: autonomous + skills + MCPs daily |
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 
 *Guide 7 is not part of the onboarding sequence. Engineers read it as a reference once proficient. Required reading for leads from day one.*
 
@@ -255,9 +345,15 @@ Not prohibited, but requires careful review of generated locators and test data.
 
 Leads are accountable for making these guidelines real:
 
+<<<<<<< HEAD
 1. **Metrics:** Run the 3 metrics monthly. Share directional findings — not precision reports.
 2. **Subscription optimization:** Monitor Team Plan quota efficiency and fallback usage. If GLM fallback is used frequently, investigate whether quota-saving practices (model switching, session hygiene) are being followed.
 3. **Onboarding:** Personally pair with each new engineer during Stage 1. The sequence doesn't work on paper alone.
+=======
+1. **Metrics:** Run the 4 metrics monthly. Share directional findings — not precision reports.
+2. **Subscription optimization:** Monitor Team Plan quota efficiency and fallback usage. If GLM fallback is used frequently, investigate whether quota-saving practices (model switching, session hygiene) are being followed.
+3. **Onboarding:** Personally pair with each new engineer during Week 1. The sequence doesn't work on paper alone.
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 4. **`#aiad-discussion`:** Participate actively. If the channel goes quiet for a week, prompt the team with a question or observation.
 5. **Monthly demo:** Schedule and facilitate. If no volunteer, present yourself.
 6. **Quarterly review:** Conduct the review. Publish findings to Confluence.
@@ -272,6 +368,7 @@ Leads are accountable for making these guidelines real:
 
 ### Monthly Metrics Checklist
 
+<<<<<<< HEAD
 | Metric                           | How                        | Time   |
 | -------------------------------- | -------------------------- | ------ |
 | Engineering North Star (Quality) | Sprint Retros / DORA       | 10 min |
@@ -282,6 +379,19 @@ Leads are accountable for making these guidelines real:
 
 | Criteria                                             | Check |
 | ---------------------------------------------------- | ----- |
+=======
+| Metric                           | How                            | Time   |
+| -------------------------------- | ------------------------------ | ------ |
+| Engineering North Star (Quality) | Sprint Retros / DORA           | 10 min |
+| AI-Assisted PR Volume            | GitLab MR label filter         | 5 min  |
+| Session Length                   | Stop hook + `/usage`           | 10 min |
+| Token Usage                      | `/usage` + Z.ai (fallback)     | 5 min  |
+
+### Team Plan Health Check
+
+| Criteria                                            | Check |
+| --------------------------------------------------- | ----- |
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 | Team Plan quota sufficient for daily usage           | [ ]   |
 | GLM fallback used < 20% of total sessions            | [ ]   |
 | 70%+ engineers fully proficient (completed 7 guides) | [ ]   |
@@ -305,7 +415,10 @@ Leads are accountable for making these guidelines real:
 | Claude Code docs                | `https://docs.anthropic.com/en/docs/claude-code` |
 | Claude Team Plan info           | `https://www.anthropic.com/pricing`              |
 | Z.ai (GLM fallback)             | `https://z.ai`                                   |
+<<<<<<< HEAD
 | Official Courses                | `https://claude.com/resources/courses`           |
+=======
+>>>>>>> 083c044 (docs(guides): sync aiad presentation and guides with engineering standards)
 | `#aiad-discussion`              | Google Chat                                      |
 
 ---
