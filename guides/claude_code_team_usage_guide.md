@@ -45,31 +45,21 @@ The primary signal that Claude Code is becoming a core part of the daily workflo
 
 ---
 
-#### Session Length
+### 3. Token Usage
 
-Helps identify if engineers are getting into a flow state or if they are facing high cognitive load adjusting the AI's context.
+The primary cost driver and a proxy for the depth of AI engagement. We encourage engineers to fully utilize and leverage the AI to its maximum potential to extract the highest possible engineering value.
 
-- **Targets:** Average session under 30 minutes. Flag sessions 3× the baseline.
-- **How to track:** Extending the Stop hook to log session duration, or via `/usage` in Claude Code.
-
----
-
-#### Token Usage
-
-The primary cost driver and a proxy for the depth of AI engagement. Unusually high token counts often point to unfocused sessions with context bloat.
-
-- **Targets:** Aggregate costs remain within the baseline budget. Flag engineers consistently 2× team average cost.
-- **How to track:** `/usage` command in Claude Code sessions. Collect aggregate (not individual) weekly summaries so everyone understands consumption levels. During GLM fallback periods, check the Z.ai dashboard.
+- **Targets:** Aggregate costs scale with team value/ROI. Monitor for **High-Value Engagement** — high token usage is expected and encouraged when it leads to significant progress on complex tasks.
+- **How to track:** `/usage` command in Claude Code sessions. Collect aggregate weekly summaries so the team understands overall consumption and shared value creation. During GLM fallback periods, check the Z.ai dashboard.
 
 ---
 
-### Metrics Summary
+### 4. Metrics Summary
 
 | Metric                           | Category          | Tracking                   |
 | -------------------------------- | ----------------- | -------------------------- |
 | Engineering North Star (Quality) | Lagging Indicator | Sprint Retros / DORA       |
 | AI-Assisted PR Volume            | Leading Indicator | GitLab MR labels           |
-| Session Length                   | Leading Indicator | Stop hook + `/usage`       |
 | Token Usage                      | Leading Indicator | `/usage` + Z.ai (fallback) |
 
 *These metrics do not need perfect precision—they provide a directional signal. A lead who checks MR labels, runs `/usage`, and asks the team weekly gets 80% of the signal with 20% of the effort.*
@@ -103,7 +93,7 @@ Key principle: **don't give engineers all seven guides at once.** Overloading le
 
 #### Stage 1: Setup & MCP (Guides 1-5)
 
-**Complete:** Install Claude Code, authenticate via `claude login` with Team Plan invite, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set and plugins. Install global MCPs (Context7, Sequential Thinking, Jira, Confluence, GitLab) + project MCPs. Install hook scripts from `aiad-claude`.
+**Complete:** Install Claude Code, authenticate via `claude login` with Team Plan invite, install global `CLAUDE.md` + verify per-repo file, install TipTip skill set and plugins. Install global MCPs (Context7, Sequential Thinking, Atlassian, GitLab) + project MCPs. Install hook scripts from `aiad-claude`.
 
 **By end of Stage 1:** Engineer runs Claude daily. `pr-description` and `git-commit` used for every applicable MR. 4+ distinct skills invoked. No more manually copying Jira ticket descriptions. Lint runs automatically after Claude edits.
 
@@ -146,7 +136,7 @@ Primary channel for Claude Code knowledge sharing.
 - Workflow discoveries: *"Running the postgres skill before writing a migration saves schema mistakes — here's how"*
 - Skill improvement proposals: *"The code-review-golang skill misses our new error handling pattern"*
 - Unusual Claude behavior: *"Claude keeps suggesting sqlx despite the CLAUDE.md rule"*
-- MCP issues: *"Jira MCP token expires every 30 days — reminder to rotate"*
+- MCP issues: *"Atlassian MCP token expires every 30 days — reminder to rotate"*
 - Cost observations: *"Session cost spiked — forgot Serena, Claude read 40 files manually"*
 - Questions about which workflow to use for a new type of task
 
@@ -265,7 +255,7 @@ Not prohibited, but requires careful review of generated locators and test data.
 
 Leads are accountable for making these guidelines real:
 
-1. **Metrics:** Run the 4 metrics monthly. Share directional findings — not precision reports.
+1. **Metrics:** Run the 3 metrics monthly. Share directional findings — not precision reports.
 2. **Subscription optimization:** Monitor Team Plan quota efficiency and fallback usage. If GLM fallback is used frequently, investigate whether quota-saving practices (model switching, session hygiene) are being followed.
 3. **Onboarding:** Personally pair with each new engineer during Stage 1. The sequence doesn't work on paper alone.
 4. **`#aiad-discussion`:** Participate actively. If the channel goes quiet for a week, prompt the team with a question or observation.
@@ -286,7 +276,6 @@ Leads are accountable for making these guidelines real:
 | -------------------------------- | -------------------------- | ------ |
 | Engineering North Star (Quality) | Sprint Retros / DORA       | 10 min |
 | AI-Assisted PR Volume            | GitLab MR label filter     | 5 min  |
-| Session Length                   | Stop hook + `/usage`       | 10 min |
 | Token Usage                      | `/usage` + Z.ai (fallback) | 5 min  |
 
 ### Team Plan Health Check
