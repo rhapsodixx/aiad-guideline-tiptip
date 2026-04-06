@@ -212,57 +212,29 @@ claude mcp add --transport stdio sequential-thinking -- npx -y @modelcontextprot
 
 ---
 
-### 4.4 Jira MCP — Issue Context in Sessions
+### 4.4 Atlassian MCP — Jira & Confluence Integration
 **Classification:** Must-Have
 
-Claude pulls the Jira ticket directly — linked tickets, acceptance criteria, all in session context. No more copy-pasting ticket descriptions.
+Consolidates Jira and Confluence into a single, high-performance MCP server. Claude can pull Jira tickets (acceptance criteria, comments, linked issues) and Confluence pages (ADRs, RFCs, documentation) in the same session without needing separate configurations.
 
 **Installation — Claude Code CLI:**
 ```bash
-claude mcp add --transport stdio jira -- npx -y @modelcontextprotocol/server-jira --url https://your-tiptip-domain.atlassian.net
+claude mcp add --transport stdio atlassian -- uvx mcp-atlassian
 ```
 
 **Installation — VS Code (Claude Code extension):**
 ```json
 {
   "mcpServers": {
-    "jira": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-jira"],
+    "atlassian": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "https://your-tiptip-domain.atlassian.net",
-        "JIRA_EMAIL": "your.name@tiptip.co",
-        "JIRA_API_TOKEN": "YOUR_API_TOKEN"
-      }
-    }
-  }
-}
-```
-**Config level:** Global (`~/.claude.json`).
-**Prerequisites:** Atlassian API Token. Remember to replace `your-tiptip-domain` with the real tip-tip Jira domain.
-
----
-
-### 4.5 Confluence MCP — Internal Documentation Access
-**Classification:** Must-Have
-
-Claude can pull ADRs, API contracts, and tech RFCs from Confluence mid-session. Useful for onboarding and multi-service tasks.
-
-**Installation — Claude Code CLI:**
-```bash
-claude mcp add --transport stdio confluence -- npx -y @modelcontextprotocol/server-confluence --url https://your-tiptip-domain.atlassian.net/wiki
-```
-
-**Installation — VS Code (Claude Code extension):**
-```json
-{
-  "mcpServers": {
-    "confluence": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-confluence"],
-      "env": {
+        "JIRA_USERNAME": "your.name@tiptip.co",
+        "JIRA_API_TOKEN": "YOUR_API_TOKEN",
         "CONFLUENCE_URL": "https://your-tiptip-domain.atlassian.net/wiki",
-        "CONFLUENCE_EMAIL": "your.name@tiptip.co",
+        "CONFLUENCE_USERNAME": "your.name@tiptip.co",
         "CONFLUENCE_API_TOKEN": "YOUR_API_TOKEN"
       }
     }
@@ -270,7 +242,8 @@ claude mcp add --transport stdio confluence -- npx -y @modelcontextprotocol/serv
 }
 ```
 **Config level:** Global (`~/.claude.json`).
-**Prerequisites:** Atlassian API Token (shares authentication with Jira).
+**Prerequisites:** Atlassian API Token. Replace `your-tiptip-domain` with the real tip-tip Atlassian domain. Note that the username is typically your work email.
+**Link:** [github.com/sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian)
 
 ---
 
@@ -432,8 +405,7 @@ claude mcp add --transport stdio puppeteer -- npx -y @modelcontextprotocol/serve
 | Serena              | ✅                | ✅            | ✅                  | Must-Have      | Project      |
 | Context7            | ✅                | ✅            | ✅                  | Must-Have      | Global       |
 | Sequential Thinking | ✅                | ✅            | ✅                  | Must-Have      | Global       |
-| Jira                | ✅                | ✅            | ✅                  | Must-Have      | Global       |
-| Confluence          | ✅                | ✅            | ✅                  | Must-Have      | Global       |
+| Atlassian (Jira/Conf) | ✅                | ✅            | ✅                  | Must-Have      | Global       |
 | GitLab              | ✅                | ✅            | ✅                  | Must-Have      | Global       |
 | Web Search          | ✅                | -            | -                  | Nice-to-Have   | Global       |
 | PostgreSQL          | -                | ✅            | -                  | Must-Have      | Project      |
@@ -452,7 +424,7 @@ Skills define the workflow. MCPs supply the live data.
 
 **Example — TipTip code review workflow:**
 1. **GitLab MCP** pulls the MR diff and reviewer comments
-2. **Jira MCP** pulls the linked ticket to verify acceptance criteria
+2. **Atlassian MCP** pulls the linked ticket to verify acceptance criteria
 3. **PostgreSQL MCP** validates new SQL migrations against the local schema
 4. **Context7** checks newly added Go modules against latest library docs
 
@@ -474,7 +446,7 @@ The skill orchestrates; MCPs supply data. Watch for **context window compounding
 - Know what each MCP accesses — databases, Jira tickets, Confluence pages. Understand what you're giving Claude.
 - Don't add MCPs to project `.mcp.json` without team discussion
 - Report MCP failures immediately in `#aiad-discussion` — silent failures degrade output
-- Keep tokens current — if Jira/Confluence lookups start failing, check token expiry first
+- Keep tokens current — if Atlassian lookups start failing, check token expiry first
 
 > 💡 *Tip:* Keep under 10 MCPs enabled and under 80 tools active per session. Your 200K context window before compacting might only be ~70K with too many tools. Disable unused MCPs per project via `disabledMcpServers` in `.mcp.json`.
 
@@ -487,8 +459,7 @@ The skill orchestrates; MCPs supply data. Watch for **context window compounding
 | Serena              | github.com/oraios/serena                | `claude mcp add serena ...`               | Project      | None / uv config     |
 | Context7            | context7.com                            | `npx ctx7 setup --claude`                 | Global       | Context7 API key     |
 | Sequential Thinking | github.com/.../sequentialthinking       | `claude mcp add sequential-thinking ...`  | Global       | None                 |
-| Jira                | @modelcontextprotocol/server-jira       | `claude mcp add jira ...`                 | Global       | Atlassian API token  |
-| Confluence          | @modelcontextprotocol/server-confluence | `claude mcp add confluence ...`           | Global       | Atlassian API token  |
+| Atlassian (Jira/Conf) | github.com/sooperset/mcp-atlassian      | `claude mcp add atlassian ...`            | Global       | Atlassian API token  |
 | GitLab              | @modelcontextprotocol/server-gitlab     | `claude mcp add gitlab ...`               | Global       | GitLab PAT           |
 | PostgreSQL          | @modelcontextprotocol/server-postgres   | `claude mcp add postgres ...`             | Project      | DB connection string |
 | Figma               | figma.com/MCP                           | `claude mcp add --transport sse figma...` | Project      | Figma PAT            |

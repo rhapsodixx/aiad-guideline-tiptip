@@ -75,8 +75,8 @@ All sample task templates — including the generic template above and the speci
 5. Open `task.md` and modify the bracketed placeholders (`[TICKET-ID]`, `[service name]`, etc.) to fit your specific feature.
 6. Make sure `task.md` is added to your local `.gitignore`.
 
-### Connecting Task Files to Jira
-With the Jira MCP active (Guide 4), engineers can ask Claude to pull a Jira ticket and draft the task file automatically. Try:
+### Connecting Task Files to Atlassian
+With the Atlassian MCP active (Guide 4), engineers can ask Claude to pull a Jira ticket and draft the task file automatically. Try:
 
 > "Pull TICKET-123 from Jira and create a task.md for implementing this feature in the payment-service repo."
 
@@ -156,7 +156,7 @@ Below are 8 realistic TipTip scenarios structured as recipes.
 
 **When to use:** A Jira ticket requires a new HTTP endpoint (e.g., a new `/v1/creator/earnings` endpoint in `creator-service`).
 **Recommended mode:** Autonomous
-**MCPs:** Jira <!-- Reason: Pulls the exact acceptance criteria directly into the session without copy-pasting -->, Context7 <!-- Reason: Injects version-accurate Go library docs to prevent hallucinated APIs -->, PostgreSQL <!-- Reason: Allows Claude to inspect the schema locally for the repository layer -->, GitLab <!-- Reason: Fetches MR context and repository metadata -->
+**MCPs:** Atlassian <!-- Reason: Pulls the exact acceptance criteria from Jira and documentation from Confluence directly into the session -->, Context7 <!-- Reason: Injects version-accurate Go library docs to prevent hallucinated APIs -->, PostgreSQL <!-- Reason: Allows Claude to inspect the schema locally for the repository layer -->, GitLab <!-- Reason: Fetches MR context and repository metadata -->
 **Skills:** `golang-pattern`, `tdd`, `pr-description`
 
 **Step-by-step instructions:**
@@ -175,7 +175,7 @@ Use the `workflow_1_new_endpoint.md` template from `aiad-claude/tasks/`. Copy it
 3. Copy the task template: `cp ~/repos/aiad-claude/tasks/workflow_1_new_endpoint.md ./task.md`
 4. Open `task.md` in the editor, fill in all `[PLACEHOLDER]` values, and save.
 5. Launch Claude Code in the terminal: `claude`
-6. Verify MCPs are loaded: type `/mcp` and confirm Jira, Context7, PostgreSQL, and GitLab are active.
+6. Verify MCPs are loaded: type `/mcp` and confirm Atlassian, Context7, PostgreSQL, and GitLab are active.
 7. Start execution: type `Please execute the implementation plan detailed in task.md.`
 8. After completion, review: run `git diff`, check test output with `go test ./...`, and verify route registration in the router file.
 
@@ -217,7 +217,7 @@ Use the `workflow_2_refactor.md` template from `aiad-claude/tasks/`. Copy it to 
 
 **When to use:** Doing a thorough self-review or pre-review before submitting to peers.
 **Recommended mode:** Autonomous (short session, clear output)
-**MCPs:** GitLab <!-- Reason: Directly pulls the MR diff and review comments from the repository -->, Jira <!-- Reason: Pulls the linked ticket to check the original acceptance criteria -->, Context7 <!-- Reason: Checks newly added library usage against current API documentation -->, Serena <!-- Reason: Enables navigation to symbol definitions affected by the MR diff -->
+**MCPs:** GitLab <!-- Reason: Directly pulls the MR diff and review comments from the repository -->, Atlassian <!-- Reason: Pulls the linked ticket from Jira and related specs from Confluence -->, Context7 <!-- Reason: Checks newly added library usage against current API documentation -->, Serena <!-- Reason: Enables navigation to symbol definitions affected by the MR diff -->
 **Skills:** `code-review-golang` or `code-review-nextjs`, `pr-description`
 
 **Step-by-step instructions:**
@@ -227,7 +227,7 @@ Use the `workflow_2_refactor.md` template from `aiad-claude/tasks/`. Copy it to 
 
 **The prompt:**
 ```text
-Review the current branch's changes against the Jira ticket linked in the MR. Use the GitLab MCP to pull the MR diff and any reviewer comments. Use the Jira MCP to pull [TICKET-ID] and its acceptance criteria. Then:
+Review the current branch's changes against the Jira ticket linked in the MR. Use the GitLab MCP to pull the MR diff and any reviewer comments. Use the Atlassian MCP to pull [TICKET-ID] and its acceptance criteria. Then:
 
 1. Verify each acceptance criterion is met by the implementation.
 2. Mark each as PASS, FAIL, or PARTIAL with a brief explanation.
@@ -242,12 +242,12 @@ Review the current branch's changes against the Jira ticket linked in the MR. Us
 1. Open VS Code in the repo with the feature branch checked out: `code ~/repos/<service-name>`
 2. Confirm you are on the correct branch: `git branch --show-current`
 3. Open the integrated terminal and launch Claude Code: `claude`
-4. Verify MCPs: type `/mcp` and confirm GitLab, Jira, Context7, and Serena are active.
+4. Verify MCPs: type `/mcp` and confirm GitLab, Atlassian, Context7, and Serena are active.
 5. Paste the prompt above into the Claude Code session, replacing `[TICKET-ID]` with the actual Jira ticket key.
 6. Let Claude run autonomously. It will pull the MR diff, check acceptance criteria, implement fixes if needed, and generate a PR description.
 7. After completion: review `git diff` for any auto-applied changes, verify the generated PR description, and check that all acceptance criteria are marked PASS.
 
-**Common failure modes:** GitLab MCP token expiry (check your token), or Claude assessing a PASS on a criterion due to superficial reading. Validate the reasoning, not just the verdict.
+**Common failure modes:** GitLab or Atlassian MCP token expiry (check your token), or Claude assessing a PASS on a criterion due to superficial reading. Validate the reasoning, not just the verdict.
 
 ---
 
@@ -325,7 +325,7 @@ Do NOT execute this query. Review only.
 
 **When to use:** Deep feature work touching multiple services where upfront planning prevents wasted effort.
 **Recommended mode:** Interactive
-**MCPs:** Jira <!-- Reason: Pulls the foundational feature ticket and all linked requirements -->, Confluence <!-- Reason: Retrieves relevant ADRs and architectural contracts for planning -->, Serena <!-- Reason: Maps out affected codebase areas semantically without blind-reading files -->, Context7 <!-- Reason: Assesses third-party SDK viability directly from current docs -->, Sequential Thinking <!-- Reason: Forces Claude to explicitly structure and evaluate its plan step-by-step before finalizing -->
+**MCPs:** Atlassian <!-- Reason: Pulls the foundational feature ticket (Jira) and all linked requirements or ADRs (Confluence) -->, Serena <!-- Reason: Maps out affected codebase areas semantically without blind-reading files -->, Context7 <!-- Reason: Assesses third-party SDK viability directly from current docs -->, Sequential Thinking <!-- Reason: Forces Claude to explicitly structure and evaluate its plan step-by-step before finalizing -->
 **Skills:** `plan`
 
 **Step-by-step instructions:**
@@ -354,7 +354,7 @@ Do not write any code yet. Output the plan as a markdown document I can review a
 
 1. Open VS Code in the primary affected repo: `code ~/repos/<service-name>`
 2. Open the integrated terminal and launch Claude Code: `claude`
-3. Verify MCPs: type `/mcp` and confirm Jira, Confluence, Serena, Context7, and Sequential Thinking are active.
+3. Verify MCPs: type `/mcp` and confirm Atlassian, Serena, Context7, and Sequential Thinking are active.
 4. Paste the prompt above, replacing `[TICKET-ID]` and `[page-URL]` with actual values.
 5. **Stay interactive** — push back on Claude's plan if scope is too broad, edge cases are missing, or risks are underestimated.
 6. Once the plan is satisfactory, ask Claude to generate sequential `task.md` files for each implementation step.
@@ -415,7 +415,7 @@ Do not apply any fix yet — present the diagnosis and proposed fix for my revie
 
 **When to use:** A new PRD or Jira ticket has been created and the QA team needs to define test coverage before development starts, then convert manual test cases into automated Playwright/Cucumber scripts.
 **Recommended mode:** Autonomous (phased — manual test generation first, then script generation)
-**MCPs:** Jira <!-- Reason: Pulls the PRD/ticket details and acceptance criteria -->, Confluence <!-- Reason: Retrieves related feature documentation and QA standards -->
+**MCPs:** Atlassian <!-- Reason: Pulls processing requirements from Jira and feature documentation from Confluence -->
 **Skills:** `shift-left-manual-test`, `automation-script-generation`, `automation-script-validation`
 
 **Step-by-step instructions:**
@@ -451,7 +451,7 @@ Target repository: web-automation-playwright
 
 1. Open VS Code in the `web-automation-playwright` repo: `code ~/repos/web-automation-playwright`
 2. Open the integrated terminal and launch Claude Code: `claude`
-3. Verify MCPs: type `/mcp` and confirm Jira and Confluence are active.
+3. Verify MCPs: type `/mcp` and confirm Atlassian is active.
 4. **Phase 1:** Paste the manual test generation prompt above, replacing `[TICKET-ID]` with the actual Jira key.
 5. Review the generated Gherkin scenarios. Validate coverage: positive, negative, edge cases.
 6. **Phase 2:** Paste the automation script generation prompt. Claude will scaffold POM classes, step definitions, and feature files.
@@ -522,14 +522,14 @@ This list bounds improvements planned for TipTip's Claude Code workflow. Enginee
 
 | Want to...                  | Workflow   | Mode        | Key MCPs                   |
 | --------------------------- | ---------- | ----------- | -------------------------- |
-| Add a Go API endpoint       | Workflow 1 | Autonomous  | Jira, Context7, PostgreSQL |
+| Add a Go API endpoint       | Workflow 1 | Autonomous  | Atlassian, Context7, PostgreSQL |
 | Refactor a Go module        | Workflow 2 | Autonomous  | Serena, Context7           |
-| Review MR before submission | Workflow 3 | Autonomous  | GitLab, Jira, Serena       |
+| Review MR before submission | Workflow 3 | Autonomous  | GitLab, Atlassian, Serena  |
 | Add tests to existing code  | Workflow 4 | Autonomous  | Serena, PostgreSQL         |
 | Review a SQL query          | Workflow 5 | Interactive | PostgreSQL                 |
-| Plan a feature from Jira    | Workflow 6 | Interactive | Jira, Confluence, Serena   |
+| Plan a feature from Jira    | Workflow 6 | Interactive | Atlassian, Serena          |
 | Debug a Sentry error        | Workflow 7 | Interactive | Serena, Context7           |
-| QA shift-left test pipeline | Workflow 8 | Autonomous  | Jira, Confluence           |
+| QA shift-left test pipeline | Workflow 8 | Autonomous  | Atlassian                  |
 
 ### Task File Checklist
 

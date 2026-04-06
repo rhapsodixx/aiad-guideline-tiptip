@@ -9,7 +9,7 @@ Claude Code is a terminal-native agentic coding tool — not autocomplete. It re
 Why Claude Code over Cursor, Copilot, Cline, or Windsurf:
 - **Skills** — reusable, project-specific task templates
 - **CLAUDE.md** — native, persistent project memory
-- **MCP** — first-class Model Context Protocol integrations (Jira, Confluence, browsers)
+- **MCP** — first-class Model Context Protocol integrations (Atlassian, browsers)
 - **Subagents** — parallel sub-task delegation
 - **Hooks** — pre/post tool execution enforcement for linting, testing, formatting
 
