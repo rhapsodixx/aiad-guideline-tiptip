@@ -11,7 +11,7 @@ Skills are reusable prompt templates stored as markdown files — saved workflow
 They're context-aware (reads your `CLAUDE.md` and working directory), version-controlled, and can call tools, run shell commands, and chain actions — mini-workflows, not just text templates.
 
 Two levels:
-- **Global** (`~/.claude/skills/`) — available in every project (personal skills only)asda
+- **Global** (`~/.claude/skills/`) — available in every project (personal skills only)
 - **Project-level** (`.agents/skills/<team>/<skill-name>/SKILL.md`) — repo-specific, organized by team, in its own directory
 
 *For more details, see the [Anthropic Skills Documentation](https://docs.anthropic.com/en/docs/claude-code/skills).*
