@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TipTip QA Automation Skills — Complete Usage Guide</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #161b22;
+    --panel-2: #1c2430;
+    --border: #2a3441;
+    --text: #e6edf3;
+    --muted: #9aa7b5;
+    --accent: #4dd0a7;
+    --accent-2: #5b9dff;
+    --p0: #ff5c6c;
+    --p1: #ffb454;
+    --p2: #56c8d8;
+    --code-bg: #0b0f14;
+    --mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); line-height: 1.65; font-size: 15.5px;
+  }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+  /* Sidebar nav */
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    background: var(--panel); border-right: 1px solid var(--border); padding: 24px 18px;
+  }
+  nav.toc .brand { font-weight: 800; font-size: 17px; letter-spacing: -0.3px; margin-bottom: 4px; }
+  nav.toc .brand span { color: var(--accent); }
+  nav.toc .sub { color: var(--muted); font-size: 12px; margin-bottom: 22px; }
+  nav.toc a {
+    display: block; color: var(--muted); text-decoration: none; padding: 7px 10px;
+    border-radius: 7px; font-size: 13.5px; margin-bottom: 2px; transition: all .15s;
+    border-left: 2px solid transparent;
+  }
+  nav.toc a:hover { background: var(--panel-2); color: var(--text); }
+  nav.toc a.head { color: var(--text); font-weight: 600; margin-top: 14px; }
+  /* Main */
+  main { padding: 0 0 80px; max-width: 980px; }
+  .hero {
+    padding: 56px 56px 40px; border-bottom: 1px solid var(--border);
+    background: radial-gradient(1200px 400px at 0% 0%, rgba(77,208,167,.10), transparent),
+                radial-gradient(900px 400px at 100% 0%, rgba(91,157,255,.10), transparent);
+  }
+  .hero h1 { font-size: 34px; margin: 0 0 12px; letter-spacing: -0.8px; line-height: 1.15; }
+  .hero p { color: var(--muted); max-width: 720px; font-size: 16px; margin: 0; }
+  .pill {
+    display: inline-block; background: var(--panel-2); border: 1px solid var(--border);
+    color: var(--accent); font-size: 12px; padding: 4px 11px; border-radius: 20px;
+    font-family: var(--mono); margin-bottom: 18px;
+  }
+  section { padding: 44px 56px; border-bottom: 1px solid var(--border); }
+  section > h2 {
+    font-size: 24px; margin: 0 0 6px; letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  section > h2 .num {
+    font-family: var(--mono); font-size: 13px; color: var(--bg); background: var(--accent);
+    width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 8px; font-weight: 700; flex: none;
+  }
+  section .lede { color: var(--muted); margin: 0 0 24px; max-width: 760px; }
+  h3 { font-size: 18px; margin: 30px 0 10px; letter-spacing: -0.3px; }
+  h4 { font-size: 15px; margin: 22px 0 8px; color: var(--accent); font-family: var(--mono); }
+  p { margin: 12px 0; }
+  code {
+    font-family: var(--mono); background: var(--panel-2); padding: 2px 6px;
+    border-radius: 5px; font-size: 13px; color: #ffd9a0; border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; overflow-x: auto; font-family: var(--mono); font-size: 13px;
+    line-height: 1.55; margin: 14px 0; color: #d6e2ee;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; }
+  pre.flow { color: var(--accent); font-size: 12.5px; line-height: 1.35; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 12px; border: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--panel-2); font-weight: 600; color: var(--text); }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+  td code { white-space: nowrap; }
+  /* Callouts */
+  .callout { border-radius: 10px; padding: 14px 18px; margin: 18px 0; border: 1px solid; font-size: 14px; }
+  .callout .label { font-weight: 700; margin-right: 6px; }
+  .callout.note { background: rgba(91,157,255,.08); border-color: rgba(91,157,255,.4); }
+  .callout.note .label { color: var(--accent-2); }
+  .callout.tip { background: rgba(77,208,167,.08); border-color: rgba(77,208,167,.4); }
+  .callout.tip .label { color: var(--accent); }
+  .callout.warn { background: rgba(255,180,84,.08); border-color: rgba(255,180,84,.4); }
+  .callout.warn .label { color: var(--p1); }
+  .callout ul { margin: 8px 0 0; padding-left: 20px; }
+  .callout li { margin: 6px 0; }
+  /* Severity badges */
+  .sev { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+  .sev.p0 { background: rgba(255,92,108,.18); color: var(--p0); border: 1px solid rgba(255,92,108,.5); }
+  .sev.p1 { background: rgba(255,180,84,.18); color: var(--p1); border: 1px solid rgba(255,180,84,.5); }
+  .sev.p2 { background: rgba(86,200,216,.18); color: var(--p2); border: 1px solid rgba(86,200,216,.5); }
+  /* Charts */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 22px 0; }
+  .chart-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .chart-card h4 { margin: 0 0 4px; color: var(--text); font-family: var(--sans); font-size: 15px; }
+  .chart-card .cap { color: var(--muted); font-size: 12.5px; margin: 0 0 14px; }
+  .chart-wrap { position: relative; height: 240px; }
+  .chart-wide { grid-column: 1 / -1; }
+  .chart-wide .chart-wrap { height: 280px; }
+  /* Pipeline */
+  .pipeline { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .pipe-node {
+    background: var(--panel-2); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 10px; padding: 14px 18px;
+  }
+  .pipe-node.input { border-left-color: var(--muted); }
+  .pipe-node.output { border-left-color: var(--accent-2); background: var(--panel); }
+  .pipe-node .t { font-weight: 700; font-size: 15px; }
+  .pipe-node .t code { font-size: 13px; }
+  .pipe-node .d { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .pipe-arrow { text-align: center; color: var(--accent); font-size: 20px; padding: 6px 0; }
+  /* Decision step badges */
+  .stepflow { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 18px 0; }
+  .stepflow .row { display: flex; align-items: center; gap: 14px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px; padding: 12px 16px; }
+  .stepflow .q { color: var(--muted); flex: 1; font-size: 13.5px; }
+  .stepflow .a { font-family: var(--mono); font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; height: auto; }
+    .chart-grid { grid-template-columns: 1fr; }
+    .hero, section { padding-left: 24px; padding-right: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc">
+  <div class="brand">TipTip <span>QA</span> Automation</div>
+  <div class="sub">Three-Skill Pipeline · Usage Guide</div>
+  <a class="head" href="#s1">1 · Overview &amp; Pipeline</a>
+  <a class="head" href="#s2">2 · Prerequisites</a>
+  <a class="head" href="#s3">3 · shift-left-manual-test</a>
+  <a class="head" href="#s4">4 · automation-script-generation</a>
+  <a class="head" href="#s5">5 · automation-script-validation</a>
+  <a href="#charts">↳ Rule charts</a>
+  <a class="head" href="#s6">6 · End-to-End Walkthrough</a>
+  <a class="head" href="#s7">7 · Quick Reference</a>
+</nav>
+<main>
+<div class="hero">
+  <div class="pill">web-automation-playwright</div>
+  <h1>TipTip QA Automation Skills:<br>A Complete Usage Guide</h1>
+  <p>Take a feature from a Jira ticket all the way to a validated, runnable Playwright/Cucumber test using three Claude Code skills that hand off to one another. Assumes working knowledge of Playwright, Cucumber, and Gherkin.</p>
+</div>
+
+<section id="s1">
+  <h2><span class="num">1</span>Overview &amp; The Three-Skill Pipeline</h2>
+  <p class="lede">The three skills form a sequential pipeline. Each skill's output is the next skill's input — they were deliberately designed to hand off to one another.</p>
+
+  <div class="pipeline">
+    <div class="pipe-node input">
+      <div class="t">PRD / Jira ticket / plain-text feature</div>
+      <div class="d">The raw requirement you start from.</div>
+    </div>
+    <div class="pipe-arrow">▼</div>
+    <div class="pipe-node">
+      <div class="t"><code>shift-left-manual-test</code></div>
+      <div class="d">"What should we test?" → tagged Gherkin manual cases + test-data dependency matrix.</div>
+    </div>
+    <div class="pipe-arrow">▼</div>
+    <div class="pipe-node">
+      <div class="t"><code>automation-script-generation</code></div>
+      <div class="d">"Make it runnable." → POM class + step definitions + .feature, placed in the correct platform dirs, index.js updated.</div>
+    </div>
+    <div class="pipe-arrow">▼</div>
+    <div class="pipe-node output">
+      <div class="t"><code>automation-script-validation</code></div>
+      <div class="d">"Is it compliant?" → severity-graded P0/P1/P2 audit report. Read-only — modifies nothing.</div>
+    </div>
+  </div>
+
+  <p><strong>Each output feeds the next input.</strong> The Gherkin from skill 1 is written with steps that map cleanly onto Page Object methods, so skill 2 can scaffold without guessing. Skill 2 produces files in the exact repo layout that skill 3 knows how to audit.</p>
+
+  <div class="callout tip">
+    <span class="label">Tip:</span> Validation is not just a final gate. Run <code>automation-script-validation</code> at <em>any</em> point — on hand-written legacy files, on a teammate's branch during code review, or immediately after generation. It never modifies files, so there is no risk in running it often.
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">2</span>Prerequisites</h2>
+  <p class="lede">Before using any of these skills, make sure you have the following in place.</p>
+  <table>
+    <thead><tr><th>Requirement</th><th>Why you need it</th></tr></thead>
+    <tbody>
+      <tr><td>Local clone of <code>web-automation-playwright</code></td><td>Skills read and write files relative to this repo's structure (<code>tests/pages/</code>, <code>tests/stepDefinitions/web/</code>, <code>tests/features/</code>).</td></tr>
+      <tr><td>Claude Code CLI with the 3 skills installed</td><td><code>shift-left-manual-test</code>, <code>automation-script-generation</code>, <code>automation-script-validation</code>.</td></tr>
+      <tr><td>Atlassian MCP configured</td><td>Required only for <code>shift-left-manual-test</code> when you pass a Jira key or Confluence URL. Plain-text input works without it.</td></tr>
+      <tr><td>Node.js &amp; npm installed</td><td>To run the generated tests (<code>npm run test:local</code>).</td></tr>
+      <tr><td>Playwright / Cucumber / Gherkin familiarity</td><td>The skills generate idiomatic code; you must read and verify it.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout note">
+    <span class="label">Note:</span> The skills never log you in to TipTip systems and never invent credentials. They reference <code>process.env</code> variables (e.g. <code>process.env.REGISTERED_USER_EMAIL</code>). Your local <code>.env</code> / <code>.env.stag</code> / <code>.env.prod</code> files must be configured separately.
+  </div>
+</section>
+
+<section id="s3">
+  <h2><span class="num">3</span>Skill 1 · <code>shift-left-manual-test</code></h2>
+  <p class="lede">Turns a PRD, Jira ticket, or plain-text feature description into structured Gherkin manual test cases — tagged with TipTip's conventions and accompanied by a test-data dependency matrix. Output is shaped for direct consumption by <code>automation-script-generation</code>. Commands: <code>generate</code> (default), <code>review</code>.</p>
+
+  <h3>Command: <code>generate</code> (default)</h3>
+  <p><strong>Purpose:</strong> Produce a complete set of manual test cases (positive, negative, edge, boundary) from a requirement source. <strong>When:</strong> at the start of test design — the moment a ticket lands, before any automation exists.</p>
+
+  <table>
+    <thead><tr><th>Input type</th><th>Example prompt</th></tr></thead>
+    <tbody>
+      <tr><td>Jira ticket key</td><td><code>shift-left-manual-test generate PT-12345</code></td></tr>
+      <tr><td>Confluence URL</td><td><code>shift-left-manual-test generate https://tiptip.atlassian.net/wiki/spaces/QE/pages/123456/Guest-Checkout-PRD</code></td></tr>
+      <tr><td>Plain-text description</td><td><code>shift-left-manual-test generate</code> → paste: <em>"Guest users can purchase a paid digital content item on TWA without an account, paying via Xendit."</em></td></tr>
+    </tbody>
+  </table>
+  <p>A Jira key is fetched via the Atlassian MCP (<code>getJiraIssue</code>); a Confluence link via <code>getConfluencePage</code>; plain text is parsed directly.</p>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>Scenario coverage categories</h4>
+      <p class="cap">Every requirement is expanded across all four categories, each with a TipTip priority weighting.</p>
+      <div class="chart-wrap"><canvas id="coverageChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h4>Tag families applied</h4>
+      <p class="cap">Type, environment, platform, and domain tags attached to every feature/scenario.</p>
+      <div class="chart-wrap"><canvas id="tagChart"></canvas></div>
+    </div>
+  </div>
+
+  <h4>Sample TWA output (positive · negative · edge)</h4>
+<pre><code>@regression @commerce @twa @stag
+Feature: Guest purchase of paid digital content
+
+    Background: Guest lands on TipTip
+        Given I open TipTip website
+
+    @positive_case @smoke
+    Scenario: Guest successfully buys a paid content item via Xendit
+        Given user search "sdet title 167" on landing page
+        And user click "content" tab in explore page
+        When user filter and select "premium" product
+        And user buy the product
+        And user pay the "content" "without" voucher
+        Then user should be able to consume the "content"
+
+    @negative_case
+    Scenario: Purchase blocked when payment is declined
+        Given user search "sdet title 167" on landing page
+        And user buy the product
+        When user pays with a declined card
+        Then an error "Payment failed, please try again" should be displayed
+        And user remains on the payment page
+
+    @edge_case
+    Scenario: Purchase of a free content item skips payment entirely
+        Given user search "free sdet title 09" on landing page
+        And user filter and select "free" product
+        When user claims the product
+        Then user should be able to consume the "content"
+        And no payment step is shown</code></pre>
+
+  <p>…followed by a test-data dependency matrix (premium content, Xendit sandbox, hardcoded OTP <code>909090</code>, etc.).</p>
+
+  <h3>Command: <code>review</code></h3>
+  <p><strong>Purpose:</strong> Audit existing manual test cases and suggest what's missing — uncovered negative paths, missing edge values, mis-applied tags, or steps too vague to map to a Page Object method. <strong>Input:</strong> a path to a <code>.feature</code> file or pasted cases.</p>
+<pre><code>shift-left-manual-test review tests/features/e2e/guest-purchase.feature</code></pre>
+
+  <h3>Constraints to know upfront</h3>
+  <ul>
+    <li><strong>No real PII, ever.</strong> Uses TipTip standard patterns — <code>"909090"</code> for OTP, <code>"8881588080XX"</code> for phone.</li>
+    <li><strong>25-scenario cap per feature file.</strong> If more is needed, the skill splits by sub-domain.</li>
+    <li><strong>No invented element IDs.</strong> Steps reference visible text or logical descriptions — mapping to locators is skill 2's job.</li>
+    <li><strong>Generic, reusable steps</strong> — <code>user clicks "&lt;button_text&gt;" button</code>, not page-specific phrasing.</li>
+  </ul>
+
+  <div class="callout warn">
+    <span class="label">Common Mistakes:</span>
+    <ul>
+      <li>Writing implementation-coupled steps yourself (<code>user fills #input-email</code>) — defeats the hand-off to skill 2.</li>
+      <li>Expecting Jira fetching without the Atlassian MCP — paste the ticket text as plain input instead.</li>
+      <li>Ignoring the dependency matrix — it tells you what test data must exist before the generated test can pass.</li>
+      <li>Cramming unrelated behaviors into one feature — if you pass 25 scenarios, let the skill split by sub-domain.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">4</span>Skill 2 · <code>automation-script-generation</code></h2>
+  <p class="lede">Takes Gherkin (from skill 1, an existing <code>.feature</code>, or a plain description) and generates three production-ready artifacts following the exact repo structure — a POM class, Cucumber step definitions, and a <code>.feature</code> file — then registers the new page class in the platform's <code>index.js</code>. Commands: <code>generate</code> (default), <code>scaffold-page</code>, <code>scaffold-steps</code>.</p>
+
+  <h3>Platform detection &amp; file placement</h3>
+  <table>
+    <thead><tr><th>Platform</th><th>Page dir</th><th>Step dir</th><th>Feature dir</th></tr></thead>
+    <tbody>
+      <tr><td><strong>TWA</strong><br><code>tiptip.tv</code></td><td><code>tests/pages/twa/</code></td><td><code>tests/stepDefinitions/web/twa/</code></td><td><code>tests/features/e2e/</code> · <code>core/</code></td></tr>
+      <tr><td><strong>Content Hub</strong><br><code>hub.tiptip.tv</code></td><td><code>tests/pages/ch/</code></td><td><code>tests/stepDefinitions/web/ch/</code></td><td><code>tests/features/content_hub/</code></td></tr>
+      <tr><td><strong>SatuSatu</strong><br><code>satusatu.com</code></td><td><code>tests/pages/swa/</code></td><td><code>tests/stepDefinitions/web/swa/</code></td><td><code>tests/features/satusatu/</code></td></tr>
+    </tbody>
+  </table>
+  <p>Before creating anything, the skill reads the platform's <code>index.js</code> to see which page objects already exist, so it doesn't duplicate one that's already there.</p>
+
+  <h3>Command: <code>generate</code> (default)</h3>
+  <p>Produces all three artifacts in one pass. Pass the Gherkin from skill 1 directly, or point it at a file: <code>automation-script-generation generate tests/features/e2e/guest-purchase.feature</code>.</p>
+
+  <h4>Sample POM class — locator priority in action</h4>
+<pre><code>const { expect, Locator, Page } = require("@playwright/test");
+
+class ProductDetailPage {
+  constructor(page) {
+    this.page = page;
+
+    // 1. CSS ID — preferred
+    this.buttonBuy = page.locator("#i-product-buy-button");
+
+    // 2. XPath — when no ID exists
+    this.buttonPayNow = page.locator("//button[normalize-space()='Pay Now']");
+
+    // 3. Tag + text filter — last resort for MUI components
+    this.voucherMenuItem = page
+      .locator(".MuiMenuItem-root")
+      .getByRole("li", { name: "menuitem" })
+      .getByText("Apply Voucher");
+
+    // TODO: Verify locator — ID assumed from visible text
+    this.labelPaymentError = page.locator("#payment-error-message");
+  }
+
+  async clickButtonBuy() {
+    await this.buttonBuy.click();
+  }
+
+  async verifyPaymentError(expectedText) {
+    await expect.soft(this.labelPaymentError).toHaveText(expectedText);
+  }
+}
+
+module.exports = ProductDetailPage;</code></pre>
+
+  <h3>How <code>index.js</code> gets updated — and why it matters</h3>
+  <p>After creating a new page class, the skill registers it in the platform's <code>index.js</code>. The export is an <strong>array of class constructors</strong> — not instances:</p>
+<pre><code>const ProductDetailPage = require("./product-detail-page.js");
+
+module.exports = [
+  // ... existing pages ...
+  ProductDetailPage,
+];</code></pre>
+  <p>The <code>BeforeAll</code> hook in <code>cucumber.conf.js</code> iterates that array, does <code>new ClassConstructor(global.page)</code> for each entry, and assigns the instance to a <strong>lowercased global</strong>:</p>
+<pre class="flow">SignInPage        →  global.signInPage
+ProductDetailPage →  global.productDetailPage</pre>
+  <div class="callout warn">
+    <span class="label">Warning:</span> If the class is a file on disk but missing from <code>index.js</code>, the global is never created and your steps throw at runtime — a silent failure that validation catches as <span class="sev p0">XREF-003</span>.
+  </div>
+
+  <h3>Locator priority — decision flow</h3>
+  <div class="stepflow">
+    <div class="row"><div class="q">Does the element have a CSS ID (<code>#id</code>)?</div><div class="a">→ use page.locator("#id") ✓ preferred</div></div>
+    <div class="row"><div class="q">No ID — does it have a <code>data-testid</code>?</div><div class="a">→ use [data-testid="…"]</div></div>
+    <div class="row"><div class="q">No testid — stable text / MUI component?</div><div class="a">→ XPath //…[text()] or .MuiMenuItem-root</div></div>
+    <div class="row"><div class="q">Last resort — fragile selector</div><div class="a">→ getByText() + // TODO + request an ID</div></div>
+  </div>
+
+  <h3>Commands: <code>scaffold-page</code> &amp; <code>scaffold-steps</code></h3>
+  <p><code>scaffold-page</code> generates <strong>only</strong> a POM class (plus its <code>index.js</code> registration). <code>scaffold-steps</code> generates <strong>only</strong> step definitions for an <em>existing</em> page object.</p>
+<pre><code>automation-script-generation scaffold-page twa product-detail
+elements: buy button, pay-now button, voucher menu, payment error label
+
+automation-script-generation scaffold-steps tests/pages/twa/product-detail-page.js</code></pre>
+
+  <div class="callout tip">
+    <span class="label">When to use which:</span>
+    <ul>
+      <li>Starting from a feature/scenario, need everything → <code>generate</code></li>
+      <li>New page exists in the app, no POM yet → <code>scaffold-page</code></li>
+      <li>POM exists, but steps aren't wired up yet → <code>scaffold-steps</code></li>
+    </ul>
+  </div>
+
+  <h3>Constraints to know upfront</h3>
+  <ul>
+    <li><strong>No <code>page.waitForTimeout()</code></strong> — uses built-in waiting (<code>expect().toBeVisible()</code>, <code>waitForSelector()</code>, <code>waitForURL()</code>).</li>
+    <li><strong>CommonJS only</strong> — <code>require</code> / <code>module.exports</code>, never <code>import</code> / <code>export</code>.</li>
+    <li><strong>No hardcoded credentials</strong> — uses <code>process.env</code> variables.</li>
+    <li><strong>Never invents locator IDs</strong> — unknown IDs get a <code>// TODO: Verify locator</code> comment.</li>
+    <li><strong><code>expect.soft()</code></strong> for non-critical assertions, matching the repo convention.</li>
+  </ul>
+  <div class="callout note">
+    <span class="label">Note:</span> When a locator changes, edit <em>only the Page Object</em>. Step definitions and feature files reference behavior, not selectors, so they stay stable.
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">5</span>Skill 3 · <code>automation-script-validation</code></h2>
+  <p class="lede">Performs <strong>static analysis</strong> on generated or existing automation files and produces a severity-graded audit report. It is <strong>read-only</strong> — it modifies nothing and runs no tests. Commands: <code>validate</code> (default), <code>validate-page</code>, <code>validate-steps</code>, <code>validate-feature</code>.</p>
+
+  <table>
+    <thead><tr><th>Input</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>A single file</td><td><code>validate tests/pages/twa/product-detail-page.js</code></td></tr>
+      <tr><td>A directory</td><td><code>validate tests/pages/twa/</code></td></tr>
+      <tr><td>Everything</td><td><code>validate all</code></td></tr>
+    </tbody>
+  </table>
+  <p>Scoped variants run one layer only: <code>validate-page</code> (POM + index), <code>validate-steps</code>, <code>validate-feature</code>. <strong>Cross-reference (XREF) checks require the full <code>validate</code></strong> because they need all three layers loaded at once.</p>
+
+  <div id="charts" class="chart-grid">
+    <div class="chart-card">
+      <h4>Rules by severity</h4>
+      <p class="cap">32 rules total. P0 blocks merge, P1 is a sprint fix, P2 is backlog quality.</p>
+      <div class="chart-wrap"><canvas id="sevChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h4>Rules by layer</h4>
+      <p class="cap">Where the rules live across the four file types plus cross-reference.</p>
+      <div class="chart-wrap"><canvas id="layerChart"></canvas></div>
+    </div>
+    <div class="chart-card chart-wide">
+      <h4>Severity distribution per layer</h4>
+      <p class="cap">P0 concentrates in Page Objects, index.js, and cross-reference — the places a runtime failure originates.</p>
+      <div class="chart-wrap"><canvas id="stackChart"></canvas></div>
+    </div>
+  </div>
+
+  <h3>Reading the report — P0 / P1 / P2</h3>
+  <table>
+    <thead><tr><th>Severity</th><th>Meaning</th><th>SLA</th><th>Concrete example</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sev p0">P0 Critical</span></td><td>Will cause a runtime failure</td><td>Fix before merge</td><td>Page file missing from <code>index.js</code> (XREF-003) — global never created, steps throw.</td></tr>
+      <tr><td><span class="sev p1">P1 High</span></td><td>Causes flakiness / maintenance burden</td><td>Fix this sprint</td><td>A method using <code>page.waitForTimeout(5000)</code> (POM-008 / STEP-006).</td></tr>
+      <tr><td><span class="sev p2">P2 Medium</span></td><td>Convention / quality issue</td><td>Plan for improvement</td><td>An XPath locator where an ID exists (POM-006) — works, but brittle.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>A realistic audit report snippet</h3>
+<pre><code>### tests/pages/twa/product-detail-page.js
+
+#### POM-008: No hardcoded waits — P1
+
+Current (line 14):
+  async clickButtonPayNow() {
+    await this.page.waitForTimeout(5000);
+    await this.buttonPayNow.click();
+  }
+
+Expected:
+  async clickButtonPayNow() {
+    await expect(this.buttonPayNow).toBeVisible();
+    await this.buttonPayNow.click();
+  }
+
+Rationale: Fixed waits make tests slow and flaky. Playwright's auto-waiting
+via expect().toBeVisible() resolves the moment the element is actionable.</code></pre>
+
+  <h3>Cross-reference validation &amp; the silent failure (XREF-003)</h3>
+  <ul>
+    <li><span class="sev p1">XREF-001</span> a page object with methods but no matching step-definition file.</li>
+    <li><span class="sev p2">XREF-002</span> a class declared in <code>index.js</code> but never used by any step.</li>
+    <li><span class="sev p0">XREF-003</span> a <code>*-page.js</code> file on disk but <strong>not listed in <code>index.js</code></strong>.</li>
+  </ul>
+  <div class="callout warn">
+    <span class="label">Why XREF-003 is P0:</span> The file compiles, the class is correct, the steps look right — but because the <code>BeforeAll</code> hook only instantiates classes in the <code>index.js</code> array, the global (<code>productDetailPage</code>) is never created. The test fails at runtime with an undefined-reference error that points nowhere near the real cause.
+  </div>
+
+  <h3>Fix Priority Guide</h3>
+  <table>
+    <thead><tr><th>Rule</th><th>Layer</th><th>Sev</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>POM-001</td><td>POM</td><td><span class="sev p0">P0</span></td><td>Rename class to PascalCase ending in <code>Page</code>.</td></tr>
+      <tr><td>POM-003</td><td>POM</td><td><span class="sev p0">P0</span></td><td>Accept <code>page</code> in constructor; move all locators into it.</td></tr>
+      <tr><td>POM-005</td><td>POM</td><td><span class="sev p0">P0</span></td><td>End file with <code>module.exports = &lt;ClassName&gt;;</code> (CommonJS).</td></tr>
+      <tr><td>POM-002</td><td>POM</td><td><span class="sev p1">P1</span></td><td>Rename file to kebab-case <code>*-page.js</code>.</td></tr>
+      <tr><td>POM-004</td><td>POM</td><td><span class="sev p1">P1</span></td><td>Move <code>page.locator()</code> calls into the constructor.</td></tr>
+      <tr><td>POM-007</td><td>POM</td><td><span class="sev p1">P1</span></td><td>Make interaction methods <code>async</code>.</td></tr>
+      <tr><td>POM-008</td><td>POM</td><td><span class="sev p1">P1</span></td><td>Replace <code>waitForTimeout()</code> with auto-waiting.</td></tr>
+      <tr><td>POM-011</td><td>POM</td><td><span class="sev p1">P1</span></td><td>Import <code>{ expect }</code> from <code>@playwright/test</code>.</td></tr>
+      <tr><td>POM-006</td><td>POM</td><td><span class="sev p2">P2</span></td><td>Prefer ID over XPath/text locators.</td></tr>
+      <tr><td>POM-009</td><td>POM</td><td><span class="sev p2">P2</span></td><td>Use <code>expect.soft()</code> for non-blocking assertions.</td></tr>
+      <tr><td>POM-010</td><td>POM</td><td><span class="sev p2">P2</span></td><td>Remove business logic/assertions from page objects.</td></tr>
+      <tr><td>IDX-001</td><td>index</td><td><span class="sev p0">P0</span></td><td>Add <code>require()</code> + array entry for every page file.</td></tr>
+      <tr><td>IDX-003</td><td>index</td><td><span class="sev p0">P0</span></td><td>Export an array of constructors, not instances.</td></tr>
+      <tr><td>IDX-002</td><td>index</td><td><span class="sev p1">P1</span></td><td>Remove <code>require()</code> of non-existent files.</td></tr>
+      <tr><td>IDX-004</td><td>index</td><td><span class="sev p2">P2</span></td><td>Match require variable names to class names.</td></tr>
+      <tr><td>STEP-001</td><td>steps</td><td><span class="sev p0">P0</span></td><td>Import <code>{ Given, When, Then }</code> from <code>@cucumber/cucumber</code>.</td></tr>
+      <tr><td>STEP-002</td><td>steps</td><td><span class="sev p1">P1</span></td><td>Access page objects via globals, don't re-instantiate.</td></tr>
+      <tr><td>STEP-003</td><td>steps</td><td><span class="sev p1">P1</span></td><td>Move <code>page.locator()</code> calls into page objects.</td></tr>
+      <tr><td>STEP-006</td><td>steps</td><td><span class="sev p1">P1</span></td><td>Replace <code>waitForTimeout()</code> with explicit waits.</td></tr>
+      <tr><td>STEP-007</td><td>steps</td><td><span class="sev p1">P1</span></td><td>Rename file to kebab-case <code>*-steps.js</code>.</td></tr>
+      <tr><td>STEP-004</td><td>steps</td><td><span class="sev p2">P2</span></td><td>Make steps generic / reusable.</td></tr>
+      <tr><td>STEP-005</td><td>steps</td><td><span class="sev p2">P2</span></td><td>Parameterize with <code>{string}</code> / <code>{int}</code>.</td></tr>
+      <tr><td>FEAT-001</td><td>feature</td><td><span class="sev p1">P1</span></td><td>Add a domain tag and <code>@stag</code>.</td></tr>
+      <tr><td>FEAT-002</td><td>feature</td><td><span class="sev p1">P1</span></td><td>Add a type tag to every scenario.</td></tr>
+      <tr><td>FEAT-006</td><td>feature</td><td><span class="sev p0">P0</span></td><td>Ensure every step has a definition (no orphans).</td></tr>
+      <tr><td>FEAT-003</td><td>feature</td><td><span class="sev p2">P2</span></td><td>Move common preconditions into <code>Background</code>.</td></tr>
+      <tr><td>FEAT-004</td><td>feature</td><td><span class="sev p2">P2</span></td><td>Use <code>Scenario Outline</code> + <code>Examples</code>.</td></tr>
+      <tr><td>FEAT-005</td><td>feature</td><td><span class="sev p2">P2</span></td><td>Split scenarios over 10 steps — one behavior each.</td></tr>
+      <tr><td>FEAT-007</td><td>feature</td><td><span class="sev p2">P2</span></td><td>Describe behavior, not implementation.</td></tr>
+      <tr><td>XREF-001</td><td>cross</td><td><span class="sev p1">P1</span></td><td>Add a step-definition file for the page object.</td></tr>
+      <tr><td>XREF-002</td><td>cross</td><td><span class="sev p2">P2</span></td><td>Remove or use the orphaned page class.</td></tr>
+      <tr><td>XREF-003</td><td>cross</td><td><span class="sev p0">P0</span></td><td>Register the page file in <code>index.js</code>.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s6">
+  <h2><span class="num">6</span>End-to-End Walkthrough</h2>
+  <p class="lede">A real session, start to finish, on TWA. <strong>Scenario:</strong> Jira ticket <code>PT-99999</code> — "Allow guest users to purchase content."</p>
+
+  <h3>Step 1 — Generate manual test cases from the ticket</h3>
+<pre><code>shift-left-manual-test generate PT-99999</code></pre>
+  <p>The skill fetches PT-99999 via the Atlassian MCP and returns (abridged):</p>
+<pre><code>@regression @commerce @twa @stag
+Feature: Guest purchase of paid digital content
+
+    Background: Guest lands on TipTip
+        Given I open TipTip website
+
+    @positive_case @smoke
+    Scenario: Guest buys a paid content item via Xendit
+        Given user search "sdet title 167" on landing page
+        And user buy the product
+        When user pay the "content" "without" voucher
+        Then user should be able to consume the "content"
+
+    @negative_case
+    Scenario: Purchase blocked when payment is declined
+        ...</code></pre>
+
+  <h3>Step 2 — Generate the automation scripts</h3>
+  <p>Paste that Gherkin into the next command. The skill detects <strong>TWA</strong>, reads <code>tests/pages/twa/index.js</code>, sees no <code>ProductDetailPage</code>, and creates:</p>
+  <table>
+    <thead><tr><th>Type</th><th>File</th></tr></thead>
+    <tbody>
+      <tr><td>Page Object</td><td><code>tests/pages/twa/product-detail-page.js</code></td></tr>
+      <tr><td>Index update</td><td><code>tests/pages/twa/index.js</code></td></tr>
+      <tr><td>Step definitions</td><td><code>tests/stepDefinitions/web/twa/product-steps.js</code></td></tr>
+      <tr><td>Feature file</td><td><code>tests/features/e2e/guest-purchase.feature</code></td></tr>
+    </tbody>
+  </table>
+<pre><code>const { Given, When, Then } = require("@cucumber/cucumber");
+const { expect } = require("@playwright/test");
+
+When("user buy the product", async function () {
+  await productDetailPage.clickButtonBuy();
+});
+
+When("user pay the {string} {string} voucher", async function (item, voucherMode) {
+  await productDetailPage.clickButtonPayNow();
+});
+
+Then("an error {string} should be displayed", async function (message) {
+  await productDetailPage.verifyPaymentError(message);
+});</code></pre>
+
+  <h3>Step 3 — Validate before you commit</h3>
+<pre><code>automation-script-validation validate tests/pages/twa/</code></pre>
+  <p>The report comes back with one <span class="sev p1">P1</span> (POM-008, a stray <code>waitForTimeout(3000)</code>). You fix it in the Page Object — steps and feature stay untouched — then re-run validation to confirm <strong>✅ PASS</strong>.</p>
+
+  <h3>Step 4 — Run the test locally</h3>
+<pre><code>npm run test:local -- --tags '@commerce and @smoke'</code></pre>
+  <p>When green, you commit. The whole loop — ticket to validated, passing test — happened without leaving Claude Code except to run npm.</p>
+
+  <div class="callout tip">
+    <span class="label">Tip:</span> Don't forget the dependency matrix from Step 1. If the premium content item or the Xendit sandbox isn't provisioned in staging, the test fails for data reasons, not code reasons. Validation can't catch that — only the matrix warns you.
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">7</span>Quick Reference</h2>
+
+  <h3>Table 1 — Command Reference</h3>
+  <table>
+    <thead><tr><th>Skill</th><th>Command</th><th>Input</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2">shift-left-manual-test</td><td><code>generate</code></td><td>Jira key, Confluence URL, or plain text</td><td>Tagged Gherkin cases + coverage summary + dependency matrix</td></tr>
+      <tr><td><code>review</code></td><td>Existing <code>.feature</code> / pasted cases</td><td>Review report: missing cases, tag gaps, vague steps</td></tr>
+      <tr><td rowspan="3">automation-script-generation</td><td><code>generate</code></td><td>Gherkin, <code>.feature</code> path, or description</td><td>POM + step defs + <code>.feature</code> + <code>index.js</code> update</td></tr>
+      <tr><td><code>scaffold-page</code></td><td>Platform + page name + UI elements</td><td>One POM class + <code>index.js</code> registration</td></tr>
+      <tr><td><code>scaffold-steps</code></td><td>Path to an existing page object</td><td>Step definitions for that page's methods</td></tr>
+      <tr><td rowspan="4">automation-script-validation</td><td><code>validate</code></td><td>File, directory, or <code>all</code></td><td>Full audit report (incl. XREF cross-checks)</td></tr>
+      <tr><td><code>validate-page</code></td><td>POM file(s) / directory</td><td>POM + index audit only (no XREF)</td></tr>
+      <tr><td><code>validate-steps</code></td><td>Step definition file(s)</td><td>Step-definition audit only</td></tr>
+      <tr><td><code>validate-feature</code></td><td><code>.feature</code> file(s)</td><td>Feature-file audit only</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Table 2 — Rule Reference</h3>
+  <p>Full rule list available in the <a href="#s5" style="color:var(--accent)">Fix Priority Guide</a> above — 32 rules across POM (11), index.js (4), step definitions (7), feature files (7), and cross-reference (3).</p>
+</section>
+
+<script>
+  const C = { p0:'#ff5c6c', p1:'#ffb454', p2:'#56c8d8', accent:'#4dd0a7', accent2:'#5b9dff', muted:'#9aa7b5', grid:'rgba(255,255,255,0.07)' };
+  Chart.defaults.color = C.muted;
+  Chart.defaults.font.family = "-apple-system, 'Segoe UI', Roboto, sans-serif";
+  Chart.defaults.font.size = 12;
+  const legendBottom = { legend: { position: 'bottom', labels: { padding: 14, usePointStyle: true, boxWidth: 8 } } };
+  const noLegend = { legend: { display: false } };
+
+  // Section 3 — scenario coverage priority weighting
+  new Chart(document.getElementById('coverageChart'), {
+    type: 'bar',
+    data: { labels: ['Positive','Negative','Edge','Boundary'],
+      datasets: [{ label: 'Priority weight', data: [3,3,2,1],
+        backgroundColor: [C.accent, C.p0, C.p1, C.p2], borderRadius: 6 }] },
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: noLegend,
+      scales: { x: { grid: { color: C.grid }, ticks: { stepSize: 1, callback: v => ['','Nice','Should','Must'][v] || v }, max: 3 },
+                y: { grid: { display: false } } } }
+  });
+
+  // Section 3 — tag families
+  new Chart(document.getElementById('tagChart'), {
+    type: 'bar',
+    data: { labels: ['Type','Suite','Environment','Platform','Domain'],
+      datasets: [{ label: 'Tags available', data: [3,2,2,3,8],
+        backgroundColor: C.accent2, borderRadius: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: noLegend,
+      scales: { y: { grid: { color: C.grid }, ticks: { stepSize: 2 } }, x: { grid: { display: false } } } }
+  });
+
+  // Section 5 — rules by severity
+  new Chart(document.getElementById('sevChart'), {
+    type: 'doughnut',
+    data: { labels: ['P0 — Critical (8)','P1 — High (13)','P2 — Medium (11)'],
+      datasets: [{ data: [8,13,11], backgroundColor: [C.p0, C.p1, C.p2], borderColor: '#161b22', borderWidth: 3 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '58%', plugins: legendBottom }
+  });
+
+  // Section 5 — rules by layer
+  new Chart(document.getElementById('layerChart'), {
+    type: 'bar',
+    data: { labels: ['Page Object','index.js','Step defs','Feature','Cross-ref'],
+      datasets: [{ label: 'Rule count', data: [11,4,7,7,3],
+        backgroundColor: C.accent, borderRadius: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: noLegend,
+      scales: { y: { grid: { color: C.grid }, ticks: { stepSize: 2 } }, x: { grid: { display: false } } } }
+  });
+
+  // Section 5 — severity per layer (stacked)
+  new Chart(document.getElementById('stackChart'), {
+    type: 'bar',
+    data: { labels: ['Page Object','index.js','Step defs','Feature','Cross-ref'],
+      datasets: [
+        { label: 'P0', data: [3,2,1,1,1], backgroundColor: C.p0, borderRadius: 4 },
+        { label: 'P1', data: [5,1,4,2,1], backgroundColor: C.p1, borderRadius: 4 },
+        { label: 'P2', data: [3,1,2,4,1], backgroundColor: C.p2, borderRadius: 4 }
+      ] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: legendBottom,
+      scales: { x: { stacked: true, grid: { display: false } },
+                y: { stacked: true, grid: { color: C.grid }, ticks: { stepSize: 2 } } } }
+  });
+</script>
+
+</main>
+</div>
+</body>
+</html>
